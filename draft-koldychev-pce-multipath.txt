@@ -91,17 +91,17 @@ Table of Contents
      5.1.  Signaling Multiple Paths for Loadbalancing  . . . . . . .   8
      5.2.  Signaling Multiple Paths for Protection . . . . . . . . .   9
    6.  PCEP Message Extensions . . . . . . . . . . . . . . . . . . .   9
-   7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
+   7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  10
      7.1.  SR Policy Candidate-Path with Multiple Segment-Lists  . .  10
      7.2.  Two Primary Paths Protected by One Backup Path  . . . . .  11
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
    10. Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  12
    11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  12
-   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     12.1.  Normative References . . . . . . . . . . . . . . . . . .  12
-     12.2.  Informative References . . . . . . . . . . . . . . . . .  13
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .  13
+     12.2.  Informative References . . . . . . . . . . . . . . . . .  14
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
 
 
 
@@ -420,6 +420,12 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
    assume that the PCE does not support this standard and fall back to
    reporting only a single ERO/RRO.
 
+   The Path ID of each ERO/RRO MUST be unique within that LSP.  If a
+   PCEP speaker detects that there are two paths with the same Path IDs,
+   then the PCEP speaker should send PCError message with Error-Type = 1
+   ("Reception of an invalid object") and Error-Value = TBD4
+   ("Conflicting Path ID").
+
 5.1.  Signaling Multiple Paths for Loadbalancing
 
    The PATH-ATTRIB object can be used to signal multiple path(s) and
@@ -437,18 +443,16 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
        not carried inside a PATH-ATTRIB object, the default weight 1
        MUST be assumed when computing the loadshare.
 
-   3.  The fraction of flows carried by a specific primary path is
-       derived from the ratio of its weight to the sum of all other
-       multipath weights.
-
-
-
 
 
 Koldychev, et al.       Expires December 24, 2020               [Page 8]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
+
+   3.  The fraction of flows carried by a specific primary path is
+       derived from the ratio of its weight to the sum of all other
+       multipath weights.
 
 5.2.  Signaling Multiple Paths for Protection
 
@@ -474,10 +478,33 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
        rerouted traffic after the protected path(s) fail- then the B
        flag MUST be set.
 
+   Note that if a given path has the B-flag cleared, then there MUST be
+   some other path within the same LSP that uses the given path as a
+   backup.  If this condition is violated, then the PCEP speaker should
+   send a PCError message with Error-Type = 10 ("Reception of an invalid
+   object") and Error-Value = TBD5 ("No primary path for pure backup").
+
+   Note that a given PCC may not support certain backup combinations,
+   such as a backup path that is itself protected by another backup
+   path, etc.  If a PCC is not able to implement a requested backup
+   scenario, the PCC SHOULD send a PCError message with Error-Type = 19
+   ("Invalid Operation") and Error-Value = TBD6 ("Not supported path
+   backup").
+
 6.  PCEP Message Extensions
 
    The RBNF of PCReq, PCRep, PCRpt, PCUpd and PCInit messages currently
    use intended-path and/or actual-path:
+
+
+
+
+
+
+Koldychev, et al.       Expires December 24, 2020               [Page 9]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2020
+
 
       <intended-path> ::= (<ERO>|<SERO>)
                  [<intended-path>]
@@ -494,17 +521,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
                  [<actual-path>]
 
 7.  Examples
-
-
-
-
-
-
-
-Koldychev, et al.       Expires December 24, 2020               [Page 9]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2020
-
 
 7.1.  SR Policy Candidate-Path with Multiple Segment-Lists
 
@@ -539,6 +555,13 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
                      <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
                      <ERO SID-List2>
 
+
+
+Koldychev, et al.       Expires December 24, 2020              [Page 10]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2020
+
+
    The state-report for CP2 can be encoded as:
 
    <state-report> =  <LSP PLSP_ID=200>
@@ -555,13 +578,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
    Note that the syntax
 
-
-
-Koldychev, et al.       Expires December 24, 2020              [Page 10]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2020
-
-
    <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
 
    , simply means that this is PATH-ATTRIB object with Path ID field set
@@ -577,20 +593,30 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 <state-report> =  <LSP>
                   <ASSOCIATION>
                   <END-POINT>
-                  <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=1, Backup_Paths=[3]>>
+                  <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
                   <ERO A>
-                  <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=1, Backup_Paths=[3]>>
+                  <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
                   <ERO B>
-                  <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=0, Backup_Paths=[]>>
+                  <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
                   <ERO C>
 
    Note that the syntax
 
-   <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=1, Backup_Paths=[3]>>
+   <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
 
    , simply means that this is PATH-ATTRIB object with Path ID field set
-   to "1" and with a MULTIPATH-BACKUP TLV that has B-flag set to 1 and
-   contains 1 backup path with Backup Path ID equal to 3.
+   to "1" and with a MULTIPATH-BACKUP TLV that has B-flag cleared and
+   contains a single backup path with Backup Path ID of 3.
+
+
+
+
+
+
+Koldychev, et al.       Expires December 24, 2020              [Page 11]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2020
+
 
 8.  IANA Considerations
 
@@ -608,15 +634,20 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
     | TBD3       | MULTIPATH-BACKUP                  | This document   |
     +------------+-----------------------------------+-----------------+
 
+   IANA is requested to make the assignment of a new value for the
+   existing "PCEP-ERROR Object Error Types and Values" registry as
+   follows:
 
-
-
-
-
-Koldychev, et al.       Expires December 24, 2020              [Page 11]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2020
-
+    +------------+-----------------------------------+-----------------+
+    | Error-Type | Error-Value                       | Reference       |
+    +------------+-----------------------------------+-----------------+
+    | 10         | TBD4 - Conflicting Path ID        | This document   |
+    +------------+-----------------------------------+-----------------+
+    | 10         | TBD5 - No primary path for pure   | This document   |
+    |            |        backup                     |                 |
+    +------------+-----------------------------------+-----------------+
+    | 19         | TBD6 - Not supported path backup  | This document   |
+    +------------+-----------------------------------+-----------------+
 
 9.  Security Considerations
 
@@ -632,6 +663,16 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
       Nokia
 
       Email: andrew.stone@nokia.com
+
+
+
+
+
+
+Koldychev, et al.       Expires December 24, 2020              [Page 12]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2020
+
 
 12.  References
 
@@ -666,14 +707,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-
-Koldychev, et al.       Expires December 24, 2020              [Page 12]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2020
-
-
    [RFC5440]  Vasseur, JP., Ed. and JL. Le Roux, Ed., "Path Computation
               Element (PCE) Communication Protocol (PCEP)", RFC 5440,
               DOI 10.17487/RFC5440, March 2009,
@@ -684,6 +717,18 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
               Extensions for Stateful PCE", RFC 8231,
               DOI 10.17487/RFC8231, September 2017,
               <https://www.rfc-editor.org/info/rfc8231>.
+
+
+
+
+
+
+
+
+Koldychev, et al.       Expires December 24, 2020              [Page 13]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2020
+
 
    [RFC8281]  Crabbe, E., Minei, I., Sivabalan, S., and R. Varga, "Path
               Computation Element Communication Protocol (PCEP)
@@ -724,16 +769,21 @@ Authors' Addresses
    Email: vbeeram@juniper.net
 
 
-
-Koldychev, et al.       Expires December 24, 2020              [Page 13]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2020
-
-
    Hooman Bidgoli
    Nokia
 
    Email: hooman.bidgoli@nokia.com
+
+
+
+
+
+
+
+
+Koldychev, et al.       Expires December 24, 2020              [Page 14]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
    Bhupendra Yadav
@@ -781,4 +831,10 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-Koldychev, et al.       Expires December 24, 2020              [Page 14]
+
+
+
+
+
+
+Koldychev, et al.       Expires December 24, 2020              [Page 15]

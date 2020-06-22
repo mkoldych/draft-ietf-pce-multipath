@@ -322,6 +322,12 @@ the MULTIPATH-CAP TLV in the OPEN object, then the PCC MUST assume
 that the PCE does not support this standard and fall back to
 reporting only a single ERO/RRO.
 
+The Path ID of each ERO/RRO MUST be unique within that LSP.
+If a PCEP speaker detects that there are two paths with the same Path IDs,
+then the PCEP speaker should send PCError message with
+Error-Type = 1 ("Reception of an invalid object") and
+Error-Value = TBD4 ("Conflicting Path ID").
+
 ## Signaling Multiple Paths for Loadbalancing
 
 The PATH-ATTRIB object can be used to signal multiple path(s) and indicate
@@ -363,6 +369,18 @@ follows:
       the path only carries rerouted traffic after the protected path(s) fail-- then
       the B flag MUST be set.
 
+Note that if a given path has the B-flag cleared, then there MUST be some other path
+within the same LSP that uses the given path as a backup.
+If this condition is violated, then the PCEP speaker should send a PCError message
+with Error-Type = 10 ("Reception of an invalid object") and
+Error-Value = TBD5 ("No primary path for pure backup").
+
+Note that a given PCC may not support certain backup combinations,
+such as a backup path that is itself protected by another backup path, etc.
+If a PCC is not able to implement a requested backup scenario,
+the PCC SHOULD send a PCError message with
+Error-Type = 19 ("Invalid Operation") and
+Error-Value = TBD6 ("Not supported path backup").
 
 #  PCEP Message Extensions
 
@@ -464,24 +482,24 @@ This would be encoded in a state-report as:
 <state-report> =  <LSP>
                   <ASSOCIATION>
                   <END-POINT>
-                  <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=1, Backup_Paths=[3]>>
+                  <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
                   <ERO A>
-                  <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=1, Backup_Paths=[3]>>
+                  <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
                   <ERO B>
-                  <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=0, Backup_Paths=[]>>
+                  <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
                   <ERO C>
 ~~~
 
 Note that the syntax
 
 ~~~
-<PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=1, Backup_Paths=[3]>>
+<PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
 ~~~
 
 , simply means that this is PATH-ATTRIB object 
 with Path ID field set to "1" and 
-with a MULTIPATH-BACKUP TLV that has B-flag set to 1 and contains 1 backup
-path with Backup Path ID equal to 3.
+with a MULTIPATH-BACKUP TLV that has B-flag cleared and contains
+a single backup path with Backup Path ID of 3.
 
 #  IANA Considerations
 
@@ -500,6 +518,24 @@ path with Backup Path ID equal to 3.
  | TBD3       | MULTIPATH-BACKUP                  | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
+
+   IANA is requested to make the assignment of a new value for the
+   existing "PCEP-ERROR Object Error Types and Values" registry as follows:
+
+~~~
+ +------------+-----------------------------------+-----------------+
+ | Error-Type | Error-Value                       | Reference       |
+ +------------+-----------------------------------+-----------------+
+ | 10         | TBD4 - Conflicting Path ID        | This document   |
+ +------------+-----------------------------------+-----------------+
+ | 10         | TBD5 - No primary path for pure   | This document   |
+ |            |        backup                     |                 |
+ +------------+-----------------------------------+-----------------+
+ | 19         | TBD6 - Not supported path backup  | This document   |
+ +------------+-----------------------------------+-----------------+
+~~~
+
+
 
 #  Security Considerations
 
