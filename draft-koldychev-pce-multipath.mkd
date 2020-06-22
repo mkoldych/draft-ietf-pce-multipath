@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-koldychev-pce-multipath-01
+docname: draft-koldychev-pce-multipath-02
 category: std
 ipr: trust200902
 
@@ -203,7 +203,7 @@ preceded by an PATH-ATTRIB object that describes it.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Flags                           | Oper|
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |                         Path ID.                              |
+  |                         Path ID                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   ~                          Optional TLVs                        ~
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -420,9 +420,9 @@ The state-report for CP1 can be encoded as:
 <state-report> =  <LSP PLSP_ID=100>
                   <ASSOCIATION>
                   <END-POINT>
-                  <PATH-ATTRIB PATH_ID=1 Weight_TLV=W1>
+                  <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
                   <ERO SID-List1>
-                  <PATH-ATTRIB PATH_ID=2 Weight_TLV=W2>
+                  <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
                   <ERO SID-List2>
 ~~~
 
@@ -432,9 +432,9 @@ The state-report for CP2 can be encoded as:
 <state-report> =  <LSP PLSP_ID=200>
                   <ASSOCIATION>
                   <END-POINT>
-                  <PATH-ATTRIB PATH_ID=1 Weight_TLV=W3>
+                  <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W3>>
                   <ERO SID-List3>
-                  <PATH-ATTRIB PATH_ID=2 Weight_TLV=W4>
+                  <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W4>>
                   <ERO SID-List4>
 ~~~
 
@@ -446,13 +446,42 @@ inserted.
 Note that the syntax
 
 ~~~
-<PATH-ATTRIB PATH_ID=1 Weight_TLV=W1>
+<PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
 ~~~
 
 , simply means that this is PATH-ATTRIB object 
-with PATH_ID field set to "1" and 
-with a Weight TLV carrying weight of "W1".
+with Path ID field set to "1" and 
+with a MULTIPATH-WEIGHT TLV carrying weight of "W1".
 
+## Two Primary Paths Protected by One Backup Path
+
+Suppose there are 3 paths: A, B, C.
+Where A,B are primary and C is to be used only when A or B fail.
+Suppose the Path IDs for A, B, C are respectively 1, 2, 3.
+This would be encoded in a state-report as:
+
+~~~
+<state-report> =  <LSP>
+                  <ASSOCIATION>
+                  <END-POINT>
+                  <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=1, Backup_Paths=[3]>>
+                  <ERO A>
+                  <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=1, Backup_Paths=[3]>>
+                  <ERO B>
+                  <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=0, Backup_Paths=[]>>
+                  <ERO C>
+~~~
+
+Note that the syntax
+
+~~~
+<PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=1, Backup_Paths=[3]>>
+~~~
+
+, simply means that this is PATH-ATTRIB object 
+with Path ID field set to "1" and 
+with a MULTIPATH-BACKUP TLV that has B-flag set to 1 and contains 1 backup
+path with Backup Path ID equal to 3.
 
 #  IANA Considerations
 
