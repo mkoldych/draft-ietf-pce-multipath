@@ -17,8 +17,8 @@ author:
  -
     ins: S. Sivabalan
     name: Siva Sivabalan
-    organization: Cisco Systems, Inc.
-    email: msiva@cisco.com
+    organization: Ciena Corporation
+    email: ssivabal@ciena.com
  -
     ins: T. Saad
     name: Tarek Saad
@@ -257,7 +257,7 @@ preceded by an PATH-ATTRIB object that describes it.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             Type              |             Length            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |       Backup Path Number      |             Flags             |
+  |       Backup Path Count       |             Flags             |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Backup Path ID 1                      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -275,7 +275,7 @@ preceded by an PATH-ATTRIB object that describes it.
 
    Length: variable - multiple of 4-octets
 
-   Backup Path Number: Number of backup path(s).
+   Backup Path Count: Number of backup path(s).
 
    Flags:
 
