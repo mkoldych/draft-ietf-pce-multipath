@@ -77,7 +77,7 @@ LSPs under the active stateful PCE model, without the need for local
 configuration on the PCC, thus allowing for dynamic centralized
 control of a network.
 
-PCEP Extensions for Segment Routing {{!I-D.ietf-pce-segment-routing}}
+PCEP Extensions for Segment Routing {{!RFC8664}}
 specifies extensions to the Path Computation Element Protocol (PCEP)
 that allow a stateful PCE to compute and initiate Traffic Engineering
 (TE) paths, as well as for a PCC to request a path subject to certain
@@ -435,25 +435,27 @@ Let us assign PLSP-ID 100 to CP1 and PLSP-ID 200 to CP2.
 The state-report for CP1 can be encoded as:
 
 ~~~
-<state-report> =  <LSP PLSP_ID=100>
-                  <ASSOCIATION>
-                  <END-POINT>
-                  <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
-                  <ERO SID-List1>
-                  <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
-                  <ERO SID-List2>
+<state-report> =
+        <LSP PLSP_ID=100>
+        <ASSOCIATION>
+        <END-POINT>
+        <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
+        <ERO SID-List1>
+        <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
+        <ERO SID-List2>
 ~~~
 
 The state-report for CP2 can be encoded as:
 
 ~~~
-<state-report> =  <LSP PLSP_ID=200>
-                  <ASSOCIATION>
-                  <END-POINT>
-                  <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W3>>
-                  <ERO SID-List3>
-                  <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W4>>
-                  <ERO SID-List4>
+<state-report> =
+        <LSP PLSP_ID=200>
+        <ASSOCIATION>
+        <END-POINT>
+        <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W3>>
+        <ERO SID-List3>
+        <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W4>>
+        <ERO SID-List4>
 ~~~
 
 The above sample state-report elements only 
@@ -479,15 +481,16 @@ Suppose the Path IDs for A, B, C are respectively 1, 2, 3.
 This would be encoded in a state-report as:
 
 ~~~
-<state-report> =  <LSP>
-                  <ASSOCIATION>
-                  <END-POINT>
-                  <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
-                  <ERO A>
-                  <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
-                  <ERO B>
-                  <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
-                  <ERO C>
+<state-report> =
+        <LSP>
+        <ASSOCIATION>
+        <END-POINT>
+        <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
+        <ERO A>
+        <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
+        <ERO B>
+        <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
+        <ERO C>
 ~~~
 
 Note that the syntax

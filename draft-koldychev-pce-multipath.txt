@@ -5,7 +5,7 @@
 Network Working Group                                       M. Koldychev
 Internet-Draft                                       Cisco Systems, Inc.
 Intended status: Standards Track                            S. Sivabalan
-Expires: December 24, 2020                             Ciena Corporation
+Expires: December 25, 2020                             Ciena Corporation
                                                                  T. Saad
                                                                V. Beeram
                                                   Juniper Networks, Inc.
@@ -13,7 +13,7 @@ Expires: December 24, 2020                             Ciena Corporation
                                                                    Nokia
                                                                 B. Yadav
                                                                    Ciena
-                                                           June 22, 2020
+                                                           June 23, 2020
 
 
           PCEP Extensions for Signaling Multipath Information
@@ -47,13 +47,13 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 24, 2020.
+   This Internet-Draft will expire on December 25, 2020.
 
 
 
 
 
-Koldychev, et al.       Expires December 24, 2020               [Page 1]
+Koldychev, et al.       Expires December 25, 2020               [Page 1]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -97,7 +97,7 @@ Table of Contents
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
    10. Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  12
-   11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  12
+   11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  13
    12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
      12.1.  Normative References . . . . . . . . . . . . . . . . . .  13
      12.2.  Informative References . . . . . . . . . . . . . . . . .  14
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Koldychev, et al.       Expires December 24, 2020               [Page 2]
+Koldychev, et al.       Expires December 25, 2020               [Page 2]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -129,11 +129,11 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
    for local configuration on the PCC, thus allowing for dynamic
    centralized control of a network.
 
-   PCEP Extensions for Segment Routing [I-D.ietf-pce-segment-routing]
-   specifies extensions to the Path Computation Element Protocol (PCEP)
-   that allow a stateful PCE to compute and initiate Traffic Engineering
-   (TE) paths, as well as for a PCC to request a path subject to certain
-   constraint(s) and optimization criteria in SR networks.
+   PCEP Extensions for Segment Routing [RFC8664] specifies extensions to
+   the Path Computation Element Protocol (PCEP) that allow a stateful
+   PCE to compute and initiate Traffic Engineering (TE) paths, as well
+   as for a PCC to request a path subject to certain constraint(s) and
+   optimization criteria in SR networks.
 
    Segment Routing Policy for Traffic Engineering
    [I-D.ietf-spring-segment-routing-policy] details the concepts of SR
@@ -165,7 +165,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-Koldychev, et al.       Expires December 24, 2020               [Page 3]
+Koldychev, et al.       Expires December 25, 2020               [Page 3]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -221,7 +221,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-Koldychev, et al.       Expires December 24, 2020               [Page 4]
+Koldychev, et al.       Expires December 25, 2020               [Page 4]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -277,7 +277,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-Koldychev, et al.       Expires December 24, 2020               [Page 5]
+Koldychev, et al.       Expires December 25, 2020               [Page 5]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -333,7 +333,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-Koldychev, et al.       Expires December 24, 2020               [Page 6]
+Koldychev, et al.       Expires December 25, 2020               [Page 6]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -389,7 +389,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-Koldychev, et al.       Expires December 24, 2020               [Page 7]
+Koldychev, et al.       Expires December 25, 2020               [Page 7]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -445,7 +445,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-Koldychev, et al.       Expires December 24, 2020               [Page 8]
+Koldychev, et al.       Expires December 25, 2020               [Page 8]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -501,7 +501,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-Koldychev, et al.       Expires December 24, 2020               [Page 9]
+Koldychev, et al.       Expires December 25, 2020               [Page 9]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -547,30 +547,40 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
    The state-report for CP1 can be encoded as:
 
-   <state-report> =  <LSP PLSP_ID=100>
-                     <ASSOCIATION>
-                     <END-POINT>
-                     <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
-                     <ERO SID-List1>
-                     <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
-                     <ERO SID-List2>
 
 
 
-Koldychev, et al.       Expires December 24, 2020              [Page 10]
+
+
+
+
+
+
+
+Koldychev, et al.       Expires December 25, 2020              [Page 10]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
+   <state-report> =
+           <LSP PLSP_ID=100>
+           <ASSOCIATION>
+           <END-POINT>
+           <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
+           <ERO SID-List1>
+           <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
+           <ERO SID-List2>
+
    The state-report for CP2 can be encoded as:
 
-   <state-report> =  <LSP PLSP_ID=200>
-                     <ASSOCIATION>
-                     <END-POINT>
-                     <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W3>>
-                     <ERO SID-List3>
-                     <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W4>>
-                     <ERO SID-List4>
+   <state-report> =
+           <LSP PLSP_ID=200>
+           <ASSOCIATION>
+           <END-POINT>
+           <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W3>>
+           <ERO SID-List3>
+           <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W4>>
+           <ERO SID-List4>
 
    The above sample state-report elements only specify the minimum
    mandatory objects, of course other objects like SRP, LSPA, METRIC,
@@ -590,15 +600,23 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
    are respectively 1, 2, 3.  This would be encoded in a state-report
    as:
 
-<state-report> =  <LSP>
-                  <ASSOCIATION>
-                  <END-POINT>
-                  <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
-                  <ERO A>
-                  <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
-                  <ERO B>
-                  <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
-                  <ERO C>
+   <state-report> =
+           <LSP>
+           <ASSOCIATION>
+           <END-POINT>
+           <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
+           <ERO A>
+           <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
+           <ERO B>
+           <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
+           <ERO C>
+
+
+
+Koldychev, et al.       Expires December 25, 2020              [Page 11]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2020
+
 
    Note that the syntax
 
@@ -607,16 +625,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
    , simply means that this is PATH-ATTRIB object with Path ID field set
    to "1" and with a MULTIPATH-BACKUP TLV that has B-flag cleared and
    contains a single backup path with Backup Path ID of 3.
-
-
-
-
-
-
-Koldychev, et al.       Expires December 24, 2020              [Page 11]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2020
-
 
 8.  IANA Considerations
 
@@ -657,22 +665,21 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
    Thanks to Dhruv Dhody for ideas and discussion.
 
+
+
+
+
+Koldychev, et al.       Expires December 25, 2020              [Page 12]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2020
+
+
 11.  Contributors
 
       Andrew Stone
       Nokia
 
       Email: andrew.stone@nokia.com
-
-
-
-
-
-
-Koldychev, et al.       Expires December 24, 2020              [Page 12]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2020
-
 
 12.  References
 
@@ -683,12 +690,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
               Bidgoli, "PCEP extension to support Segment Routing Policy
               Candidate Paths", draft-barth-pce-segment-routing-policy-
               cp-06 (work in progress), June 2020.
-
-   [I-D.ietf-pce-segment-routing]
-              Sivabalan, S., Filsfils, C., Tantsura, J., Henderickx, W.,
-              and J. Hardwick, "PCEP Extensions for Segment Routing",
-              draft-ietf-pce-segment-routing-16 (work in progress),
-              March 2019.
 
    [I-D.ietf-spring-segment-routing-policy]
               Filsfils, C., Sivabalan, S., Voyer, D., Bogdanov, A., and
@@ -724,8 +725,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-
-Koldychev, et al.       Expires December 24, 2020              [Page 13]
+Koldychev, et al.       Expires December 25, 2020              [Page 13]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2020
 
@@ -735,6 +735,12 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
               Extensions for PCE-Initiated LSP Setup in a Stateful PCE
               Model", RFC 8281, DOI 10.17487/RFC8281, December 2017,
               <https://www.rfc-editor.org/info/rfc8281>.
+
+   [RFC8664]  Sivabalan, S., Filsfils, C., Tantsura, J., Henderickx, W.,
+              and J. Hardwick, "Path Computation Element Communication
+              Protocol (PCEP) Extensions for Segment Routing", RFC 8664,
+              DOI 10.17487/RFC8664, December 2019,
+              <https://www.rfc-editor.org/info/rfc8664>.
 
 12.2.  Informative References
 
@@ -769,21 +775,21 @@ Authors' Addresses
    Email: vbeeram@juniper.net
 
 
+
+
+
+
+
+
+Koldychev, et al.       Expires December 25, 2020              [Page 14]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2020
+
+
    Hooman Bidgoli
    Nokia
 
    Email: hooman.bidgoli@nokia.com
-
-
-
-
-
-
-
-
-Koldychev, et al.       Expires December 24, 2020              [Page 14]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
    Bhupendra Yadav
@@ -831,10 +837,4 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
 
 
-
-
-
-
-
-
-Koldychev, et al.       Expires December 24, 2020              [Page 15]
+Koldychev, et al.       Expires December 25, 2020              [Page 15]
