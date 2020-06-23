@@ -421,8 +421,8 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
    reporting only a single ERO/RRO.
 
    The Path ID of each ERO/RRO MUST be unique within that LSP.  If a
-   PCEP speaker detects that there are two paths with the same Path IDs,
-   then the PCEP speaker should send PCError message with Error-Type = 1
+   PCEP speaker detects that there are two paths with the same Path ID,
+   then the PCEP speaker SHOULD send PCError message with Error-Type = 1
    ("Reception of an invalid object") and Error-Value = TBD4
    ("Conflicting Path ID").
 
@@ -480,7 +480,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
 
    Note that if a given path has the B-flag set, then there MUST be some
    other path within the same LSP that uses the given path as a backup.
-   If this condition is violated, then the PCEP speaker should send a
+   If this condition is violated, then the PCEP speaker SHOULD send a
    PCError message with Error-Type = 10 ("Reception of an invalid
    object") and Error-Value = TBD5 ("No primary path for pure backup").
 
