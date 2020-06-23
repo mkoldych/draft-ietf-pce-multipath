@@ -478,10 +478,10 @@ Internet-Draft        PCEP Extensions for Multipath            June 2020
        rerouted traffic after the protected path(s) fail- then the B
        flag MUST be set.
 
-   Note that if a given path has the B-flag cleared, then there MUST be
-   some other path within the same LSP that uses the given path as a
-   backup.  If this condition is violated, then the PCEP speaker should
-   send a PCError message with Error-Type = 10 ("Reception of an invalid
+   Note that if a given path has the B-flag set, then there MUST be some
+   other path within the same LSP that uses the given path as a backup.
+   If this condition is violated, then the PCEP speaker should send a
+   PCError message with Error-Type = 10 ("Reception of an invalid
    object") and Error-Value = TBD5 ("No primary path for pure backup").
 
    Note that a given PCC may not support certain backup combinations,
