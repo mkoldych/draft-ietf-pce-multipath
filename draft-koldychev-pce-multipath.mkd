@@ -1,9 +1,11 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-koldychev-pce-multipath-02
+docname: draft-koldychev-pce-multipath-03
 category: std
 ipr: trust200902
+area: Routing 
+workgroup: PCE Working Group 
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs]
@@ -39,7 +41,11 @@ author:
     name: Bhupendra Yadav
     organization: Ciena
     email: byadav@ciena.com
-
+ -
+    ins: S. Peng
+    name: Shuping Peng
+    organization: Huawei Technologies
+    email: pengshuping@huawei.com
 
 
 
@@ -47,6 +53,7 @@ normative:
   RFC2119:
 
 informative:
+  RFC8745:
 
 --- abstract
 
@@ -90,7 +97,7 @@ particular, it describes the SR candidate-path as a collection of one
 or more Segment-Lists.  The current PCEP standards only allow for
 signaling of one Segment-List per Candidate-Path.  PCEP extension to
 support Segment Routing Policy Candidate Paths
-{{!I-D.barth-pce-segment-routing-policy-cp}} specifically avoids
+{{!I-D.ietf-pce-segment-routing-policy-cp}} specifically avoids
 defining how to signal multipath information, and states that this
 will be defined in another document.
 
@@ -99,10 +106,11 @@ of multipath information via PCEP.
 
 # Terminology
 
-In this document, the key words "MUST", "MUST NOT", "REQUIRED",
-"SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
-and "OPTIONAL" are to be interpreted as described in BCP 14, RFC 2119
-{{RFC2119}}.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 {{!RFC2119}} {{!RFC8174}} when, and only when, 
+they appear in all capitals, as shown here.
 
 ## Terms and Abbreviations
 
@@ -119,10 +127,10 @@ This extension is motivated by the use-cases described below.
 ## Signaling Multiple Segment-Lists of an SR Candidate-Path
 
 The Candidate-Path of an SR Policy is the unit of report/update in PCEP, see
-{{!I-D.barth-pce-segment-routing-policy-cp}}.  Each Candidate-Path can
+{{!I-D.ietf-pce-segment-routing-policy-cp}}.  Each Candidate-Path can
 contain multiple Segment-Lists and each Segment-List is encoded by
-one SR-ERO object.  However, each PCEP LSP can contain only a
-single SR-ERO object, which prevents us from encoding multiple Segment-
+one ERO.  However, each PCEP LSP can contain only a
+single ERO (containing multiple SR-ERO subobject), which prevents us from encoding multiple Segment-
 Lists within the same SR Candidate-Path.
 
 With the help of the protocol extensions defined in this document,
@@ -130,20 +138,22 @@ this limitation is overcome.
 
 ## Splitting of Requested Bandwidth
 
-A PCC may request a path with 100 Gbps of bandwidth, but all links in the
+A PCC may request a path with 80 Gbps of bandwidth, but all links in the
 network have only 50 Gbps capacity.  The PCE can return two paths, that can
-each carry 50 Gbps. The PCC can then equally or unequally split the incoming
-100 Gbps of traffic among the two 50 Gbps paths. {{WEIGHT-TLV}} introduces a
+together carry 80 Gbps. The PCC can then equally or unequally split the incoming
+80 Gbps of traffic among the two paths. {{WEIGHT-TLV}} introduces a
 new TLV that carries the path weight that allows for distribution of incoming
 traffic on to the multiple paths.
 
 ## Providing Backup path for Protection
 
 It is desirable for the PCE to compute and signal to the PCC a backup path
-that is used to protect a primary path. 
+that is used to protect a primary path within the multipaths in a given LSP. 
+
+Note that {{?RFC8745}} specify the Path Protection association among LSPs. The use of {{?RFC8745}} with multipath is out of scope of this document and is for future study. 
 
 When multipath is used, a backup path may protect one or more primary
-paths.  For this reason, a primary and backup path identifiers are needed to
+paths.  For this reason, primary and backup path identifiers are needed to
 indicate which backup path(s) protect which primary path(s).
 {{BACKUP-TLV}} introduces a new TLV that carries the required information.
 
@@ -155,14 +165,16 @@ indicate which backup path(s) protect which primary path(s).
 We define the MULTIPATH-CAP TLV that MAY be present in the OPEN
 object and/or the LSP object.  The purpose of this TLV is two-fold:
 
-   1.  From PCC: it tells how many multipaths the PCC can install in
+   1.  From PCC: it tells how many multipaths per PCEP Tunnel, the PCC can install in
        forwarding.
 
    2.  From PCE: it tells that the PCE supports this standard and how
-       many multipaths the PCE can compute.
+       many multipaths per PCEP Tunnel, the PCE can compute.
 
 Only the first instance of this TLV can be processed, subsequent
-instances SHOULD be ignored.
+instances SHOULD be ignored. 
+
+{{OP}} specify the usage of this TLV with Open message (within the OPEN object) and other PCEP messages (within the LSP object).
 
 ~~~
    0                   1                   2                   3
@@ -170,7 +182,7 @@ instances SHOULD be ignored.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             Type              |             Length            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |     Number of Multipaths      |            Reserved       |B|W|
+  |     Number of Multipaths      |            Flags          |B|W|
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 {: #fig-multipath-cap title="MULTIPATH-CAP TLV format"}
@@ -179,16 +191,18 @@ instances SHOULD be ignored.
 
    Length: 4.
 
-   Number of Multipaths: the maximum number of multipaths that a PCE can return. The value
-   0 indicates unlimited number.
+   Number of Multipaths: the maximum number of multipaths per PCEP 
+   Tunnel. The value 0 indicates unlimited number.
 
-   B-flag: whether MULTIPATH-BACKUP-TLV is supported.
+   Flags: Following bits are defined: 
 
-   W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
+     W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
 
-   Reserved: zero on transmit, ignore on receipt.
-
-
+     B-flag: whether MULTIPATH-BACKUP-TLV is supported.
+     
+     Unassigned bits are for future use. They MUST be set to 0 on
+     transmission and MUST be ignored on receipt. 
+   
 ##  Path Attributes Object
 
 We define the PATH-ATTRIB object that is used to carry per-path
@@ -201,7 +215,7 @@ preceded by an PATH-ATTRIB object that describes it.
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |                         Flags                           | Oper|
+  |                         Flags                           |  O  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Path ID                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -210,13 +224,22 @@ preceded by an PATH-ATTRIB object that describes it.
 ~~~
 {: #fig-path-attrib title="PATH-ATTRIB object format"}
 
-   Flags: to be extended in the future.
+   Flags (32-bits): Following bits are assigned -
 
-   Oper: operational state of the path, same values as the identically
-   named field in the LSP object.
+     O (Operational - 3 bits): operational state of the path, same 
+     values as the identically named field in the LSP object {{!RFC8231}}.
+
+     Unassigned bits are for future use. They MUST be set to 0 on
+     transmission and MUST be ignored on receipt. 
 
    Path ID: 4-octet identifier that identifies a path in the set of
-   multiple paths.
+   multiple paths. It uniquely identifies a path (encoded in the 
+   ERO/RRO) within the set of multiple paths under the PCEP LSP. Once a 
+   path changes, a new Path ID is assigned.
+
+   TLVs that may be included in the PATH-ATTRIB object are described in the
+   following sections.  Other optional TLVs could be defined by future
+   documents to be included within the PATH-ATTRIB object body.
 
 ##  Multipath Weight TLV {#WEIGHT-TLV}
 
@@ -257,7 +280,7 @@ preceded by an PATH-ATTRIB object that describes it.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             Type              |             Length            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |       Backup Path Count       |             Flags             |
+  |       Backup Path Count       |             Flags           |B|
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Backup Path ID 1                      |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -273,43 +296,38 @@ preceded by an PATH-ATTRIB object that describes it.
 
    Type: TBD3 for "MULTIPATH-BACKUP" TLV
 
-   Length: variable - multiple of 4-octets
+   Length: 4 + (N * 4) (where N is the Backup Path Count)
 
    Backup Path Count: Number of backup path(s).
 
-   Flags:
-
-~~~
-    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-    |B|          Reserved           |
-    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-~~~
-
-> B: If set, indicates a pure backup path. This is a path that only
-carries rerouted traffic after the protected path fails. If this flag
-is not set, or if the MULTIPATH-BACKUP TLV is not carried in the PATH-ATTRIB
-object of an ERO or SERO, then the path is assumed to be primary that
-carries normal traffic.
-
+   Flags (16 bits): a flag field. Currently a single flag "B bit" is defined.  
+   Unused flags MUST be set to zero while sending and ignored on receipt.
+     
+     B: If set, indicates a pure backup path. This is a path that only
+     carries rerouted traffic after the protected path fails. If this flag
+     is not set, or if the MULTIPATH-BACKUP TLV is not carried in the PATH-ATTRIB
+     object of an ERO or SERO, then the path is assumed to be primary that
+     carries normal traffic.
 
    Backup Path ID(s): a series of 4-octet identifier(s) that identify the
    backup path(s) in the set that protect this primary path.
  
 
-#  Operation
+#  Operation {#OP}
 
 When the PCC wants to indicate to the PCE that it wants to get
-multipaths instead of a single path, it can do one or both of the
+multipaths for a PCEP Tunnel, instead of a single path, it can do (1) or both (1) and (2) of the
 following:
 
-   1.  Send the MULTIPATH-CAP TLV in the OPEN object during session
+   (1) Send the MULTIPATH-CAP TLV in the OPEN object during session
        establishment.  This applies to all PCEP Tunnels on the PCC,
        unless overridden by PCEP Tunnel specific information.
 
-   2.  Send the MULTIPATH-CAP TLV in the LSP object for a particular
-       PCEP Tunnel in the PCRpt message.  This applies to the specified
+   (2) Additionally send the MULTIPATH-CAP TLV in the LSP object for a particular
+       PCEP Tunnel in the PCRpt or PCReq message.  This applies to the specified
        PCEP Tunnel and overrides the information from the OPEN object.
 
+     
 When PCE computes the path for a PCEP Tunnel, it MUST NOT return more
 multipaths than the corresponding value of "Number of Multipaths"
 from the MULTIPATH-CAP TLV.  If this TLV is absent (from both OPEN
@@ -317,16 +335,17 @@ and LSP objects), then the "Number of Multipaths" is assumed to be 1.
 
 If the PCE supports this standard, then it MUST include the
 MULTIPATH-CAP TLV in the OPEN object.  This tells the PCC that it can
-report multiple ERO/RRO objects to this PCE.  If the PCE does not include
+report multiple ERO/RRO objects per PCEP Tunnel to this PCE.  If the PCE does not include
 the MULTIPATH-CAP TLV in the OPEN object, then the PCC MUST assume
 that the PCE does not support this standard and fall back to
-reporting only a single ERO/RRO.
+reporting only a single ERO/RRO. The PCE MUST NOT include MULTIPATH-CAP TLV
+in the LSP object in any other PCEP message towards the PCC and the PCC MUST ignore it if received. 
 
 The Path ID of each ERO/RRO MUST be unique within that LSP.
 If a PCEP speaker detects that there are two paths with the same Path ID,
 then the PCEP speaker SHOULD send PCError message with
 Error-Type = 1 ("Reception of an invalid object") and
-Error-Value = TBD4 ("Conflicting Path ID").
+Error-Value = TBD4 ("Conflicting Path ID"). 
 
 ## Signaling Multiple Paths for Loadbalancing
 
@@ -350,7 +369,7 @@ PATH-ATTRIB is populated for each ERO or SERO as follows:
 ## Signaling Multiple Paths for Protection
 
 The PATH-ATTRIB object can be used to describe a set of backup path(s) protecting
-a primary path. In this case, the PATH-ATTRIB is populated for each ERO or SERO as
+a primary path within a PCEP Tunnel. In this case, the PATH-ATTRIB is populated for each ERO or SERO as
 follows:
 
    1. The PCE assigns a unique Path ID to each ERO or SERO path and populates
@@ -397,11 +416,14 @@ The RBNF of PCReq, PCRep, PCRpt, PCUpd and PCInit messages currently use intende
 In this standard, we extend these two elements:
 
 ~~~
-   <intended-path> ::= [<PATH-ATTRIB>](<ERO>|<SERO>)
-              [<intended-path>]
+   <intended-path> ::= ((<ERO>|<SERO>)|
+                       (<PATH-ATTRIB>(<ERO>|<SERO>)
+                       [<intended-path>]))
+              
 
-   <actual-path> ::= [<PATH-ATTRIB>](<RRO>|<SRRO>)
-              [<actual-path>]
+   <actual-path> ::= ((<RRO>|<SRRO>)|
+                      (<PATH-ATTRIB>(<RRO>|<SRRO>)
+                      [<actual-path>]))
 ~~~
 
 
@@ -427,7 +449,7 @@ represented in a PCRpt message.
                 Weight W4, SID-List4 <SID41...SID4j>
 ~~~
 
-As specified in {{!I-D.barth-pce-segment-routing-policy-cp}}, CP1 and CP2 
+As specified in {{!I-D.ietf-pce-segment-routing-policy-cp}}, CP1 and CP2 
 are signaled as separate state-report elements and each has 
 a unique PLSP-ID, assigned by the PCC. 
 Let us assign PLSP-ID 100 to CP1 and PLSP-ID 200 to CP2. 
