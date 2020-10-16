@@ -306,7 +306,7 @@ preceded by an PATH-ATTRIB object that describes it.
      B: If set, indicates a pure backup path. This is a path that only
      carries rerouted traffic after the protected path fails. If this flag
      is not set, or if the MULTIPATH-BACKUP TLV is not carried in the PATH-ATTRIB
-     object of an ERO or SERO, then the path is assumed to be primary that
+     object of an ERO, then the path is assumed to be primary that
      carries normal traffic.
 
    Backup Path ID(s): a series of 4-octet identifier(s) that identify the
@@ -351,9 +351,9 @@ Error-Value = TBD4 ("Conflicting Path ID").
 
 The PATH-ATTRIB object can be used to signal multiple path(s) and indicate
 (un)equal loadbalancing amongst the set of multipaths. In this case, the
-PATH-ATTRIB is populated for each ERO or SERO as follows:
+PATH-ATTRIB is populated for each ERO as follows:
 
-   1. The PCE assigns a unique Path ID to each ERO or SERO path and populates
+   1. The PCE assigns a unique Path ID to each ERO path and populates
       it inside the PATH-ATTRIB object. The Path ID is unique within the
       context of a PLSP or PCEP Tunnel.
 
@@ -369,21 +369,21 @@ PATH-ATTRIB is populated for each ERO or SERO as follows:
 ## Signaling Multiple Paths for Protection
 
 The PATH-ATTRIB object can be used to describe a set of backup path(s) protecting
-a primary path within a PCEP Tunnel. In this case, the PATH-ATTRIB is populated for each ERO or SERO as
+a primary path within a PCEP Tunnel. In this case, the PATH-ATTRIB is populated for each ERO as
 follows:
 
-   1. The PCE assigns a unique Path ID to each ERO or SERO path and populates
+   1. The PCE assigns a unique Path ID to each ERO path and populates
       it inside the PATH-ATTRIB object. The Path ID is unique within the
       context of a PLSP or PCEP Tunnel.
 
    2. The MULTIPATH-BACKUP TLV MUST be added inside the PATH-ATTRIB object for each
-      ERO or SERO that is protected. The backup path ID(s) are populated in the
+      ERO that is protected. The backup path ID(s) are populated in the
       MULTIPATH-BACKUP TLV to reflect the set of backup path(s) protecting the
       primary path. The Length field and Backup Path Number in the MULTIPATH-BACKUP
       are updated according to the number of backup path ID(s) included.
 
    3. The MULTIPATH-BACKUP TLV MAY be added inside the PATH-ATTRIB object for each
-      ERO or SERO that is unprotected. In this case, MULTIPATH-BACKUP does not carry
+      ERO that is unprotected. In this case, MULTIPATH-BACKUP does not carry
       any backup path IDs in the TLV. If the path acts as a pure backup -- i.e.
       the path only carries rerouted traffic after the protected path(s) fail-- then
       the B flag MUST be set.
@@ -406,7 +406,7 @@ Error-Value = TBD6 ("Not supported path backup").
 The RBNF of PCReq, PCRep, PCRpt, PCUpd and PCInit messages currently use intended-path and/or actual-path:
 
 ~~~
-   <intended-path> ::= (<ERO>|<SERO>)
+   <intended-path> ::= <ERO>
               [<intended-path>]
 
    <actual-path> ::= (<RRO>|<SRRO>)
@@ -416,14 +416,14 @@ The RBNF of PCReq, PCRep, PCRpt, PCUpd and PCInit messages currently use intende
 In this standard, we extend these two elements:
 
 ~~~
-   <intended-path> ::= ((<ERO>|<SERO>)|
-                       (<PATH-ATTRIB>(<ERO>|<SERO>)
-                       [<intended-path>]))
+   <intended-path> ::= (<ERO>|
+                       (<PATH-ATTRIB><ERO>)
+                       [<intended-path>])
               
 
-   <actual-path> ::= ((<RRO>|<SRRO>)|
-                      (<PATH-ATTRIB>(<RRO>|<SRRO>)
-                      [<actual-path>]))
+   <actual-path> ::= (<RRO>|
+                      (<PATH-ATTRIB><RRO>)
+                      [<actual-path>])
 ~~~
 
 
