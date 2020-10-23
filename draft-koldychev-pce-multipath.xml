@@ -634,18 +634,19 @@ a single backup path with Backup Path ID of 3.</t>
 field of the MULTIPATH-CAP TLV, called “Flags in MULTIPATH-CAP
 TLV”.</t>
 
-<t>Following bits are defined:
-~~~
- +————+———————————–+—————–+
+<t>Following bits are defined:</t>
+
+<figure><artwork><![CDATA[
+ +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
- +————+———————————–+—————–+
+ +------------+-----------------------------------+-----------------+
  | 0-13       | Unassigned                        | This document   |
- +————+———————————–+—————–+
+ +------------+-----------------------------------+-----------------+
  | 14         | B-flag: Backup support            | This document   |
- +————+———————————–+—————–+
+ +------------+-----------------------------------+-----------------+
  | 15         | W-flag: Weighted ECMP support     | This document   |
- +————+———————————–+—————–+
-~~~</t>
+ +------------+-----------------------------------+-----------------+
+]]></artwork></figure>
 
 </section>
 <section anchor="flags-in-the-path-attribute-object" title="Flags in the Path Attribute Object">
@@ -654,16 +655,17 @@ TLV”.</t>
 field of the PATH-ATTRIBUTE object,
 called “Flags in PATH-ATTRIBUTE Object”.</t>
 
-<t>Following bits are defined:
-~~~
- +————+———————————–+—————–+
+<t>Following bits are defined:</t>
+
+<figure><artwork><![CDATA[
+ +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
- +————+———————————–+—————–+
+ +------------+-----------------------------------+-----------------+
  | 0-12       | Unassigned                        | This document   |
- +————+———————————–+—————–+
+ +------------+-----------------------------------+-----------------+
  | 13-15      | O-flag: Operational state         | This document   |
- +————+———————————–+—————–+
-~~~</t>
+ +------------+-----------------------------------+-----------------+
+]]></artwork></figure>
 
 </section>
 <section anchor="flags-in-the-multipath-backup-tlv" title="Flags in the Multipath Backup TLV">
@@ -672,16 +674,17 @@ called “Flags in PATH-ATTRIBUTE Object”.</t>
 field of the MULTIPATH-BACKUP TLV,
 called “Flags in MULTIPATH-BACKUP TLV”.</t>
 
-<t>Following bits are defined:
-~~~
- +————+———————————–+—————–+
+<t>Following bits are defined:</t>
+
+<figure><artwork><![CDATA[
+ +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
- +————+———————————–+—————–+
+ +------------+-----------------------------------+-----------------+
  | 0-14       | Unassigned                        | This document   |
- +————+———————————–+—————–+
+ +------------+-----------------------------------+-----------------+
  | 15         | B-flag: Pure backup               | This document   |
- +————+———————————–+—————–+
-~~~</t>
+ +------------+-----------------------------------+-----------------+
+]]></artwork></figure>
 
 </section>
 </section>
@@ -968,7 +971,7 @@ called “Flags in MULTIPATH-BACKUP TLV”.</t>
   </back>
 
 <!-- ##markdown-source:
-H4sIABcck18AA+09a3PbNrbf+Stw1S/2VlIt2UlbTZJbW1Yb3fVD13aa2enu
+H4sIAAMfk18AA+09a3PbNrbf+Stw1S/2VlIt2UlbTZJbW1Yb3fVD13aa2enu
 7EAkJKGhSC1B2tEm6W+/5wGQoETZydZJZ3avOrOxSOCcg4PzxoG20+kEuc5j
 NRCT4WgiRm9zlRidJkbM0kxc63kiY53MxXkR53ol84UYJ/BmKXMYFMjpNFO3
 zXPLGUGUholcAoook7O88yaNo3W4ULedVag6Szesc3AYhDJX8zRbD4TJo0Cv
@@ -1116,13 +1119,13 @@ FpwHGuo+UnB+z4rwQqjDUz90bqblIcH5fbQcNtBiQ4QvTstRAy3WAn9BWnyF
 6nCd8DOa4c7o6uryymLgYi8JPKdxJLigaaaYdkpts81RwpYU+UDDVNrofnCj
 qo0oBPvouukVTN2XbSPs71iDbj4WLb0DDw91FHREQ0fBF5HkTVqeAi07K+87
 aKmZoPKLjSqaubv15BFX9H19Rd/SinbUu7+EbnLjrDvD2/mbH43aGmYKayes
-nTXFIlVOqJ0HwCKOgOPEdLNBwLYItQXefASwrZKg2pgAxmA6dc+l+sdVyROd
-Vxt1SufqfFL0B6jkQadXORfvpudOWj6nSh55eNzPENiQ3B1pfTFannh43G8p
-cCkAuEMXt3ySvrAy1X/toPyxg0fWJC9cfnUzKm9ybWnTxjim5j9Zo/olnj9a
-ow47TpAhg7NSfLl1i/zz0/KAS6iu3X1Gd1CVCRpkuGnYf7IIV1H+Hy3CviF2
-TmHidbZ8KVpYhAUeuhcZBi+b5SDAdYE/7uYqXLnmn1QU4jh8k6R3IHBzKonb
-K50SfwkRxPd0kRW38L9pxFkBwJScWODpWUGXIhgO/V44mnzIE8pTzeMkykAp
-rnP8HWCiAf/vC/CvEf/Mv6QBXYMDvP/zApz+f1sD33cVZAAA
+nTXFIlVOqJ0HwCKOgOPEdLNBwLYItQXefASwrZKg2pgAxmA6dc+l+kfWyROd
+Vzt1SgfrfFT0B+jkQadXeRfvqudOWj6nTh55eNzvENiY3J1pfTFannh43I8p
+cC0AuEM3t3ySvrA21X/uoPy1g0dWJS9efnUzKq9ybanTxjim5j9apfolnj9a
+pQ47TpIhh7NifLl1j/zz0/KAU6gu3n1Gh1AVChqEuGnYf7QMV4H+Hy3Dvil2
+bmHiNbd8KVpYhgWeuxcZxi+bFSHAdYG/7+aKXLnmX1UU4jh8k6R3IHFzqorb
+W50SfwwR5Pd0kRW38L9pxIkBwJScW+ABWkH3IhgO/WQ4Gn1IFcqDzeMkykAr
+rnP8KWCiAf8fDPCvEf/Sv6QBXYMDvP//Apz+f06YF/oYZAAA
 
 -->
 

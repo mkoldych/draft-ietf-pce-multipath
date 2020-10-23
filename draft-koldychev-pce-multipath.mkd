@@ -595,6 +595,7 @@ field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP
 TLV".
 
 Following bits are defined:
+
 ~~~
  +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
@@ -614,6 +615,7 @@ field of the PATH-ATTRIBUTE object,
 called "Flags in PATH-ATTRIBUTE Object".
 
 Following bits are defined:
+
 ~~~
  +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
@@ -631,6 +633,7 @@ field of the MULTIPATH-BACKUP TLV,
 called "Flags in MULTIPATH-BACKUP TLV".
 
 Following bits are defined:
+
 ~~~
  +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |

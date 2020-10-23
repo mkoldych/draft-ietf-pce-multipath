@@ -101,7 +101,7 @@ Table of Contents
      8.4.  Flags in the Multipath Capability TLV . . . . . . . . . .  14
      8.5.  Flags in the Path Attribute Object  . . . . . . . . . . .  14
      8.6.  Flags in the Multipath Backup TLV . . . . . . . . . . . .  14
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
    10. Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  15
    11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  15
    12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
@@ -735,15 +735,17 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
    IANA is requested to create a new sub-registry to manage the Flag
    field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP TLV".
 
-   Following bits are defined: ~~~
-   +--------+-----------------------+-----------+ | Bit | Description |
-   Reference | +--------+-----------------------+-----------+ | 0-13 |
-   Unassigned | This document |
-   +--------+-----------------------+-----------+ | 14 | B-flag: Backup
-   support | This document |
-   +--------+-----------------------+-----------+ | 15 | W-flag:
-   Weighted ECMP support | This document |
-   +--------+-----------------------+-----------+ ~~~
+   Following bits are defined:
+
+    +------------+-----------------------------------+-----------------+
+    | Bit        | Description                       | Reference       |
+    +------------+-----------------------------------+-----------------+
+    | 0-13       | Unassigned                        | This document   |
+    +------------+-----------------------------------+-----------------+
+    | 14         | B-flag: Backup support            | This document   |
+    +------------+-----------------------------------+-----------------+
+    | 15         | W-flag: Weighted ECMP support     | This document   |
+    +------------+-----------------------------------+-----------------+
 
 8.5.  Flags in the Path Attribute Object
 
@@ -751,13 +753,15 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
    field of the PATH-ATTRIBUTE object, called "Flags in PATH-ATTRIBUTE
    Object".
 
-   Following bits are defined: ~~~
-   +--------+-----------------------+-----------+ | Bit | Description |
-   Reference | +--------+-----------------------+-----------+ | 0-12 |
-   Unassigned | This document |
-   +--------+-----------------------+-----------+ | 13-15 | O-flag:
-   Operational state | This document |
-   +--------+-----------------------+-----------+ ~~~
+   Following bits are defined:
+
+    +------------+-----------------------------------+-----------------+
+    | Bit        | Description                       | Reference       |
+    +------------+-----------------------------------+-----------------+
+    | 0-12       | Unassigned                        | This document   |
+    +------------+-----------------------------------+-----------------+
+    | 13-15      | O-flag: Operational state         | This document   |
+    +------------+-----------------------------------+-----------------+
 
 8.6.  Flags in the Multipath Backup TLV
 
@@ -765,19 +769,15 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
    field of the MULTIPATH-BACKUP TLV, called "Flags in MULTIPATH-BACKUP
    TLV".
 
-   Following bits are defined: ~~~
-   +--------+-----------------------+-----------+ | Bit | Description |
-   Reference | +--------+-----------------------+-----------+ | 0-14 |
-   Unassigned | This document |
-   +--------+-----------------------+-----------+ | 15 | B-flag: Pure
-   backup | This document |
-   +--------+-----------------------+-----------+ ~~~
+   Following bits are defined:
 
-9.  Security Considerations
-
-   None at this time.
-
-
+    +------------+-----------------------------------+-----------------+
+    | Bit        | Description                       | Reference       |
+    +------------+-----------------------------------+-----------------+
+    | 0-14       | Unassigned                        | This document   |
+    +------------+-----------------------------------+-----------------+
+    | 15         | B-flag: Pure backup               | This document   |
+    +------------+-----------------------------------+-----------------+
 
 
 
@@ -785,6 +785,10 @@ Koldychev, et al.        Expires April 26, 2021                [Page 14]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
+
+9.  Security Considerations
+
+   None at this time.
 
 10.  Acknowledgement
 
@@ -829,10 +833,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
               DOI 10.17487/RFC5440, March 2009,
               <https://www.rfc-editor.org/info/rfc5440>.
 
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
 
 
 
@@ -841,6 +841,10 @@ Koldychev, et al.        Expires April 26, 2021                [Page 15]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
    [RFC8231]  Crabbe, E., Minei, I., Medved, J., and R. Varga, "Path
               Computation Element Communication Protocol (PCEP)
@@ -886,10 +890,6 @@ Authors' Addresses
    Ciena Corporation
 
    Email: ssivabal@ciena.com
-
-
-
-
 
 
 
