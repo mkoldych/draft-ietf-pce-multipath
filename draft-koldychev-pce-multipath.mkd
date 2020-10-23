@@ -206,7 +206,8 @@ instances SHOULD be ignored.
 ##  Path Attributes Object
 
 We define the PATH-ATTRIB object that is used to carry per-path
-information and to act as a separator between several ERO/RRO objects in the intended-path/actual-path RBNF element.
+information and to act as a separator between several ERO/RRO objects
+in the \<intended-path\>/\<actual-path\> RBNF element.
 The PATH-ATTRIB object always precedes the ERO/RRO that it applies to.  If
 multiple ERO/RRO objects are present, then each ERO/RRO object MUST be
 preceded by an PATH-ATTRIB object that describes it.
@@ -403,17 +404,19 @@ Error-Value = TBD6 ("Not supported path backup").
 
 #  PCEP Message Extensions
 
-The RBNF of PCReq, PCRep, PCRpt, PCUpd and PCInit messages currently use intended-path and/or actual-path:
+The RBNF of PCReq, PCRep, PCRpt, PCUpd and PCInit messages currently use a combination
+of \<intended-path\> and/or \<actual-path\>.
+As specified in Section 6.1 of {{!RFC8231}}, \<intended-path\> is represented by the
+ERO object and \<actual-path\> is represented by the RRO object:
 
 ~~~
    <intended-path> ::= <ERO>
-              [<intended-path>]
 
-   <actual-path> ::= (<RRO>|<SRRO>)
-              [<actual-path>]
+   <actual-path> ::= <RRO>
 ~~~
 
-In this standard, we extend these two elements:
+In this standard, we extend these two elements to allow multiple ERO/RRO objects to be
+present in the \<intended-path\>/\<actual-path\>:
 
 ~~~
    <intended-path> ::= (<ERO>|
