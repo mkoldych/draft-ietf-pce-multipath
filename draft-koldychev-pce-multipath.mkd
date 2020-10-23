@@ -266,6 +266,11 @@ preceded by an PATH-ATTRIB object that describes it.
    desired. The fraction of flows a specific ERO/RRO carries is derived
    from the ratio of its weight to the sum of all other multipath ERO/RRO weights.
 
+   When the MULTIPATH-WEIGHT TLV is absent from the PATH-ATTRIB object,
+   or the PATH-ATTRIB object is absent from the
+   \<intended-path\>/\<actual-path\>, then the Weight of the corresponding
+   path is taken to be "1".
+
 ##  Multipath Backup TLV {#BACKUP-TLV}
 
    This document introduces a new MULTIPATH-BACKUP TLV that is optional and can
