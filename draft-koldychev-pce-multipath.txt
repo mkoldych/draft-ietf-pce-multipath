@@ -5,7 +5,7 @@
 PCE Working Group                                           M. Koldychev
 Internet-Draft                                       Cisco Systems, Inc.
 Intended status: Standards Track                            S. Sivabalan
-Expires: April 26, 2021                                Ciena Corporation
+Expires: April 30, 2021                                Ciena Corporation
                                                                  T. Saad
                                                                V. Beeram
                                                   Juniper Networks, Inc.
@@ -15,11 +15,11 @@ Expires: April 26, 2021                                Ciena Corporation
                                                                    Ciena
                                                                  S. Peng
                                                      Huawei Technologies
-                                                        October 23, 2020
+                                                        October 27, 2020
 
 
           PCEP Extensions for Signaling Multipath Information
-                    draft-koldychev-pce-multipath-03
+                    draft-koldychev-pce-multipath-04
 
 Abstract
 
@@ -49,11 +49,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 26, 2021.
+   This Internet-Draft will expire on April 30, 2021.
 
 
 
-Koldychev, et al.        Expires April 26, 2021                 [Page 1]
+Koldychev, et al.        Expires April 30, 2021                 [Page 1]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Koldychev, et al.        Expires April 26, 2021                 [Page 2]
+Koldychev, et al.        Expires April 30, 2021                 [Page 2]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -165,7 +165,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                 [Page 3]
+Koldychev, et al.        Expires April 30, 2021                 [Page 3]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -221,7 +221,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                 [Page 4]
+Koldychev, et al.        Expires April 30, 2021                 [Page 4]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -277,7 +277,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                 [Page 5]
+Koldychev, et al.        Expires April 30, 2021                 [Page 5]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -333,7 +333,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                 [Page 6]
+Koldychev, et al.        Expires April 30, 2021                 [Page 6]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -389,7 +389,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                 [Page 7]
+Koldychev, et al.        Expires April 30, 2021                 [Page 7]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -424,11 +424,11 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
    Unused flags MUST be set to zero while sending and ignored on
    receipt.
 
- B: If set, indicates a pure backup path. This is a path that only
- carries rerouted traffic after the protected path fails. If this flag
- is not set, or if the MULTIPATH-BACKUP TLV is not carried in the PATH-ATTRIB
- object of an ERO, then the path is assumed to be primary that
- carries normal traffic.
+   B: If set, indicates a pure backup path. This is a path that only
+   carries rerouted traffic after the protected path fails. If this flag
+   is not set, or if the MULTIPATH-BACKUP TLV is absent,
+   then the path is assumed to be primary that
+   carries normal traffic.
 
    Backup Path ID(s): a series of 4-octet identifier(s) that identify
    the backup path(s) in the set that protect this primary path.
@@ -445,7 +445,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                 [Page 8]
+Koldychev, et al.        Expires April 30, 2021                 [Page 8]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -501,7 +501,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                 [Page 9]
+Koldychev, et al.        Expires April 30, 2021                 [Page 9]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -557,7 +557,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                [Page 10]
+Koldychev, et al.        Expires April 30, 2021                [Page 10]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -613,7 +613,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                [Page 11]
+Koldychev, et al.        Expires April 30, 2021                [Page 11]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -669,7 +669,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                [Page 12]
+Koldychev, et al.        Expires April 30, 2021                [Page 12]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -725,7 +725,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                [Page 13]
+Koldychev, et al.        Expires April 30, 2021                [Page 13]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -781,7 +781,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                [Page 14]
+Koldychev, et al.        Expires April 30, 2021                [Page 14]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -837,7 +837,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                [Page 15]
+Koldychev, et al.        Expires April 30, 2021                [Page 15]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -893,7 +893,7 @@ Authors' Addresses
 
 
 
-Koldychev, et al.        Expires April 26, 2021                [Page 16]
+Koldychev, et al.        Expires April 30, 2021                [Page 16]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2020
 
@@ -949,4 +949,4 @@ Internet-Draft        PCEP Extensions for Multipath         October 2020
 
 
 
-Koldychev, et al.        Expires April 26, 2021                [Page 17]
+Koldychev, et al.        Expires April 30, 2021                [Page 17]

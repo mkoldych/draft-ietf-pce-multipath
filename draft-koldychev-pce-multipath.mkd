@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-koldychev-pce-multipath-03
+docname: draft-koldychev-pce-multipath-04
 category: std
 ipr: trust200902
 area: Routing 
@@ -315,8 +315,8 @@ The PATH-ATTRIB Object-Type value is 1.
      
      B: If set, indicates a pure backup path. This is a path that only
      carries rerouted traffic after the protected path fails. If this flag
-     is not set, or if the MULTIPATH-BACKUP TLV is not carried in the PATH-ATTRIB
-     object of an ERO, then the path is assumed to be primary that
+     is not set, or if the MULTIPATH-BACKUP TLV is absent,
+     then the path is assumed to be primary that
      carries normal traffic.
 
    Backup Path ID(s): a series of 4-octet identifier(s) that identify the
