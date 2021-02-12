@@ -335,10 +335,21 @@ weight of each color in the Composite Candidate Path,
 in the same manner as the weight of each
 Segment List in the Non-Composite Candidate Path is adjusted.
 
-To signal the Composite Candidate Path, we make use of the COLOR object, defined in
-{{!I-D.peng-pce-te-constraints}}. For a Composite Candidate Path, the COLOR PCEP object
-takes the place of the SR-ERO/SR-RRO object in all PCEP messages relating to that
-Candidate Path. See {{RBNF}} for more details.
+To signal the Composite Candidate Path, we make use of the COLOR TLV, defined in
+{{!I-D.peng-pce-te-constraints}}. For a Composite Candidate Path, the COLOR TLV
+is included in the PATH-ATTRIB Object, thus allowing each Composite Candidate Path
+to do ECMP/UCMP among SR Policies or Tunnels identified by its constituent Colors.
+Only one COLOR TLV SHOULD be included into the PATH-ATTRIB object. If multiple
+COLOR TLVs are contained in the PATH-ATTRIB object, only the first one MUST be
+processed and the others SHOULD be ignored.
+
+An empty SR-ERO/SR-RRO object MUST be included as per the existing RBNF, i.e.,
+SR-ERO/SR-RRO MUST contain no sub-objects.
+If the head-end receives a non-empty SR-ERO/SR-RRO,
+then it MUST send PCError message with Error-Type 19 ("Invalid Operation") and
+Error-Value = TBD8 ("Non-empty path").
+
+See {{CCPEX}} for an example of the encoding.
 
 
 #  Operation {#OP}
@@ -456,25 +467,13 @@ present in the \<intended-path\>/\<actual-path\>:
                       [<actual-path>])
 ~~~
 
-For Composite Candidate Paths (see {{CCP}}), the COLOR object is used in the \<intended-path\>/\<actual-path\>:
-
-~~~
-   <intended-path> ::= (<PATH-ATTRIB><COLOR>
-                       [<intended-path>])
-              
-
-   <actual-path> ::= (<PATH-ATTRIB><COLOR>
-                      [<actual-path>])
-~~~
-
 
 #  Examples
 
 ## SR Policy Candidate-Path with Multiple Segment-Lists
 
-Consider how the following sample SR Policy, taken from  
-{{!I-D.ietf-spring-segment-routing-policy}}, would be
-represented in a PCRpt message.
+Consider the following sample SR Policy, taken from  
+{{!I-D.ietf-spring-segment-routing-policy}}.
 
 ~~~
         SR policy POL1 <headend, color, endpoint>
@@ -567,6 +566,33 @@ with Path ID field set to "1" and
 with a MULTIPATH-BACKUP TLV that has B-flag cleared and contains
 a single backup path with Backup Path ID of 3.
 
+## Composite Candidate Path {#CCPEX}
+
+Consider the following Composite Candidate Path, taken from  
+{{!I-D.ietf-spring-segment-routing-policy}}.
+
+~~~
+   SR policy POL100 <headend = H1, color = 100, endpoint = E1>
+        Candidate-path CP1 <protocol-origin = 20, originator =
+   100:1.1.1.1, discriminator = 1>
+            Preference 200
+            Weight W1, SR policy <color = 1>
+            Weight W2, SR policy <color = 2>
+~~~
+
+This is signaled in PCEP as:
+
+~~~
+        <LSP PLSP_ID=100>
+        <ASSOCIATION>
+        <END-POINT>
+        <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1> <COLOR-TLV Color=1>>
+        <ERO (empty)>
+        <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2> <COLOR-TLV Color=2>>
+        <ERO (empty)>
+~~~
+
+
 #  IANA Considerations
 
 ## PCEP Object
@@ -614,6 +640,8 @@ a single backup path with Backup Path ID of 3.
  |            |        backup                     |                 |
  +------------+-----------------------------------+-----------------+
  | 19         | TBD7 - Not supported path backup  | This document   |
+ +------------+-----------------------------------+-----------------+
+ | 19         | TBD8 - Non-empty path             | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
 
