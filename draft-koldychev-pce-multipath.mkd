@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-koldychev-pce-multipath-04
+docname: draft-koldychev-pce-multipath-05
 category: std
 ipr: trust200902
 area: Routing 
@@ -587,9 +587,9 @@ This is signaled in PCEP as:
         <ASSOCIATION>
         <END-POINT>
         <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1> <COLOR-TLV Color=1>>
-        <ERO (empty)>
+        <SR-ERO (empty)>
         <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2> <COLOR-TLV Color=2>>
-        <ERO (empty)>
+        <SR-ERO (empty)>
 ~~~
 
 
