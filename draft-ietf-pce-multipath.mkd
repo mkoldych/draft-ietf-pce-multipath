@@ -182,7 +182,7 @@ instances SHOULD be ignored.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             Type              |             Length            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |     Number of Multipaths      |            Flags          |B|W|
+  |     Number of Multipaths      |            Flags        |O|B|W|
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 {: #fig-multipath-cap title="MULTIPATH-CAP TLV format"}
@@ -199,6 +199,8 @@ instances SHOULD be ignored.
      W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
 
      B-flag: whether MULTIPATH-BACKUP-TLV is supported.
+
+     O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported.
      
      Unassigned bits are for future use. They MUST be set to 0 on
      transmission and MUST be ignored on receipt. 
@@ -241,6 +243,7 @@ The PATH-ATTRIB Object-Type value is 1.
    multiple paths. It uniquely identifies a path (encoded in the 
    ERO/RRO) within the set of multiple paths under the PCEP LSP. Once a 
    path changes, a new Path ID is assigned.
+   Value 0x0 is reserved to indicate the absense of a Path ID.
 
    TLVs that may be included in the PATH-ATTRIB object are described in the
    following sections.  Other optional TLVs could be defined by future
@@ -302,7 +305,7 @@ The PATH-ATTRIB Object-Type value is 1.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 ~~~
-{: #figctrl title="MULTIPATH-BACKUP TLV format"}
+{: #fig-multipath-backup title="MULTIPATH-BACKUP TLV format"}
 
    Type: TBD4 for "MULTIPATH-BACKUP" TLV
 
@@ -322,6 +325,73 @@ The PATH-ATTRIB Object-Type value is 1.
    Backup Path ID(s): a series of 4-octet identifier(s) that identify the
    backup path(s) in the set that protect this primary path.
  
+##  Multipath Opposite Direction Path TLV {#OPPDIR-PATH-TLV}
+
+    This document introduces a new MULTIPATH-OPPDIR-PATH TLV that is optional
+    and can be present in the PATH-ATTRIB object.
+
+    This TLV is used to indicate whether the given path is a forward path or a
+    reverse path in its PCEP Tunnel, as well as give information about the
+    opposite-direction path(s) of the given path.
+
+~~~
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |             Type              |             Length            |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |        Reserved (MBZ)         |             Flags       |L|N|R|
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                 Opposite Direction Path ID                    |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+~~~
+{: #fig-multipath-oppdir title="MULTIPATH-OPPDIR-PATH TLV format"}
+
+   Type: TBD9 for "MULTIPATH-OPPDIR-PATH" TLV
+
+   Length: 16.
+
+   Flags (16 bits): a flag field, unused flags MUST be set to zero
+   while sending and ignored on receipt.
+     
+
+     R (Reverse path): If set, indicates this path is reverse,
+     i.e., it
+     originates on the Tunnel destination and terminates on the
+     Tunnel source (usually the PCC headend itself).
+     Paths with this flag set MUST NOT
+     be installed into forwarding, they serve only informational
+     purposes.
+
+     N (Node co-routed): If set, indicates this path is
+     node co-routed with
+     its opposite direction path, specified in this TLV.
+     Two opposite direction paths are node co-routed if they
+     traverse the same nodes,
+     but MAY traverse different links.
+
+     L (Link co-routed): If set, indicates this path is
+     link co-routed with
+     its opposite directions path, specified in this TLV.
+     Two opposite direction paths are link co-routed if they
+     traverse the same links (but in the oppsoite directions).
+
+   Opposite Direction Path ID: Identifies the path that is the pair
+   of this path, i.e., goes in the opposite direction to this path.
+   If no such path exists, then this field MUST be set to 0x0,
+   which is reserved to indicate the absense of a Path ID.
+
+   Multiple copies of this TLV
+   present in the same PATH-ATTRIB object indicate that there are multiple
+   opposite-direction paths corresponding to the given path. This allows for
+   many-to-many relationship among the paths of two opposite direction Tunnels.
+
+   Whenever one path A references another path B as being the
+   opposite-direction path, then path B MUST also reference path A as its
+   own opposite-direction path.
+
+   See {{OPPDIREX}} for an example of usage.
 
 ##  Composite Candidate Path {#CCP}
 
@@ -583,13 +653,121 @@ Consider the following Composite Candidate Path, taken from
 This is signaled in PCEP as:
 
 ~~~
-        <LSP PLSP_ID=100>
+    <LSP PLSP_ID=100>
         <ASSOCIATION>
         <END-POINT>
-        <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1> <COLOR-TLV Color=1>>
+        <PATH-ATTRIB Path_ID=1
+            <WEIGHT-TLV Weight=W1>
+            <COLOR-TLV Color=1>>
         <SR-ERO (empty)>
-        <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2> <COLOR-TLV Color=2>>
+        <PATH-ATTRIB Path_ID=2
+            <WEIGHT-TLV Weight=W2>
+            <COLOR-TLV Color=2>>
         <SR-ERO (empty)>
+~~~
+
+## Opposite Direction Tunnels {#OPPDIREX}
+
+Consider the two opposite-direction SR Policies between
+end-points H1 and E1.
+
+~~~
+    SR policy POL1 <headend = H1, color, endpoint = E1>
+        Candidate-path CP1
+            Preference 200
+            Bidirectional Association = A1
+            SID-List = <H1,M1,M2,E1>
+            SID-List = <H1,M3,M4,E1>
+        Candidate-path CP2
+            Preference 100
+            Bidirectional Association = A2
+            SID-List = <H1,M5,M6,E1>
+            SID-List = <H1,M7,M8,E1>
+
+    SR policy POL2 <headend = E1, color, endpoint = H1>
+        Candidate-path CP1
+            Preference 200
+            Bidirectional Association = A1
+            SID-List = <E1,M2,M1,H1>
+            SID-List = <E1,M4,M3,H1>
+        Candidate-path CP2
+            Preference 100
+            Bidirectional Association = A2
+            SID-List = <E1,M6,M5,H1>
+~~~
+
+The state-report for POL1, CP1 can be encoded as:
+
+~~~
+    <state-report> =
+        <LSP PLSP_ID=100>
+        <BIDIRECTIONAL ASSOCIATION = A1>
+        <PATH-ATTRIB R-flag=0 PathID=1
+            <OPPDIR-PATH-TLV OppositePathID=3>>
+        <ERO <H1,M1,M2,E1>>
+        <PATH-ATTRIB R-flag=0 PathID=2
+            <OPPDIR-PATH-TLV OppositePathID=4>>
+        <ERO <H1,M3,M4,E1>>
+        <PATH-ATTRIB R-flag=1 PathID=3
+            <OPPDIR-PATH-TLV OppositePathID=1>>
+        <ERO <E1,M2,M1,H1>>
+        <PATH-ATTRIB R-flag=1 PathID=4
+            <OPPDIR-PATH-TLV OppositePathID=2>>
+        <ERO <E1,M4,M3,H1>>
+~~~
+
+The state-report for POL1, CP2 can be encoded as:
+
+~~~
+    <state-report> =
+        <LSP PLSP_ID=200>
+        <BIDIRECTIONAL ASSOCIATION = A2>
+        <PATH-ATTRIB R-flag=0 PathID=1
+            <OPPDIR-PATH-TLV OppositePathID=3>>
+        <ERO <H1,M5,N6,E1>>
+        <PATH-ATTRIB R-flag=0 PathID=2
+            <OPPDIR-PATH-TLV OppositePathID=0>>
+        <ERO <H1,M7,M8,E1>>
+        <PATH-ATTRIB R-flag=1 PathID=3
+            <OPPDIR-PATH-TLV OppositePathID=1>>
+        <ERO <E1,M6,M5,H1>>
+~~~
+
+The state-report for POL2, CP1 can be encoded as:
+
+~~~
+<state-report> =
+        <LSP PLSP_ID=100>
+        <BIDIRECTIONAL ASSOCIATION = A1>
+        <PATH-ATTRIB R-flag=0 PathID=1
+            <OPPDIR-PATH-TLV OppositePathID=3>>
+        <ERO <E1,M2,M1,H1>>
+        <PATH-ATTRIB R-flag=0 PathID=2
+            <OPPDIR-PATH-TLV OppositePathID=4>>
+        <ERO <E1,M4,M3,H1>>
+        <PATH-ATTRIB R-flag=1 PathID=3
+            <OPPDIR-PATH-TLV OppositePathID=1>>
+        <ERO <H1,M1,M2,E1>>
+        <PATH-ATTRIB R-flag=1 PathID=4
+            <OPPDIR-PATH-TLV OppositePathID=2>>
+        <ERO <H1,M3,M4,E1>>
+~~~
+
+The state-report for POL2, CP2 can be encoded as:
+
+~~~
+<state-report> =
+        <LSP PLSP_ID=200>
+        <BIDIRECTIONAL ASSOCIATION = A2>
+        <PATH-ATTRIB R-flag=0 PathID=1
+            <OPPDIR-PATH-TLV OppositePathID=3>>
+        <ERO <E1,M6,M5,H1>>
+        <PATH-ATTRIB R-flag=1 PathID=2
+            <OPPDIR-PATH-TLV OppositePathID=0>>
+        <ERO <H1,M7,M8,E1>>
+        <PATH-ATTRIB R-flag=1 PathID=3
+            <OPPDIR-PATH-TLV OppositePathID=1>>
+        <ERO <H1,M5,N6,E1>>
 ~~~
 
 
@@ -622,6 +800,8 @@ This is signaled in PCEP as:
  | TBD3       | MULTIPATH-WEIGHT                  | This document   |
  +------------+-----------------------------------+-----------------+
  | TBD4       | MULTIPATH-BACKUP                  | This document   |
+ +------------+-----------------------------------+-----------------+
+ | TBD9       | MULTIPATH-OPPDIR-PATH             | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
 
@@ -657,11 +837,16 @@ Following bits are defined:
  +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
  +------------+-----------------------------------+-----------------+
- | 0-13       | Unassigned                        | This document   |
+ | 0-12       | Unassigned                        | This document   |
  +------------+-----------------------------------+-----------------+
- | 14         | B-flag: Backup support            | This document   |
+ | 13         | 0-flag: support for processing    | This document   |
+ |            | MULTIPATH-OPPDIR-PATH TLV         |                 |
  +------------+-----------------------------------+-----------------+
- | 15         | W-flag: Weighted ECMP support     | This document   |
+ | 14         | B-flag: support for processing    | This document   |
+ |            | MULTIPATH-BACKUP TLV              |                 |
+ +------------+-----------------------------------+-----------------+
+ | 15         | W-flag: support for processing    | This document   |
+ |            | MULTIPATH-WEIGHT TLV              |                 |
  +------------+-----------------------------------+-----------------+
 ~~~
 
@@ -698,6 +883,28 @@ Following bits are defined:
  | 0-14       | Unassigned                        | This document   |
  +------------+-----------------------------------+-----------------+
  | 15         | B-flag: Pure backup               | This document   |
+ +------------+-----------------------------------+-----------------+
+~~~
+
+## Flags in the Multipath Opposite Direction Path TLV
+
+IANA is requested to create a new sub-registry to manage the flag
+fields of the MULTIPATH-OPPDIR-PATH TLV,
+called "Flags in the MULTIPATH-OPPDIR-PATH TLV".
+
+Following bits are defined:
+
+~~~
+ +------------+-----------------------------------+-----------------+
+ | Bit        | Description                       | Reference       |
+ +------------+-----------------------------------+-----------------+
+ | 0-12       | Unassigned                        | This document   |
+ +------------+-----------------------------------+-----------------+
+ | 13         | L-flag: Link co-routed            | This document   |
+ +------------+-----------------------------------+-----------------+
+ | 14         | N-flag: Node co-routed            | This document   |
+ +------------+-----------------------------------+-----------------+
+ | 15         | R-flag: Reverse path              | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
 
