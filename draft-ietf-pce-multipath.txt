@@ -85,13 +85,13 @@ Table of Contents
    4.  Protocol Extensions . . . . . . . . . . . . . . . . . . . . .   5
      4.1.  Multipath Capability TLV  . . . . . . . . . . . . . . . .   5
      4.2.  Path Attributes Object  . . . . . . . . . . . . . . . . .   6
-     4.3.  Multipath Weight TLV  . . . . . . . . . . . . . . . . . .   7
+     4.3.  Multipath Weight TLV  . . . . . . . . . . . . . . . . . .   6
      4.4.  Multipath Backup TLV  . . . . . . . . . . . . . . . . . .   7
      4.5.  Multipath Opposite Direction Path TLV . . . . . . . . . .   8
      4.6.  Composite Candidate Path  . . . . . . . . . . . . . . . .  10
    5.  Operation . . . . . . . . . . . . . . . . . . . . . . . . . .  10
      5.1.  Signaling Multiple Paths for Loadbalancing  . . . . . . .  11
-     5.2.  Signaling Multiple Paths for Protection . . . . . . . . .  12
+     5.2.  Signaling Multiple Paths for Protection . . . . . . . . .  11
    6.  PCEP Message Extensions . . . . . . . . . . . . . . . . . . .  12
    7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  13
      7.1.  SR Policy Candidate-Path with Multiple Segment-Lists  . .  13
@@ -114,9 +114,9 @@ Koldychev, et al.       Expires December 16, 2021               [Page 2]
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
-   10. Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  21
-   11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  21
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
+   10. Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  20
+   11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  20
    12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
      12.1.  Normative References . . . . . . . . . . . . . . . . . .  21
      12.2.  Informative References . . . . . . . . . . . . . . . . .  22
@@ -268,11 +268,11 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    Number of Multipaths: the maximum number of multipaths per PCEP
    Tunnel.  The value 0 indicates unlimited number.
 
-   Flags: Following bits are defined:
+   W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
 
+   B-flag: whether MULTIPATH-BACKUP-TLV is supported.
 
-
-
+   O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported.
 
 
 
@@ -281,15 +281,6 @@ Koldychev, et al.       Expires December 16, 2021               [Page 5]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
-
-    W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
-
-    B-flag: whether MULTIPATH-BACKUP-TLV is supported.
-
-    O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported.
-
-    Unassigned bits are for future use. They MUST be set to 0 on
-    transmission and MUST be ignored on receipt.
 
 4.2.  Path Attributes Object
 
@@ -316,27 +307,14 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
                     Figure 2: PATH-ATTRIB object format
 
-   Flags (32-bits): Following bits are assigned -
-
-    O (Operational - 3 bits): operational state of the path, same
-    values as the identically named field in the LSP object {{RFC8231}}.
-
-    Unassigned bits are for future use. They MUST be set to 0 on
-    transmission and MUST be ignored on receipt.
+   O (Operational - 3 bits): operational state of the path, same values
+   as the identically named field in the LSP object [RFC8231].
 
    Path ID: 4-octet identifier that identifies a path in the set of
    multiple paths.  It uniquely identifies a path (encoded in the ERO/
    RRO) within the set of multiple paths under the PCEP LSP.  Once a
    path changes, a new Path ID is assigned.  Value 0x0 is reserved to
    indicate the absense of a Path ID.
-
-
-
-
-Koldychev, et al.       Expires December 16, 2021               [Page 6]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2021
-
 
    TLVs that may be included in the PATH-ATTRIB object are described in
    the following sections.  Other optional TLVs could be defined by
@@ -346,6 +324,19 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
    We define the MULTIPATH-WEIGHT TLV that MAY be present in the PATH-
    ATTRIB object.
+
+
+
+
+
+
+
+
+
+Koldychev, et al.       Expires December 16, 2021               [Page 6]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2021
+
 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -389,6 +380,15 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
+
+
+
+
+
+
+
+
+
 Koldychev, et al.       Expires December 16, 2021               [Page 7]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
@@ -419,28 +419,28 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
    Backup Path Count: Number of backup path(s).
 
-   Flags (16 bits): a flag field.  Currently a single flag "B bit" is
-   defined.
-   Unused flags MUST be set to zero while sending and ignored on
-   receipt.
-
-   B: If set, indicates a pure backup path. This is a path that only
-   carries rerouted traffic after the protected path fails. If this flag
-   is not set, or if the MULTIPATH-BACKUP TLV is absent,
-   then the path is assumed to be primary that
-   carries normal traffic.
+   B: If set, indicates a pure backup path.  This is a path that only
+   carries rerouted traffic after the protected path fails.  If this
+   flag is not set, or if the MULTIPATH-BACKUP TLV is absent, then the
+   path is assumed to be primary that carries normal traffic.
 
    Backup Path ID(s): a series of 4-octet identifier(s) that identify
    the backup path(s) in the set that protect this primary path.
 
 4.5.  Multipath Opposite Direction Path TLV
 
-This document introduces a new MULTIPATH-OPPDIR-PATH TLV that is optional
-and can be present in the PATH-ATTRIB object.
+   This document introduces a new MULTIPATH-OPPDIR-PATH TLV that is
+   optional and can be present in the PATH-ATTRIB object.
 
-This TLV is used to indicate whether the given path is a forward path or a
-reverse path in its PCEP Tunnel, as well as give information about the
-opposite-direction path(s) of the given path.
+   This TLV is used to indicate whether the given path is a forward path
+   or a reverse path in its PCEP Tunnel, as well as give information
+   about the opposite-direction path(s) of the given path.
+
+
+
+
+
+
 
 
 
@@ -467,29 +467,21 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
    Length: 16.
 
-   Flags (16 bits): a flag field, unused flags MUST be set to zero while
-   sending and ignored on receipt.
+   R (Reverse path): If set, indicates this path is reverse, i.e., it
+   originates on the Tunnel destination and terminates on the Tunnel
+   source (usually the PCC headend itself).  Paths with this flag set
+   MUST NOT be installed into forwarding, they serve only informational
+   purposes.
 
-    R (Reverse path): If set, indicates this path is reverse,
-    i.e., it
-    originates on the Tunnel destination and terminates on the
-    Tunnel source (usually the PCC headend itself).
-    Paths with this flag set MUST NOT
-    be installed into forwarding, they serve only informational
-    purposes.
+   N (Node co-routed): If set, indicates this path is node co-routed
+   with its opposite direction path, specified in this TLV.  Two
+   opposite direction paths are node co-routed if they traverse the same
+   nodes, but MAY traverse different links.
 
-    N (Node co-routed): If set, indicates this path is
-    node co-routed with
-    its opposite direction path, specified in this TLV.
-    Two opposite direction paths are node co-routed if they
-    traverse the same nodes,
-    but MAY traverse different links.
-
-    L (Link co-routed): If set, indicates this path is
-    link co-routed with
-    its opposite directions path, specified in this TLV.
-    Two opposite direction paths are link co-routed if they
-    traverse the same links (but in the oppsoite directions).
+   L (Link co-routed): If set, indicates this path is link co-routed
+   with its opposite directions path, specified in this TLV.  Two
+   opposite direction paths are link co-routed if they traverse the same
+   links (but in the oppsoite directions).
 
    Opposite Direction Path ID: Identifies the path that is the pair of
    this path, i.e., goes in the opposite direction to this path.  If no
@@ -498,14 +490,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
    Multiple copies of this TLV present in the same PATH-ATTRIB object
    indicate that there are multiple opposite-direction paths
-
-
-
-Koldychev, et al.       Expires December 16, 2021               [Page 9]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2021
-
-
    corresponding to the given path.  This allows for many-to-many
    relationship among the paths of two opposite direction Tunnels.
 
@@ -514,6 +498,13 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    opposite-direction path.
 
    See Section 7.4 for an example of usage.
+
+
+
+Koldychev, et al.       Expires December 16, 2021               [Page 9]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2021
+
 
 4.6.  Composite Candidate Path
 
@@ -555,13 +546,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    establishment.  This applies to all PCEP Tunnels on the PCC, unless
    overridden by PCEP Tunnel specific information.
 
-
-
-Koldychev, et al.       Expires December 16, 2021              [Page 10]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2021
-
-
    (2) Additionally send the MULTIPATH-CAP TLV in the LSP object for a
    particular PCEP Tunnel in the PCRpt or PCReq message.  This applies
    to the specified PCEP Tunnel and overrides the information from the
@@ -569,6 +553,15 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
    When PCE computes the path for a PCEP Tunnel, it MUST NOT return more
    multipaths than the corresponding value of "Number of Multipaths"
+
+
+
+
+Koldychev, et al.       Expires December 16, 2021              [Page 10]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2021
+
+
    from the MULTIPATH-CAP TLV.  If this TLV is absent (from both OPEN
    and LSP objects), then the "Number of Multipaths" is assumed to be 1.
 
@@ -607,17 +600,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
        derived from the ratio of its weight to the sum of all other
        multipath weights.
 
-
-
-
-
-
-
-Koldychev, et al.       Expires December 16, 2021              [Page 11]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2021
-
-
 5.2.  Signaling Multiple Paths for Protection
 
    The PATH-ATTRIB object can be used to describe a set of backup
@@ -627,6 +609,14 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    1.  The PCE assigns a unique Path ID to each ERO path and populates
        it inside the PATH-ATTRIB object.  The Path ID is unique within
        the context of a PLSP or PCEP Tunnel.
+
+
+
+
+Koldychev, et al.       Expires December 16, 2021              [Page 11]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2021
+
 
    2.  The MULTIPATH-BACKUP TLV MUST be added inside the PATH-ATTRIB
        object for each ERO that is protected.  The backup path ID(s) are
@@ -666,6 +656,16 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
       <actual-path> ::= <RRO>
 
+   In this standard, we extend these two elements to allow multiple ERO/
+   RRO objects to be present in the <intended-path>/<actual-path>:
+
+
+
+
+
+
+
+
 
 
 
@@ -673,9 +673,6 @@ Koldychev, et al.       Expires December 16, 2021              [Page 12]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
-
-   In this standard, we extend these two elements to allow multiple ERO/
-   RRO objects to be present in the <intended-path>/<actual-path>:
 
       <intended-path> ::= (<ERO>|
                           (<PATH-ATTRIB><ERO>)
@@ -722,6 +719,9 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
            <ERO SID-List2>
 
    The state-report for CP2 can be encoded as:
+
+
+
 
 
 
@@ -1028,8 +1028,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    IANA is requested to create a new sub-registry to manage the Flag
    field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP TLV".
 
-   Following bits are defined:
-
     +------------+-----------------------------------+-----------------+
     | Bit        | Description                       | Reference       |
     +------------+-----------------------------------+-----------------+
@@ -1051,11 +1049,13 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    field of the PATH-ATTRIBUTE object, called "Flags in PATH-ATTRIBUTE
    Object".
 
-   Following bits are defined:
-
-
-
-
+    +------------+-----------------------------------+-----------------+
+    | Bit        | Description                       | Reference       |
+    +------------+-----------------------------------+-----------------+
+    | 0-12       | Unassigned                        | This document   |
+    +------------+-----------------------------------+-----------------+
+    | 13-15      | O-flag: Operational state         | This document   |
+    +------------+-----------------------------------+-----------------+
 
 
 
@@ -1066,21 +1066,11 @@ Koldychev, et al.       Expires December 16, 2021              [Page 19]
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
-    +------------+-----------------------------------+-----------------+
-    | Bit        | Description                       | Reference       |
-    +------------+-----------------------------------+-----------------+
-    | 0-12       | Unassigned                        | This document   |
-    +------------+-----------------------------------+-----------------+
-    | 13-15      | O-flag: Operational state         | This document   |
-    +------------+-----------------------------------+-----------------+
-
 8.6.  Flags in the Multipath Backup TLV
 
    IANA is requested to create a new sub-registry to manage the Flag
    field of the MULTIPATH-BACKUP TLV, called "Flags in MULTIPATH-BACKUP
    TLV".
-
-   Following bits are defined:
 
     +------------+-----------------------------------+-----------------+
     | Bit        | Description                       | Reference       |
@@ -1096,8 +1086,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    fields of the MULTIPATH-OPPDIR-PATH TLV, called "Flags in the
    MULTIPATH-OPPDIR-PATH TLV".
 
-   Following bits are defined:
-
     +------------+-----------------------------------+-----------------+
     | Bit        | Description                       | Reference       |
     +------------+-----------------------------------+-----------------+
@@ -1109,18 +1097,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
     +------------+-----------------------------------+-----------------+
     | 15         | R-flag: Reverse path              | This document   |
     +------------+-----------------------------------+-----------------+
-
-
-
-
-
-
-
-
-Koldychev, et al.       Expires December 16, 2021              [Page 20]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2021
-
 
 9.  Security Considerations
 
@@ -1136,6 +1112,15 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
       Nokia
 
       Email: andrew.stone@nokia.com
+
+
+
+
+
+Koldychev, et al.       Expires December 16, 2021              [Page 20]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2021
+
 
 12.  References
 
@@ -1169,15 +1154,6 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-
-
-Koldychev, et al.       Expires December 16, 2021              [Page 21]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2021
-
-
    [RFC5440]  Vasseur, JP., Ed. and JL. Le Roux, Ed., "Path Computation
               Element (PCE) Communication Protocol (PCEP)", RFC 5440,
               DOI 10.17487/RFC5440, March 2009,
@@ -1192,6 +1168,15 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
               Extensions for Stateful PCE", RFC 8231,
               DOI 10.17487/RFC8231, September 2017,
               <https://www.rfc-editor.org/info/rfc8231>.
+
+
+
+
+
+Koldychev, et al.       Expires December 16, 2021              [Page 21]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2021
+
 
    [RFC8281]  Crabbe, E., Minei, I., Sivabalan, S., and R. Varga, "Path
               Computation Element Communication Protocol (PCEP)
@@ -1227,13 +1212,6 @@ Authors' Addresses
    Email: mkoldych@cisco.com
 
 
-
-
-Koldychev, et al.       Expires December 16, 2021              [Page 22]
-
-Internet-Draft        PCEP Extensions for Multipath            June 2021
-
-
    Siva Sivabalan
    Ciena Corporation
 
@@ -1244,6 +1222,16 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    Juniper Networks, Inc.
 
    Email: tsaad@juniper.net
+
+
+
+
+
+
+
+Koldychev, et al.       Expires December 16, 2021              [Page 22]
+
+Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
    Vishnu Pavan Beeram
@@ -1268,6 +1256,18 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    Huawei Technologies
 
    Email: pengshuping@huawei.com
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

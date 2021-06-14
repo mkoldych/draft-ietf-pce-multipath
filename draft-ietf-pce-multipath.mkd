@@ -187,24 +187,19 @@ instances SHOULD be ignored.
 ~~~
 {: #fig-multipath-cap title="MULTIPATH-CAP TLV format"}
 
-   Type: TBD1 for "MULTIPATH-CAP" TLV.
+Type: TBD1 for "MULTIPATH-CAP" TLV.
 
-   Length: 4.
+Length: 4.
 
-   Number of Multipaths: the maximum number of multipaths per PCEP 
-   Tunnel. The value 0 indicates unlimited number.
+Number of Multipaths: the maximum number of multipaths per PCEP 
+Tunnel. The value 0 indicates unlimited number.
 
-   Flags: Following bits are defined: 
+W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
 
-     W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
+B-flag: whether MULTIPATH-BACKUP-TLV is supported.
 
-     B-flag: whether MULTIPATH-BACKUP-TLV is supported.
+O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported.
 
-     O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported.
-     
-     Unassigned bits are for future use. They MUST be set to 0 on
-     transmission and MUST be ignored on receipt. 
-   
 ##  Path Attributes Object
 
 We define the PATH-ATTRIB object that is used to carry per-path
@@ -231,28 +226,23 @@ The PATH-ATTRIB Object-Type value is 1.
 ~~~
 {: #fig-path-attrib title="PATH-ATTRIB object format"}
 
-   Flags (32-bits): Following bits are assigned -
+O (Operational - 3 bits): operational state of the path, same 
+values as the identically named field in the LSP object {{!RFC8231}}.
 
-     O (Operational - 3 bits): operational state of the path, same 
-     values as the identically named field in the LSP object {{!RFC8231}}.
+Path ID: 4-octet identifier that identifies a path in the set of
+multiple paths. It uniquely identifies a path (encoded in the 
+ERO/RRO) within the set of multiple paths under the PCEP LSP. Once a 
+path changes, a new Path ID is assigned.
+Value 0x0 is reserved to indicate the absense of a Path ID.
 
-     Unassigned bits are for future use. They MUST be set to 0 on
-     transmission and MUST be ignored on receipt. 
-
-   Path ID: 4-octet identifier that identifies a path in the set of
-   multiple paths. It uniquely identifies a path (encoded in the 
-   ERO/RRO) within the set of multiple paths under the PCEP LSP. Once a 
-   path changes, a new Path ID is assigned.
-   Value 0x0 is reserved to indicate the absense of a Path ID.
-
-   TLVs that may be included in the PATH-ATTRIB object are described in the
-   following sections.  Other optional TLVs could be defined by future
-   documents to be included within the PATH-ATTRIB object body.
+TLVs that may be included in the PATH-ATTRIB object are described in the
+following sections.  Other optional TLVs could be defined by future
+documents to be included within the PATH-ATTRIB object body.
 
 ##  Multipath Weight TLV {#WEIGHT-TLV}
 
-   We define the MULTIPATH-WEIGHT TLV that MAY be present in the
-   PATH-ATTRIB object.
+We define the MULTIPATH-WEIGHT TLV that MAY be present in the
+PATH-ATTRIB object.
 
 ~~~
    0                   1                   2                   3
@@ -265,27 +255,27 @@ The PATH-ATTRIB Object-Type value is 1.
 ~~~
 {: #fig-multipath-path-attrib title="MULTIPATH-WEIGHT TLV format"}
 
-   Type: TBD3 for "MULTIPATH-WEIGHT" TLV.
+Type: TBD3 for "MULTIPATH-WEIGHT" TLV.
 
-   Length: 4.
+Length: 4.
 
-   Weight: weight of this path within the multipath, if W-ECMP is
-   desired. The fraction of flows a specific ERO/RRO carries is derived
-   from the ratio of its weight to the sum of all other multipath ERO/RRO weights.
+Weight: weight of this path within the multipath, if W-ECMP is
+desired. The fraction of flows a specific ERO/RRO carries is derived
+from the ratio of its weight to the sum of all other multipath ERO/RRO weights.
 
-   When the MULTIPATH-WEIGHT TLV is absent from the PATH-ATTRIB object,
-   or the PATH-ATTRIB object is absent from the
-   \<intended-path\>/\<actual-path\>, then the Weight of the corresponding
-   path is taken to be "1".
+When the MULTIPATH-WEIGHT TLV is absent from the PATH-ATTRIB object,
+or the PATH-ATTRIB object is absent from the
+\<intended-path\>/\<actual-path\>, then the Weight of the corresponding
+path is taken to be "1".
 
 ##  Multipath Backup TLV {#BACKUP-TLV}
 
-   This document introduces a new MULTIPATH-BACKUP TLV that is optional and can
-   be present in the PATH-ATTRIB object.
+This document introduces a new MULTIPATH-BACKUP TLV that is optional and can
+be present in the PATH-ATTRIB object.
 
-   This TLV is used to indicate the presence of a backup path that is
-   used for protection in case of failure of the primary path. The format of
-   the MULTIPATH-BACKUP TLV is:
+This TLV is used to indicate the presence of a backup path that is
+used for protection in case of failure of the primary path. The format of
+the MULTIPATH-BACKUP TLV is:
 
 ~~~
    0                   1                   2                   3
@@ -307,32 +297,29 @@ The PATH-ATTRIB Object-Type value is 1.
 ~~~
 {: #fig-multipath-backup title="MULTIPATH-BACKUP TLV format"}
 
-   Type: TBD4 for "MULTIPATH-BACKUP" TLV
+Type: TBD4 for "MULTIPATH-BACKUP" TLV
 
-   Length: 4 + (N * 4) (where N is the Backup Path Count)
+Length: 4 + (N * 4) (where N is the Backup Path Count)
 
-   Backup Path Count: Number of backup path(s).
+Backup Path Count: Number of backup path(s).
 
-   Flags (16 bits): a flag field. Currently a single flag "B bit" is defined.  
-   Unused flags MUST be set to zero while sending and ignored on receipt.
-     
-     B: If set, indicates a pure backup path. This is a path that only
-     carries rerouted traffic after the protected path fails. If this flag
-     is not set, or if the MULTIPATH-BACKUP TLV is absent,
-     then the path is assumed to be primary that
-     carries normal traffic.
+B: If set, indicates a pure backup path. This is a path that only
+carries rerouted traffic after the protected path fails. If this flag
+is not set, or if the MULTIPATH-BACKUP TLV is absent,
+then the path is assumed to be primary that
+carries normal traffic.
 
-   Backup Path ID(s): a series of 4-octet identifier(s) that identify the
-   backup path(s) in the set that protect this primary path.
+Backup Path ID(s): a series of 4-octet identifier(s) that identify the
+backup path(s) in the set that protect this primary path.
  
 ##  Multipath Opposite Direction Path TLV {#OPPDIR-PATH-TLV}
 
-    This document introduces a new MULTIPATH-OPPDIR-PATH TLV that is optional
-    and can be present in the PATH-ATTRIB object.
+This document introduces a new MULTIPATH-OPPDIR-PATH TLV that is optional
+and can be present in the PATH-ATTRIB object.
 
-    This TLV is used to indicate whether the given path is a forward path or a
-    reverse path in its PCEP Tunnel, as well as give information about the
-    opposite-direction path(s) of the given path.
+This TLV is used to indicate whether the given path is a forward path or a
+reverse path in its PCEP Tunnel, as well as give information about the
+opposite-direction path(s) of the given path.
 
 ~~~
    0                   1                   2                   3
@@ -348,50 +335,46 @@ The PATH-ATTRIB Object-Type value is 1.
 ~~~
 {: #fig-multipath-oppdir title="MULTIPATH-OPPDIR-PATH TLV format"}
 
-   Type: TBD9 for "MULTIPATH-OPPDIR-PATH" TLV
+Type: TBD9 for "MULTIPATH-OPPDIR-PATH" TLV
 
-   Length: 16.
+Length: 16.
 
-   Flags (16 bits): a flag field, unused flags MUST be set to zero
-   while sending and ignored on receipt.
-     
+R (Reverse path): If set, indicates this path is reverse,
+i.e., it
+originates on the Tunnel destination and terminates on the
+Tunnel source (usually the PCC headend itself).
+Paths with this flag set MUST NOT
+be installed into forwarding, they serve only informational
+purposes.
 
-     R (Reverse path): If set, indicates this path is reverse,
-     i.e., it
-     originates on the Tunnel destination and terminates on the
-     Tunnel source (usually the PCC headend itself).
-     Paths with this flag set MUST NOT
-     be installed into forwarding, they serve only informational
-     purposes.
+N (Node co-routed): If set, indicates this path is
+node co-routed with
+its opposite direction path, specified in this TLV.
+Two opposite direction paths are node co-routed if they
+traverse the same nodes,
+but MAY traverse different links.
 
-     N (Node co-routed): If set, indicates this path is
-     node co-routed with
-     its opposite direction path, specified in this TLV.
-     Two opposite direction paths are node co-routed if they
-     traverse the same nodes,
-     but MAY traverse different links.
+L (Link co-routed): If set, indicates this path is
+link co-routed with
+its opposite directions path, specified in this TLV.
+Two opposite direction paths are link co-routed if they
+traverse the same links (but in the oppsoite directions).
 
-     L (Link co-routed): If set, indicates this path is
-     link co-routed with
-     its opposite directions path, specified in this TLV.
-     Two opposite direction paths are link co-routed if they
-     traverse the same links (but in the oppsoite directions).
+Opposite Direction Path ID: Identifies the path that is the pair
+of this path, i.e., goes in the opposite direction to this path.
+If no such path exists, then this field MUST be set to 0x0,
+which is reserved to indicate the absense of a Path ID.
 
-   Opposite Direction Path ID: Identifies the path that is the pair
-   of this path, i.e., goes in the opposite direction to this path.
-   If no such path exists, then this field MUST be set to 0x0,
-   which is reserved to indicate the absense of a Path ID.
+Multiple copies of this TLV
+present in the same PATH-ATTRIB object indicate that there are multiple
+opposite-direction paths corresponding to the given path. This allows for
+many-to-many relationship among the paths of two opposite direction Tunnels.
 
-   Multiple copies of this TLV
-   present in the same PATH-ATTRIB object indicate that there are multiple
-   opposite-direction paths corresponding to the given path. This allows for
-   many-to-many relationship among the paths of two opposite direction Tunnels.
+Whenever one path A references another path B as being the
+opposite-direction path, then path B MUST also reference path A as its
+own opposite-direction path.
 
-   Whenever one path A references another path B as being the
-   opposite-direction path, then path B MUST also reference path A as its
-   own opposite-direction path.
-
-   See {{OPPDIREX}} for an example of usage.
+See {{OPPDIREX}} for an example of usage.
 
 ##  Composite Candidate Path {#CCP}
 
@@ -831,8 +814,6 @@ IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP
 TLV".
 
-Following bits are defined:
-
 ~~~
  +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
@@ -856,8 +837,6 @@ IANA is requested to create a new sub-registry to manage the Flag
 field of the PATH-ATTRIBUTE object,
 called "Flags in PATH-ATTRIBUTE Object".
 
-Following bits are defined:
-
 ~~~
  +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
@@ -874,8 +853,6 @@ IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-BACKUP TLV,
 called "Flags in MULTIPATH-BACKUP TLV".
 
-Following bits are defined:
-
 ~~~
  +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
@@ -891,8 +868,6 @@ Following bits are defined:
 IANA is requested to create a new sub-registry to manage the flag
 fields of the MULTIPATH-OPPDIR-PATH TLV,
 called "Flags in the MULTIPATH-OPPDIR-PATH TLV".
-
-Following bits are defined:
 
 ~~~
  +------------+-----------------------------------+-----------------+
