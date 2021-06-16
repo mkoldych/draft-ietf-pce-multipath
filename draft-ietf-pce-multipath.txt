@@ -5,7 +5,7 @@
 PCE Working Group                                           M. Koldychev
 Internet-Draft                                       Cisco Systems, Inc.
 Intended status: Standards Track                            S. Sivabalan
-Expires: December 16, 2021                             Ciena Corporation
+Expires: December 18, 2021                             Ciena Corporation
                                                                  T. Saad
                                                                V. Beeram
                                                   Juniper Networks, Inc.
@@ -15,7 +15,7 @@ Expires: December 16, 2021                             Ciena Corporation
                                                                    Ciena
                                                                  S. Peng
                                                      Huawei Technologies
-                                                           June 14, 2021
+                                                           June 16, 2021
 
 
           PCEP Extensions for Signaling Multipath Information
@@ -49,11 +49,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 16, 2021.
+   This Internet-Draft will expire on December 18, 2021.
 
 
 
-Koldychev, et al.       Expires December 16, 2021               [Page 1]
+Koldychev, et al.       Expires December 18, 2021               [Page 1]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Koldychev, et al.       Expires December 16, 2021               [Page 2]
+Koldychev, et al.       Expires December 18, 2021               [Page 2]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -165,7 +165,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021               [Page 3]
+Koldychev, et al.       Expires December 18, 2021               [Page 3]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -221,7 +221,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021               [Page 4]
+Koldychev, et al.       Expires December 18, 2021               [Page 4]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -277,7 +277,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021               [Page 5]
+Koldychev, et al.       Expires December 18, 2021               [Page 5]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -333,7 +333,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021               [Page 6]
+Koldychev, et al.       Expires December 18, 2021               [Page 6]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -389,7 +389,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021               [Page 7]
+Koldychev, et al.       Expires December 18, 2021               [Page 7]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -445,7 +445,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021               [Page 8]
+Koldychev, et al.       Expires December 18, 2021               [Page 8]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -481,12 +481,12 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    L (Link co-routed): If set, indicates this path is link co-routed
    with its opposite directions path, specified in this TLV.  Two
    opposite direction paths are link co-routed if they traverse the same
-   links (but in the oppsoite directions).
+   links (but in the opposite directions).
 
-   Opposite Direction Path ID: Identifies the path that is the pair of
-   this path, i.e., goes in the opposite direction to this path.  If no
-   such path exists, then this field MUST be set to 0x0, which is
-   reserved to indicate the absense of a Path ID.
+   Opposite Direction Path ID: Identifies the path that goes in the
+   opposite direction to this path.  If no such path exists, then this
+   field MUST be set to 0x0, which is reserved to indicate the absense
+   of a Path ID.
 
    Multiple copies of this TLV present in the same PATH-ATTRIB object
    indicate that there are multiple opposite-direction paths
@@ -494,14 +494,14 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
    relationship among the paths of two opposite direction Tunnels.
 
    Whenever one path A references another path B as being the opposite-
-   direction path, then path B MUST also reference path A as its own
-   opposite-direction path.
+   direction path, then path B typically also reference path A as its
+   own opposite-direction path.
 
    See Section 7.4 for an example of usage.
 
 
 
-Koldychev, et al.       Expires December 16, 2021               [Page 9]
+Koldychev, et al.       Expires December 18, 2021               [Page 9]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -557,7 +557,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 10]
+Koldychev, et al.       Expires December 18, 2021              [Page 10]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -613,7 +613,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 11]
+Koldychev, et al.       Expires December 18, 2021              [Page 11]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -669,7 +669,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 12]
+Koldychev, et al.       Expires December 18, 2021              [Page 12]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -725,7 +725,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 13]
+Koldychev, et al.       Expires December 18, 2021              [Page 13]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -781,7 +781,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 14]
+Koldychev, et al.       Expires December 18, 2021              [Page 14]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -837,7 +837,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 15]
+Koldychev, et al.       Expires December 18, 2021              [Page 15]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -893,7 +893,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 16]
+Koldychev, et al.       Expires December 18, 2021              [Page 16]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -913,7 +913,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
    The state-report for POL2, CP1 can be encoded as:
 
-   <state-report> =
+       <state-report> =
            <LSP PLSP_ID=100>
            <BIDIRECTIONAL ASSOCIATION = A1>
            <PATH-ATTRIB R-flag=0 PathID=1
@@ -931,7 +931,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
    The state-report for POL2, CP2 can be encoded as:
 
-   <state-report> =
+       <state-report> =
            <LSP PLSP_ID=200>
            <BIDIRECTIONAL ASSOCIATION = A2>
            <PATH-ATTRIB R-flag=0 PathID=1
@@ -949,7 +949,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 17]
+Koldychev, et al.       Expires December 18, 2021              [Page 17]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -1005,7 +1005,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 18]
+Koldychev, et al.       Expires December 18, 2021              [Page 18]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -1061,7 +1061,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 19]
+Koldychev, et al.       Expires December 18, 2021              [Page 19]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -1117,7 +1117,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 20]
+Koldychev, et al.       Expires December 18, 2021              [Page 20]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -1173,7 +1173,7 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 21]
+Koldychev, et al.       Expires December 18, 2021              [Page 21]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -1229,7 +1229,7 @@ Authors' Addresses
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 22]
+Koldychev, et al.       Expires December 18, 2021              [Page 22]
 
 Internet-Draft        PCEP Extensions for Multipath            June 2021
 
@@ -1285,4 +1285,4 @@ Internet-Draft        PCEP Extensions for Multipath            June 2021
 
 
 
-Koldychev, et al.       Expires December 16, 2021              [Page 23]
+Koldychev, et al.       Expires December 18, 2021              [Page 23]
