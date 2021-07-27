@@ -685,17 +685,17 @@ The state-report for POL1, CP1 can be encoded as:
     <state-report> =
         <LSP PLSP_ID=100>
         <BIDIRECTIONAL ASSOCIATION = A1>
-        <PATH-ATTRIB R-flag=0 PathID=1
-            <OPPDIR-PATH-TLV OppositePathID=3>>
+        <PATH-ATTRIB PathID=1
+            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
         <ERO <H1,M1,M2,E1>>
-        <PATH-ATTRIB R-flag=0 PathID=2
-            <OPPDIR-PATH-TLV OppositePathID=4>>
+        <PATH-ATTRIB PathID=2
+            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=4>>
         <ERO <H1,M3,M4,E1>>
-        <PATH-ATTRIB R-flag=1 PathID=3
-            <OPPDIR-PATH-TLV OppositePathID=1>>
+        <PATH-ATTRIB PathID=3
+            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
         <ERO <E1,M2,M1,H1>>
-        <PATH-ATTRIB R-flag=1 PathID=4
-            <OPPDIR-PATH-TLV OppositePathID=2>>
+        <PATH-ATTRIB PathID=4
+            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=2>>
         <ERO <E1,M4,M3,H1>>
 ~~~
 
@@ -705,14 +705,14 @@ The state-report for POL1, CP2 can be encoded as:
     <state-report> =
         <LSP PLSP_ID=200>
         <BIDIRECTIONAL ASSOCIATION = A2>
-        <PATH-ATTRIB R-flag=0 PathID=1
-            <OPPDIR-PATH-TLV OppositePathID=3>>
+        <PATH-ATTRIB PathID=1
+            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
         <ERO <H1,M5,N6,E1>>
-        <PATH-ATTRIB R-flag=0 PathID=2
-            <OPPDIR-PATH-TLV OppositePathID=0>>
+        <PATH-ATTRIB PathID=2
+            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=0>>
         <ERO <H1,M7,M8,E1>>
-        <PATH-ATTRIB R-flag=1 PathID=3
-            <OPPDIR-PATH-TLV OppositePathID=1>>
+        <PATH-ATTRIB PathID=3
+            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
         <ERO <E1,M6,M5,H1>>
 ~~~
 
@@ -722,17 +722,17 @@ The state-report for POL2, CP1 can be encoded as:
     <state-report> =
         <LSP PLSP_ID=100>
         <BIDIRECTIONAL ASSOCIATION = A1>
-        <PATH-ATTRIB R-flag=0 PathID=1
-            <OPPDIR-PATH-TLV OppositePathID=3>>
+        <PATH-ATTRIB PathID=1
+            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
         <ERO <E1,M2,M1,H1>>
-        <PATH-ATTRIB R-flag=0 PathID=2
-            <OPPDIR-PATH-TLV OppositePathID=4>>
+        <PATH-ATTRIB PathID=2
+            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=4>>
         <ERO <E1,M4,M3,H1>>
-        <PATH-ATTRIB R-flag=1 PathID=3
-            <OPPDIR-PATH-TLV OppositePathID=1>>
+        <PATH-ATTRIB PathID=3
+            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
         <ERO <H1,M1,M2,E1>>
-        <PATH-ATTRIB R-flag=1 PathID=4
-            <OPPDIR-PATH-TLV OppositePathID=2>>
+        <PATH-ATTRIB PathID=4
+            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=2>>
         <ERO <H1,M3,M4,E1>>
 ~~~
 
@@ -742,14 +742,14 @@ The state-report for POL2, CP2 can be encoded as:
     <state-report> =
         <LSP PLSP_ID=200>
         <BIDIRECTIONAL ASSOCIATION = A2>
-        <PATH-ATTRIB R-flag=0 PathID=1
-            <OPPDIR-PATH-TLV OppositePathID=3>>
+        <PATH-ATTRIB PathID=1
+            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
         <ERO <E1,M6,M5,H1>>
-        <PATH-ATTRIB R-flag=1 PathID=2
-            <OPPDIR-PATH-TLV OppositePathID=0>>
+        <PATH-ATTRIB PathID=2
+            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=0>>
         <ERO <H1,M7,M8,E1>>
-        <PATH-ATTRIB R-flag=1 PathID=3
-            <OPPDIR-PATH-TLV OppositePathID=1>>
+        <PATH-ATTRIB PathID=3
+            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
         <ERO <H1,M5,N6,E1>>
 ~~~
 
