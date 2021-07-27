@@ -19,7 +19,7 @@ Expires: January 28, 2022                              Ciena Corporation
 
 
           PCEP Extensions for Signaling Multipath Information
-                      draft-ietf-pce-multipath-00
+                      draft-ietf-pce-multipath-01
 
 Abstract
 
