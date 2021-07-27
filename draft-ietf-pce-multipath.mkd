@@ -58,7 +58,7 @@ informative:
 --- abstract
 
 Current PCEP standards allow only one intended and/or actual path to be present
-in a PCEP report or update. Applications that require multipath support such as
+in a PCEP message. Applications that require multipath support such as
 SR Policy require an extension to allow signaling multiple intended and/or
 actual paths within a single PCEP message. This document introduces such an
 extension. Encoding of multiple intended and/or actual paths is done by
@@ -365,12 +365,12 @@ goes in the opposite direction to this path.
 If no such path exists, then this field MUST be set to 0x0,
 which is reserved to indicate the absense of a Path ID.
 
-Multiple copies of this TLV
+Multiple instances of this TLV
 present in the same PATH-ATTRIB object indicate that there are multiple
 opposite-direction paths corresponding to the given path. This allows for
 many-to-many relationship among the paths of two opposite direction Tunnels.
 
-Whenever one path A references another path B as being the
+Whenever path A references another path B as being the
 opposite-direction path, then path B typically also reference path A as its
 own opposite-direction path.
 
