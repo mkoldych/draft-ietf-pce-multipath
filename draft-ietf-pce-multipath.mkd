@@ -62,8 +62,8 @@ in a PCEP message. Applications that require multipath support such as
 SR Policy require an extension to allow signaling multiple intended and/or
 actual paths within a single PCEP message. This document introduces such an
 extension. Encoding of multiple intended and/or actual paths is done by
-encoding multiple Explicit Route Objects (EROs) and/or multiple Record Route
-Objects (RROs). A special separator object is defined in this document, to
+encoding multiple Explicit Route Objects (ERO/SR-ERO/SRv6-ERO) and/or multiple Record Route
+Objects (RRO). A special separator object is defined in this document, to
 facilitate this. This mechanism is applicable to SR-TE and RSVP-TE and is
 dataplane agnostic.
 
@@ -130,7 +130,7 @@ The Candidate-Path of an SR Policy is the unit of report/update in PCEP, see
 {{!I-D.ietf-pce-segment-routing-policy-cp}}.  Each Candidate-Path can
 contain multiple Segment-Lists and each Segment-List is encoded by
 one ERO.  However, each PCEP LSP can contain only a
-single ERO (containing multiple SR-ERO subobject), which prevents us from encoding multiple Segment-
+single ERO/SR-ERO/SRv6-ERO, which prevents us from encoding multiple Segment-
 Lists within the same SR Candidate-Path.
 
 With the help of the protocol extensions defined in this document,
@@ -229,11 +229,11 @@ The PATH-ATTRIB Object-Type value is 1.
 O (Operational - 3 bits): operational state of the path, same 
 values as the identically named field in the LSP object {{!RFC8231}}.
 
-Path ID: 4-octet identifier that identifies a path in the set of
-multiple paths. It uniquely identifies a path (encoded in the 
-ERO/RRO) within the set of multiple paths under the PCEP LSP. Once a 
-path changes, a new Path ID is assigned.
+Path ID: 4-octet identifier that identifies a path (encoded in the 
+ERO/SR-ERO/SRv6-ERO/RRO) within the set of multiple paths under the PCEP LSP.
 Value 0x0 is reserved to indicate the absense of a Path ID.
+The value of 0x0 MAY be used when this Path is not being referenced by
+any other path and the allocation of a Path ID is not necessary.
 
 TLVs that may be included in the PATH-ATTRIB object are described in the
 following sections.  Other optional TLVs could be defined by future
@@ -360,7 +360,7 @@ its opposite directions path, specified in this TLV.
 Two opposite direction paths are link co-routed if they
 traverse the same links (but in the opposite directions).
 
-Opposite Direction Path ID: Identifies the path that
+Opposite Direction Path ID: Identifies a path that
 goes in the opposite direction to this path.
 If no such path exists, then this field MUST be set to 0x0,
 which is reserved to indicate the absense of a Path ID.
@@ -396,9 +396,9 @@ Only one COLOR TLV SHOULD be included into the PATH-ATTRIB object. If multiple
 COLOR TLVs are contained in the PATH-ATTRIB object, only the first one MUST be
 processed and the others SHOULD be ignored.
 
-An empty SR-ERO/SR-RRO object MUST be included as per the existing RBNF, i.e.,
-SR-ERO/SR-RRO MUST contain no sub-objects.
-If the head-end receives a non-empty SR-ERO/SR-RRO,
+An empty SR-ERO object MUST be included as per the existing RBNF, i.e.,
+SR-ERO MUST contain no sub-objects.
+If the head-end receives a non-empty SR-ERO,
 then it MUST send PCError message with Error-Type 19 ("Invalid Operation") and
 Error-Value = TBD8 ("Non-empty path").
 
@@ -898,4 +898,9 @@ called "Flags in the MULTIPATH-OPPDIR-PATH TLV".
    Nokia
 
    Email: andrew.stone@nokia.com
+
+   Gyan Mishra
+   Verizon Inc.
+
+   Email: gyan.s.mishra@verizon.com
 ~~~
