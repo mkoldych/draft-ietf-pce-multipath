@@ -387,7 +387,7 @@ in the same manner as the weight of each
 Segment List in the Non-Composite Candidate Path is adjusted.
 
 To signal the Composite Candidate Path, we make use of the COLOR TLV, defined in
-{{!I-D.peng-pce-te-constraints}}. For a Composite Candidate Path, the COLOR TLV
+{{!I-D.draft-rajagopalan-pce-pcep-color}}. For a Composite Candidate Path, the COLOR TLV
 is included in the PATH-ATTRIB Object, thus allowing each Composite Candidate Path
 to do ECMP/UCMP among SR Policies or Tunnels identified by its constituent Colors.
 Only one COLOR TLV SHOULD be included into the PATH-ATTRIB object. If multiple
