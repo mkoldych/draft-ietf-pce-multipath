@@ -5,7 +5,7 @@
 PCE Working Group                                           M. Koldychev
 Internet-Draft                                       Cisco Systems, Inc.
 Intended status: Standards Track                            S. Sivabalan
-Expires: April 28, 2022                                Ciena Corporation
+Expires: August 23, 2022                               Ciena Corporation
                                                                  T. Saad
                                                                V. Beeram
                                                   Juniper Networks, Inc.
@@ -15,11 +15,13 @@ Expires: April 28, 2022                                Ciena Corporation
                                                                    Ciena
                                                                  S. Peng
                                                      Huawei Technologies
-                                                        October 25, 2021
+                                                               G. Mishra
+                                                            Verizon Inc.
+                                                       February 19, 2022
 
 
           PCEP Extensions for Signaling Multipath Information
-                      draft-ietf-pce-multipath-02
+                      draft-ietf-pce-multipath-03
 
 Abstract
 
@@ -46,21 +48,19 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 28, 2022.
+   This Internet-Draft will expire on August 23, 2022.
 
 
 
 
-
-
-Koldychev, et al.        Expires April 28, 2022                 [Page 1]
+Koldychev, et al.        Expires August 23, 2022                [Page 1]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 Copyright Notice
 
-   Copyright (c) 2021 IETF Trust and the persons identified as the
+   Copyright (c) 2022 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Koldychev, et al.        Expires April 28, 2022                 [Page 2]
+Koldychev, et al.        Expires August 23, 2022                [Page 2]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
@@ -165,9 +165,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                 [Page 3]
+Koldychev, et al.        Expires August 23, 2022                [Page 3]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
@@ -221,9 +221,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                 [Page 4]
+Koldychev, et al.        Expires August 23, 2022                [Page 4]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    When multipath is used, a backup path may protect one or more primary
@@ -277,9 +277,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                 [Page 5]
+Koldychev, et al.        Expires August 23, 2022                [Page 5]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 4.2.  Path Attributes Object
@@ -333,9 +333,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                 [Page 6]
+Koldychev, et al.        Expires August 23, 2022                [Page 6]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
       0                   1                   2                   3
@@ -389,9 +389,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                 [Page 7]
+Koldychev, et al.        Expires August 23, 2022                [Page 7]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
       0                   1                   2                   3
@@ -445,9 +445,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                 [Page 8]
+Koldychev, et al.        Expires August 23, 2022                [Page 8]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
       0                   1                   2                   3
@@ -501,9 +501,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                 [Page 9]
+Koldychev, et al.        Expires August 23, 2022                [Page 9]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 4.6.  Composite Candidate Path
@@ -557,9 +557,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 10]
+Koldychev, et al.        Expires August 23, 2022               [Page 10]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    If the PCE supports this standard, then it MUST include the
@@ -613,9 +613,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 11]
+Koldychev, et al.        Expires August 23, 2022               [Page 11]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
        backup path(s) protecting the primary path.  The Length field and
@@ -669,9 +669,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 12]
+Koldychev, et al.        Expires August 23, 2022               [Page 12]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 7.  Examples
@@ -725,9 +725,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 13]
+Koldychev, et al.        Expires August 23, 2022               [Page 13]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    The above sample state-report elements only specify the minimum
@@ -781,9 +781,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 14]
+Koldychev, et al.        Expires August 23, 2022               [Page 14]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    This is signaled in PCEP as:
@@ -837,9 +837,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 15]
+Koldychev, et al.        Expires August 23, 2022               [Page 15]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
        <state-report> =
@@ -893,9 +893,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 16]
+Koldychev, et al.        Expires August 23, 2022               [Page 16]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    The state-report for POL2, CP2 can be encoded as:
@@ -949,9 +949,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 17]
+Koldychev, et al.        Expires August 23, 2022               [Page 17]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 8.3.  PCEP-Error Object
@@ -1005,9 +1005,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 18]
+Koldychev, et al.        Expires August 23, 2022               [Page 18]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
     +------------+-----------------------------------+-----------------+
@@ -1061,9 +1061,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 19]
+Koldychev, et al.        Expires August 23, 2022               [Page 19]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 10.  Acknowledgement
@@ -1090,7 +1090,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
               Rajagopalan, B., Beeram, V. P., Peng, S., Xiong, Q.,
               Koldychev, M., and G. Mishra, "Path Computation Element
               Protocol(PCEP) Extension for Color", draft-rajagopalan-
-              pce-pcep-color-00 (work in progress), October 2021.
+              pce-pcep-color-01 (work in progress), November 2021.
 
    [I-D.ietf-pce-segment-routing-policy-cp]
               Koldychev, M., Sivabalan, S., Barth, C., Peng, S., and H.
@@ -1101,14 +1101,14 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
    [I-D.ietf-spring-segment-routing-policy]
               Filsfils, C., Talaulikar, K., Voyer, D., Bogdanov, A., and
               P. Mattes, "Segment Routing Policy Architecture", draft-
-              ietf-spring-segment-routing-policy-14 (work in progress),
-              October 2021.
+              ietf-spring-segment-routing-policy-18 (work in progress),
+              February 2022.
 
    [I-D.koldychev-pce-operational]
               Koldychev, M., Sivabalan, S., Peng, S., Achaval, D., and
               H. Kotni, "PCEP Operational Clarification", draft-
-              koldychev-pce-operational-04 (work in progress), August
-              2021.
+              koldychev-pce-operational-05 (work in progress), February
+              2022.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1117,9 +1117,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 20]
+Koldychev, et al.        Expires August 23, 2022               [Page 20]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    [RFC5440]  Vasseur, JP., Ed. and JL. Le Roux, Ed., "Path Computation
@@ -1173,9 +1173,9 @@ Authors' Addresses
 
 
 
-Koldychev, et al.        Expires April 28, 2022                [Page 21]
+Koldychev, et al.        Expires August 23, 2022               [Page 21]
 
-Internet-Draft        PCEP Extensions for Multipath         October 2021
+Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    Siva Sivabalan
@@ -1214,6 +1214,10 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
    Email: pengshuping@huawei.com
 
 
+   Gyan Mishra
+   Verizon Inc.
+
+   Email: gyan.s.mishra@verizon.com
 
 
 
@@ -1225,8 +1229,4 @@ Internet-Draft        PCEP Extensions for Multipath         October 2021
 
 
 
-
-
-
-
-Koldychev, et al.        Expires April 28, 2022                [Page 22]
+Koldychev, et al.        Expires August 23, 2022               [Page 22]

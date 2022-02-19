@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-02
+docname: draft-ietf-pce-multipath-03
 category: std
 ipr: trust200902
 area: Routing 
@@ -46,6 +46,11 @@ author:
     name: Shuping Peng
     organization: Huawei Technologies
     email: pengshuping@huawei.com
+ -
+    ins: G. Mishra
+    name: Gyan Mishra
+    organization: Verizon Inc.
+    email: gyan.s.mishra@verizon.com
 
 
 
