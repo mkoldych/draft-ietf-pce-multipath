@@ -471,7 +471,7 @@ follows:
       it inside the PATH-ATTRIB object. The Path ID is unique within the
       context of a PLSP or PCEP Tunnel.
 
-   2. The MULTIPATH-BACKUP TLV MUST be added inside the PATH-ATTRIB object for each
+   2. The MULTIPATH-BACKUP TLV MAY be added inside the PATH-ATTRIB object for each
       ERO that is protected. The backup path ID(s) are populated in the
       MULTIPATH-BACKUP TLV to reflect the set of backup path(s) protecting the
       primary path. The Length field and Backup Path Number in the MULTIPATH-BACKUP
@@ -483,11 +483,9 @@ follows:
       the path only carries rerouted traffic after the protected path(s) fail-- then
       the B flag MUST be set.
 
-Note that if a given path has the B-flag set, then there MUST be some other path
-within the same LSP that uses the given path as a backup.
-If this condition is violated, then the PCEP speaker SHOULD send a PCError message
-with Error-Type = 10 ("Reception of an invalid object") and
-Error-Value = TBD6 ("No primary path for pure backup").
+Note that primary paths which do not include the MULTIPATH-BACKUP TLV are assumed
+to be protected by all the backup paths. I.e., omitting the TLV is equivalent to
+including the TLV with all the backup path IDs filled in.
 
 Note that a given PCC may not support certain backup combinations,
 such as a backup path that is itself protected by another backup path, etc.
@@ -801,9 +799,6 @@ The state-report for POL2, CP2 can be encoded as:
  | Error-Type | Error-Value                       | Reference       |
  +------------+-----------------------------------+-----------------+
  | 10         | TBD5 - Conflicting Path ID        | This document   |
- +------------+-----------------------------------+-----------------+
- | 10         | TBD6 - No primary path for pure   | This document   |
- |            |        backup                     |                 |
  +------------+-----------------------------------+-----------------+
  | 19         | TBD7 - Not supported path backup  | This document   |
  +------------+-----------------------------------+-----------------+
