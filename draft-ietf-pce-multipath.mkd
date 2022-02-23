@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-03
+docname: draft-ietf-pce-multipath-04
 category: std
 ipr: trust200902
 area: Routing 
@@ -160,6 +160,13 @@ paths.  For this reason, primary and backup path identifiers are needed to
 indicate which backup path(s) protect which primary path(s).
 {{BACKUP-TLV}} introduces a new TLV that carries the required information.
 
+## Reverse Path Information
+
+Certain applications, such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
+require the head-end to know both forward and reverse paths for each of the
+segment lists of an SR Policy in order to run OAM/PM/BFD protocols on each
+Segment List as a separate circuit.
+
 
 # Protocol Extensions
 
@@ -220,7 +227,7 @@ The PATH-ATTRIB Object-Type value is 1.
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |                         Flags                           |  O  |
+  |                         Flags                         |I|  O  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Path ID                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -232,11 +239,13 @@ The PATH-ATTRIB Object-Type value is 1.
 O (Operational - 3 bits): operational state of the path, same 
 values as the identically named field in the LSP object {{!RFC8231}}.
 
+I (Informational - 1 bit): indicates that this path SHOULD NOT be
+installed into forwarding, because it is for informational purposes
+only. For example, reverse paths MUST have this flag set.
+
 Path ID: 4-octet identifier that identifies a path (encoded in the 
 ERO/RRO) within the set of multiple paths under the PCEP LSP.
-Value 0x0 is reserved to indicate the absense of a Path ID.
-The value of 0x0 MAY be used when this Path is not being referenced by
-any other path and the allocation of a Path ID is not necessary.
+See {{PATH-ID}} for details.
 
 TLVs that may be included in the PATH-ATTRIB object are described in the
 following sections.  Other optional TLVs could be defined by future
@@ -323,6 +332,9 @@ and can be present in the PATH-ATTRIB object.
 This TLV is used to indicate whether the given path is a forward path or a
 reverse path in its PCEP Tunnel, as well as give information about the
 opposite-direction path(s) of the given path.
+Note that all reverse paths MUST have the I-flag (Informational) set in
+the PATH-ATTRIB object, to indicate that these are not to be installed
+into forwarding by the PCC.
 
 ~~~
    0                   1                   2                   3
@@ -349,6 +361,10 @@ Tunnel source (usually the PCC headend itself).
 Paths with this flag set MUST NOT
 be installed into forwarding, they serve only informational
 purposes.
+If this flag is set, then the I-flag (Informational) MUST also
+be set in the containing PATH-ATTRIB object.
+Value of this flag MUST be the same among all instances of the
+MULTIPATH-OPPDIR-PATH TLV.
 
 N (Node co-routed): If set, indicates this path is
 node co-routed with
@@ -410,9 +426,11 @@ See {{CCPEX}} for an example of the encoding.
 
 #  Operation {#OP}
 
+## Capability Negotiation
+
 When the PCC wants to indicate to the PCE that it wants to get
-multipaths for a PCEP Tunnel, instead of a single path, it can do (1) or both (1) and (2) of the
-following:
+multipaths for a PCEP Tunnel, instead of a single path, it can do
+either (1) or both (1) and (2) of the following:
 
    (1) Send the MULTIPATH-CAP TLV in the OPEN object during session
        establishment.  This applies to all PCEP Tunnels on the PCC,
@@ -433,11 +451,26 @@ MULTIPATH-CAP TLV in the OPEN object.  This tells the PCC that it can
 report multiple ERO/RRO objects per PCEP Tunnel to this PCE.  If the PCE does not include
 the MULTIPATH-CAP TLV in the OPEN object, then the PCC MUST assume
 that the PCE does not support this standard and fall back to
-reporting only a single ERO/RRO. The PCE MUST NOT include MULTIPATH-CAP TLV
-in the LSP object in any other PCEP message towards the PCC and the PCC MUST ignore it if received. 
+reporting only a single ERO/RRO.
 
-The Path ID of each ERO/RRO MUST be unique within that LSP.
-If a PCEP speaker detects that there are two paths with the same Path ID,
+## Path ID {#PATH-ID}
+
+The Path ID uniquely identifies a Path within the context of a
+PCEP Tunnel.
+Note that when the PCEP Tunnel is an SR Policy Candidate Path, the 
+Paths within that tunnel are the Segment Lists of that Candidate Path.
+
+Value 0x0 is reserved to indicate the absense of a Path ID.
+The value of 0x0 MAY be used when this Path is not being referenced 
+and the allocation of a Path ID is not necessary.
+
+Path IDs are allocated by the PCEP peer that currently owns the Tunnel.
+If the Tunnel is delegated to the PCE, then the PCE allocates the Path IDs
+and sends them in the PCReply/PCUpd/PCInit messages.
+If the Tunnel is locally computed on the PCC, then the PCC allocates the
+Path IDs and sends them in the PCReq/PCRpt messages.
+
+If a PCEP speaker detects that there are two Paths with the same Path ID,
 then the PCEP speaker SHOULD send PCError message with
 Error-Type = 1 ("Reception of an invalid object") and
 Error-Value = TBD5 ("Conflicting Path ID"). 
@@ -811,6 +844,7 @@ The state-report for POL2, CP2 can be encoded as:
 IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP
 TLV".
+New values are to be assigned by Standards Action {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -834,6 +868,7 @@ TLV".
 IANA is requested to create a new sub-registry to manage the Flag
 field of the PATH-ATTRIBUTE object,
 called "Flags in PATH-ATTRIBUTE Object".
+New values are to be assigned by Standards Action {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -843,6 +878,8 @@ called "Flags in PATH-ATTRIBUTE Object".
  +------------+-----------------------------------+-----------------+
  | 13-15      | O-flag: Operational state         | This document   |
  +------------+-----------------------------------+-----------------+
+ | 12         | I-flag: Informational             | This document   |
+ +------------+-----------------------------------+-----------------+
 ~~~
 
 ## Flags in the Multipath Backup TLV
@@ -850,6 +887,7 @@ called "Flags in PATH-ATTRIBUTE Object".
 IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-BACKUP TLV,
 called "Flags in MULTIPATH-BACKUP TLV".
+New values are to be assigned by Standards Action {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -866,6 +904,7 @@ called "Flags in MULTIPATH-BACKUP TLV".
 IANA is requested to create a new sub-registry to manage the flag
 fields of the MULTIPATH-OPPDIR-PATH TLV,
 called "Flags in the MULTIPATH-OPPDIR-PATH TLV".
+New values are to be assigned by Standards Action {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -896,9 +935,4 @@ called "Flags in the MULTIPATH-OPPDIR-PATH TLV".
    Nokia
 
    Email: andrew.stone@nokia.com
-
-   Gyan Mishra
-   Verizon Inc.
-
-   Email: gyan.s.mishra@verizon.com
 ~~~
