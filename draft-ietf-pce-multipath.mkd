@@ -227,7 +227,7 @@ The PATH-ATTRIB Object-Type value is 1.
    0                   1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |                         Flags                         |I|  O  |
+  |                         Flags                         |R|  O  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Path ID                               |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -239,9 +239,13 @@ The PATH-ATTRIB Object-Type value is 1.
 O (Operational - 3 bits): operational state of the path, same 
 values as the identically named field in the LSP object {{!RFC8231}}.
 
-I (Informational - 1 bit): indicates that this path SHOULD NOT be
-installed into forwarding, because it is for informational purposes
-only. For example, reverse paths MUST have this flag set.
+R (Reverse): Indicates this path is reverse,
+i.e., it
+originates on the Tunnel destination and terminates on the
+Tunnel source (usually the PCC headend itself).
+Paths with this flag set MUST NOT
+be installed into forwarding, they serve only informational
+purposes.
 
 Path ID: 4-octet identifier that identifies a path (encoded in the 
 ERO/RRO) within the set of multiple paths under the PCEP LSP.
@@ -342,7 +346,7 @@ into forwarding by the PCC.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             Type              |             Length            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |        Reserved (MBZ)         |             Flags       |L|N|R|
+  |        Reserved (MBZ)         |             Flags         |L|N|
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                 Opposite Direction Path ID                    |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -353,18 +357,6 @@ into forwarding by the PCC.
 Type: TBD9 for "MULTIPATH-OPPDIR-PATH" TLV
 
 Length: 16.
-
-R (Reverse path): If set, indicates this path is reverse,
-i.e., it
-originates on the Tunnel destination and terminates on the
-Tunnel source (usually the PCC headend itself).
-Paths with this flag set MUST NOT
-be installed into forwarding, they serve only informational
-purposes.
-If this flag is set, then the I-flag (Informational) MUST also
-be set in the containing PATH-ATTRIB object.
-Value of this flag MUST be the same among all instances of the
-MULTIPATH-OPPDIR-PATH TLV.
 
 N (Node co-routed): If set, indicates this path is
 node co-routed with
@@ -878,8 +870,6 @@ New values are to be assigned by Standards Action {{?RFC8126}}
  +------------+-----------------------------------+-----------------+
  | 13-15      | O-flag: Operational state         | This document   |
  +------------+-----------------------------------+-----------------+
- | 12         | I-flag: Informational             | This document   |
- +------------+-----------------------------------+-----------------+
 ~~~
 
 ## Flags in the Multipath Backup TLV
@@ -912,11 +902,9 @@ New values are to be assigned by Standards Action {{?RFC8126}}
  +------------+-----------------------------------+-----------------+
  | 0-12       | Unassigned                        | This document   |
  +------------+-----------------------------------+-----------------+
- | 13         | L-flag: Link co-routed            | This document   |
+ | 14         | L-flag: Link co-routed            | This document   |
  +------------+-----------------------------------+-----------------+
- | 14         | N-flag: Node co-routed            | This document   |
- +------------+-----------------------------------+-----------------+
- | 15         | R-flag: Reverse path              | This document   |
+ | 15         | N-flag: Node co-routed            | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
 
