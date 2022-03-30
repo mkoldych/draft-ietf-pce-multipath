@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-04
+docname: draft-ietf-pce-multipath-05
 category: std
 ipr: trust200902
 area: Routing 
@@ -286,7 +286,7 @@ path is taken to be "1".
 
 ##  Multipath Backup TLV {#BACKUP-TLV}
 
-This document introduces a new MULTIPATH-BACKUP TLV that is optional and can
+This document introduces a new MULTIPATH-BACKUP TLV that MAY
 be present in the PATH-ATTRIB object.
 
 This TLV is used to indicate the presence of a backup path that is
@@ -330,15 +330,20 @@ backup path(s) in the set that protect this primary path.
  
 ##  Multipath Opposite Direction Path TLV {#OPPDIR-PATH-TLV}
 
-This document introduces a new MULTIPATH-OPPDIR-PATH TLV that is optional
-and can be present in the PATH-ATTRIB object.
+This document introduces a new MULTIPATH-OPPDIR-PATH TLV that MAY
+be present in the PATH-ATTRIB object.
+This TLV encodes a many-to-many mapping between forward and reverse
+paths within a PCEP Tunnel.
 
-This TLV is used to indicate whether the given path is a forward path or a
-reverse path in its PCEP Tunnel, as well as give information about the
-opposite-direction path(s) of the given path.
-Note that all reverse paths MUST have the I-flag (Informational) set in
-the PATH-ATTRIB object, to indicate that these are not to be installed
-into forwarding by the PCC.
+Many-to-many mapping means that a single forward path MAY map
+to multiple reverse paths and conversely that a single reverse
+path MAY map to multiple forward paths.
+Many-to-many mapping can happen for an SR Policy,
+when a Segment List contains Node Segment(s)
+which traverse parallel links at the midpoint.
+The reverse of this Segment List may not be able to be expressed as a single
+Reverse Segment List, but need to return multiple Reverse Segment Lists
+to cover all the parallel links at the midpoint.
 
 ~~~
    0                   1                   2                   3
@@ -555,17 +560,17 @@ Consider the following sample SR Policy, taken from
 {{!I-D.ietf-spring-segment-routing-policy}}.
 
 ~~~
-        SR policy POL1 <headend, color, endpoint>
-            Candidate-path CP1 <protocol-origin = 20, originator =
-    100:1.1.1.1, discriminator = 1>
-                Preference 200
-                Weight W1, SID-List1 <SID11...SID1i>
-                Weight W2, SID-List2 <SID21...SID2j>
-            Candidate-path CP2 <protocol-origin = 20, originator =
-    100:2.2.2.2, discriminator = 2>
-                Preference 100
-                Weight W3, SID-List3 <SID31...SID3i>
-                Weight W4, SID-List4 <SID41...SID4j>
+SR policy POL1 <headend, color, endpoint>
+    Candidate-path CP1 <protocol-origin = 20, originator =
+                        100:1.1.1.1, discriminator = 1>
+        Preference 200
+        Weight W1, SID-List1 <SID11...SID1i>
+        Weight W2, SID-List2 <SID21...SID2j>
+    Candidate-path CP2 <protocol-origin = 20, originator =
+                        100:2.2.2.2, discriminator = 2>
+        Preference 100
+        Weight W3, SID-List3 <SID31...SID3i>
+        Weight W4, SID-List4 <SID41...SID4j>
 ~~~
 
 As specified in {{!I-D.ietf-pce-segment-routing-policy-cp}}, CP1 and CP2 
@@ -577,26 +582,26 @@ The state-report for CP1 can be encoded as:
 
 ~~~
 <state-report> =
-        <LSP PLSP_ID=100>
-        <ASSOCIATION>
-        <END-POINT>
-        <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
-        <ERO SID-List1>
-        <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
-        <ERO SID-List2>
+    <LSP PLSP_ID=100>
+    <ASSOCIATION>
+    <END-POINT>
+    <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
+    <ERO SID-List1>
+    <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
+    <ERO SID-List2>
 ~~~
 
 The state-report for CP2 can be encoded as:
 
 ~~~
 <state-report> =
-        <LSP PLSP_ID=200>
-        <ASSOCIATION>
-        <END-POINT>
-        <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W3>>
-        <ERO SID-List3>
-        <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W4>>
-        <ERO SID-List4>
+    <LSP PLSP_ID=200>
+    <ASSOCIATION>
+    <END-POINT>
+    <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W3>>
+    <ERO SID-List3>
+    <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W4>>
+    <ERO SID-List4>
 ~~~
 
 The above sample state-report elements only 
@@ -623,15 +628,15 @@ This would be encoded in a state-report as:
 
 ~~~
 <state-report> =
-        <LSP>
-        <ASSOCIATION>
-        <END-POINT>
-        <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
-        <ERO A>
-        <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
-        <ERO B>
-        <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
-        <ERO C>
+    <LSP>
+    <ASSOCIATION>
+    <END-POINT>
+    <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
+    <ERO A>
+    <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
+    <ERO B>
+    <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
+    <ERO C>
 ~~~
 
 Note that the syntax
@@ -651,12 +656,12 @@ Consider the following Composite Candidate Path, taken from
 {{!I-D.ietf-spring-segment-routing-policy}}.
 
 ~~~
-   SR policy POL100 <headend = H1, color = 100, endpoint = E1>
-        Candidate-path CP1 <protocol-origin = 20, originator =
-   100:1.1.1.1, discriminator = 1>
-            Preference 200
-            Weight W1, SR policy <color = 1>
-            Weight W2, SR policy <color = 2>
+SR policy POL100 <headend = H1, color = 100, endpoint = E1>
+    Candidate-path CP1 <protocol-origin = 20, originator =
+                        100:1.1.1.1, discriminator = 1>
+        Preference 200
+        Weight W1, SR policy <color = 1>
+        Weight W2, SR policy <color = 2>
 ~~~
 
 This is signaled in PCEP as:
@@ -681,104 +686,148 @@ Consider the two opposite-direction SR Policies between
 end-points H1 and E1.
 
 ~~~
-    SR policy POL1 <headend = H1, color, endpoint = E1>
-        Candidate-path CP1
-            Preference 200
-            Bidirectional Association = A1
-            SID-List = <H1,M1,M2,E1>
-            SID-List = <H1,M3,M4,E1>
-        Candidate-path CP2
-            Preference 100
-            Bidirectional Association = A2
-            SID-List = <H1,M5,M6,E1>
-            SID-List = <H1,M7,M8,E1>
+SR policy POL1 <headend = H1, color, endpoint = E1>
+    Candidate-path CP1
+        Preference 200
+        Bidirectional Association = A1
+        SID-List = <H1,M1,M2,E1>
+        SID-List = <H1,M3,M4,E1>
+    Candidate-path CP2
+        Preference 100
+        Bidirectional Association = A2
+        SID-List = <H1,M5,M6,E1>
+        SID-List = <H1,M7,M8,E1>
 
-    SR policy POL2 <headend = E1, color, endpoint = H1>
-        Candidate-path CP1
-            Preference 200
-            Bidirectional Association = A1
-            SID-List = <E1,M2,M1,H1>
-            SID-List = <E1,M4,M3,H1>
-        Candidate-path CP2
-            Preference 100
-            Bidirectional Association = A2
-            SID-List = <E1,M6,M5,H1>
+SR policy POL2 <headend = E1, color, endpoint = H1>
+    Candidate-path CP1
+        Preference 200
+        Bidirectional Association = A1
+        SID-List = <E1,M2,M1,H1>
+        SID-List = <E1,M4,M3,H1>
+    Candidate-path CP2
+        Preference 100
+        Bidirectional Association = A2
+        SID-List = <E1,M6,M5,H1>
 ~~~
 
 The state-report for POL1, CP1 can be encoded as:
 
 ~~~
-    <state-report> =
-        <LSP PLSP_ID=100>
-        <BIDIRECTIONAL ASSOCIATION = A1>
-        <PATH-ATTRIB PathID=1
-            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
-        <ERO <H1,M1,M2,E1>>
-        <PATH-ATTRIB PathID=2
-            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=4>>
-        <ERO <H1,M3,M4,E1>>
-        <PATH-ATTRIB PathID=3
-            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
-        <ERO <E1,M2,M1,H1>>
-        <PATH-ATTRIB PathID=4
-            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=2>>
-        <ERO <E1,M4,M3,H1>>
+<state-report> =
+    <LSP PLSP_ID=100>
+    <BIDIRECTIONAL ASSOCIATION = A1>
+    <PATH-ATTRIB PathID=1 R-flag=0
+        <OPPDIR-PATH-TLV OppositePathID=3>>
+    <ERO <H1,M1,M2,E1>>
+    <PATH-ATTRIB PathID=2 R-flag=0
+        <OPPDIR-PATH-TLV OppositePathID=4>>
+    <ERO <H1,M3,M4,E1>>
+    <PATH-ATTRIB PathID=3 R-flag=1
+        <OPPDIR-PATH-TLV OppositePathID=1>>
+    <ERO <E1,M2,M1,H1>>
+    <PATH-ATTRIB PathID=4 R-flag=1
+        <OPPDIR-PATH-TLV OppositePathID=2>>
+    <ERO <E1,M4,M3,H1>>
 ~~~
 
 The state-report for POL1, CP2 can be encoded as:
 
 ~~~
-    <state-report> =
-        <LSP PLSP_ID=200>
-        <BIDIRECTIONAL ASSOCIATION = A2>
-        <PATH-ATTRIB PathID=1
-            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
-        <ERO <H1,M5,N6,E1>>
-        <PATH-ATTRIB PathID=2
-            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=0>>
-        <ERO <H1,M7,M8,E1>>
-        <PATH-ATTRIB PathID=3
-            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
-        <ERO <E1,M6,M5,H1>>
+<state-report> =
+    <LSP PLSP_ID=200>
+    <BIDIRECTIONAL ASSOCIATION = A2>
+    <PATH-ATTRIB PathID=1 R-flag=0
+        <OPPDIR-PATH-TLV OppositePathID=3>>
+    <ERO <H1,M5,N6,E1>>
+    <PATH-ATTRIB PathID=2 R-flag=0
+        <OPPDIR-PATH-TLV OppositePathID=0>>
+    <ERO <H1,M7,M8,E1>>
+    <PATH-ATTRIB PathID=3 R-flag=1
+        <OPPDIR-PATH-TLV OppositePathID=1>>
+    <ERO <E1,M6,M5,H1>>
 ~~~
 
 The state-report for POL2, CP1 can be encoded as:
 
 ~~~
-    <state-report> =
-        <LSP PLSP_ID=100>
-        <BIDIRECTIONAL ASSOCIATION = A1>
-        <PATH-ATTRIB PathID=1
-            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
-        <ERO <E1,M2,M1,H1>>
-        <PATH-ATTRIB PathID=2
-            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=4>>
-        <ERO <E1,M4,M3,H1>>
-        <PATH-ATTRIB PathID=3
-            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
-        <ERO <H1,M1,M2,E1>>
-        <PATH-ATTRIB PathID=4
-            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=2>>
-        <ERO <H1,M3,M4,E1>>
+<state-report> =
+    <LSP PLSP_ID=100>
+    <BIDIRECTIONAL ASSOCIATION = A1>
+    <PATH-ATTRIB PathID=1 R-flag=0
+        <OPPDIR-PATH-TLV OppositePathID=3>>
+    <ERO <E1,M2,M1,H1>>
+    <PATH-ATTRIB PathID=2 R-flag=0
+        <OPPDIR-PATH-TLV OppositePathID=4>>
+    <ERO <E1,M4,M3,H1>>
+    <PATH-ATTRIB PathID=3 R-flag=1
+        <OPPDIR-PATH-TLV OppositePathID=1>>
+    <ERO <H1,M1,M2,E1>>
+    <PATH-ATTRIB PathID=4 R-flag=1
+        <OPPDIR-PATH-TLV OppositePathID=2>>
+    <ERO <H1,M3,M4,E1>>
 ~~~
 
 The state-report for POL2, CP2 can be encoded as:
 
 ~~~
-    <state-report> =
-        <LSP PLSP_ID=200>
-        <BIDIRECTIONAL ASSOCIATION = A2>
-        <PATH-ATTRIB PathID=1
-            <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
-        <ERO <E1,M6,M5,H1>>
-        <PATH-ATTRIB PathID=2
-            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=0>>
-        <ERO <H1,M7,M8,E1>>
-        <PATH-ATTRIB PathID=3
-            <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
-        <ERO <H1,M5,N6,E1>>
+<state-report> =
+    <LSP PLSP_ID=200>
+    <BIDIRECTIONAL ASSOCIATION = A2>
+    <PATH-ATTRIB PathID=1 R-flag=0
+        <OPPDIR-PATH-TLV OppositePathID=3>>
+    <ERO <E1,M6,M5,H1>>
+    <PATH-ATTRIB PathID=2 R-flag=1
+        <OPPDIR-PATH-TLV OppositePathID=0>>
+    <ERO <H1,M7,M8,E1>>
+    <PATH-ATTRIB PathID=3 R-flag=1
+        <OPPDIR-PATH-TLV OppositePathID=1>>
+    <ERO <H1,M5,N6,E1>>
 ~~~
 
+#  Implementation Status
+Note to the RFC Editor - remove this section before publication, as
+well as remove the reference to {{!RFC7942}}.
+
+This section records the status of known implementations of the
+protocol defined by this specification at the time of posting of this
+Internet-Draft, and is based on a proposal described in {{!RFC7942}}.
+The description of implementations in this section
+is intended to assist the IETF in its decision processes in progressing
+drafts to RFCs. Please note that the listing of any individual
+implementation here does not imply endorsement by the IETF. Furthermore,
+no effort has been spent to verify the information presented here that
+was supplied by IETF contributors. This is not intended as, and must not
+be construed to be, a catalog of available implementations or their
+features. Readers are advised to note that other implementations may
+exist.
+
+According to {{!RFC7942}}, "this will allow reviewers and
+working groups to assign due consideration to documents that have the
+benefit of running code, which may serve as evidence of valuable
+experimentation and feedback that have made the implemented protocols
+more mature. It is up to the individual working groups to use this
+information as they see fit".
+
+## Cisco Systems
+
+~~~
+Organization: Cisco Systems
+Implementation: IOS-XR PCC and PCE
+Description: Circuit-Style SR Policies
+Maturity Level: Supported feature
+Coverage: Multiple Segment-Lists and reverse paths in SR Policy
+Contact: mkoldych@cisco.com
+~~~
+
+## Ciena Corp
+
+~~~
+Organization: Ciena Corp
+Implementation: Head-end and controller
+Maturity Level: Proof of concept
+Coverage: Full
+Contact: byadav@ciena.com
+~~~
 
 #  IANA Considerations
 

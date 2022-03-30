@@ -5,7 +5,7 @@
 PCE Working Group                                           M. Koldychev
 Internet-Draft                                       Cisco Systems, Inc.
 Intended status: Standards Track                            S. Sivabalan
-Expires: August 29, 2022                               Ciena Corporation
+Expires: October 1, 2022                               Ciena Corporation
                                                                  T. Saad
                                                                V. Beeram
                                                   Juniper Networks, Inc.
@@ -17,11 +17,11 @@ Expires: August 29, 2022                               Ciena Corporation
                                                      Huawei Technologies
                                                                G. Mishra
                                                             Verizon Inc.
-                                                       February 25, 2022
+                                                          March 30, 2022
 
 
           PCEP Extensions for Signaling Multipath Information
-                      draft-ietf-pce-multipath-04
+                      draft-ietf-pce-multipath-05
 
 Abstract
 
@@ -48,14 +48,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 29, 2022.
+   This Internet-Draft will expire on October 1, 2022.
 
 
 
 
-Koldychev, et al.        Expires August 29, 2022                [Page 1]
+Koldychev, et al.        Expires October 1, 2022                [Page 1]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
 Copyright Notice
@@ -101,29 +101,32 @@ Table of Contents
      7.2.  Two Primary Paths Protected by One Backup Path  . . . . .  14
      7.3.  Composite Candidate Path  . . . . . . . . . . . . . . . .  15
      7.4.  Opposite Direction Tunnels  . . . . . . . . . . . . . . .  15
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
-     8.1.  PCEP Object . . . . . . . . . . . . . . . . . . . . . . .  18
-     8.2.  PCEP TLV  . . . . . . . . . . . . . . . . . . . . . . . .  18
-     8.3.  PCEP-Error Object . . . . . . . . . . . . . . . . . . . .  18
-     8.4.  Flags in the Multipath Capability TLV . . . . . . . . . .  19
+   8.  Implementation Status . . . . . . . . . . . . . . . . . . . .  18
+     8.1.  Cisco Systems . . . . . . . . . . . . . . . . . . . . . .  18
+     8.2.  Ciena Corp  . . . . . . . . . . . . . . . . . . . . . . .  18
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
+     9.1.  PCEP Object . . . . . . . . . . . . . . . . . . . . . . .  19
 
 
 
-Koldychev, et al.        Expires August 29, 2022                [Page 2]
+Koldychev, et al.        Expires October 1, 2022                [Page 2]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
-     8.5.  Flags in the Path Attribute Object  . . . . . . . . . . .  19
-     8.6.  Flags in the Multipath Backup TLV . . . . . . . . . . . .  19
-     8.7.  Flags in the Multipath Opposite Direction Path TLV  . . .  20
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
-   10. Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  20
-   11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  20
-   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     12.1.  Normative References . . . . . . . . . . . . . . . . . .  20
-     12.2.  Informative References . . . . . . . . . . . . . . . . .  22
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+     9.2.  PCEP TLV  . . . . . . . . . . . . . . . . . . . . . . . .  19
+     9.3.  PCEP-Error Object . . . . . . . . . . . . . . . . . . . .  19
+     9.4.  Flags in the Multipath Capability TLV . . . . . . . . . .  20
+     9.5.  Flags in the Path Attribute Object  . . . . . . . . . . .  20
+     9.6.  Flags in the Multipath Backup TLV . . . . . . . . . . . .  20
+     9.7.  Flags in the Multipath Opposite Direction Path TLV  . . .  21
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  21
+   11. Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  21
+   12. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  21
+   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
+     13.1.  Normative References . . . . . . . . . . . . . . . . . .  21
+     13.2.  Informative References . . . . . . . . . . . . . . . . .  23
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
 
 1.  Introduction
 
@@ -162,12 +165,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-
-
-
-Koldychev, et al.        Expires August 29, 2022                [Page 3]
+Koldychev, et al.        Expires October 1, 2022                [Page 3]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
 2.  Terminology
@@ -221,9 +221,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022                [Page 4]
+Koldychev, et al.        Expires October 1, 2022                [Page 4]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
    Note that [RFC8745] specify the Path Protection association among
@@ -277,9 +277,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022                [Page 5]
+Koldychev, et al.        Expires October 1, 2022                [Page 5]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
    Length: 4.
@@ -333,9 +333,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022                [Page 6]
+Koldychev, et al.        Expires October 1, 2022                [Page 6]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
    TLVs that may be included in the PATH-ATTRIB object are described in
@@ -372,8 +372,8 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 4.4.  Multipath Backup TLV
 
-   This document introduces a new MULTIPATH-BACKUP TLV that is optional
-   and can be present in the PATH-ATTRIB object.
+   This document introduces a new MULTIPATH-BACKUP TLV that MAY be
+   present in the PATH-ATTRIB object.
 
    This TLV is used to indicate the presence of a backup path that is
    used for protection in case of failure of the primary path.  The
@@ -389,9 +389,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022                [Page 7]
+Koldychev, et al.        Expires October 1, 2022                [Page 7]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
       0                   1                   2                   3
@@ -429,25 +429,25 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 4.5.  Multipath Opposite Direction Path TLV
 
-   This document introduces a new MULTIPATH-OPPDIR-PATH TLV that is
-   optional and can be present in the PATH-ATTRIB object.
+   This document introduces a new MULTIPATH-OPPDIR-PATH TLV that MAY be
+   present in the PATH-ATTRIB object.  This TLV encodes a many-to-many
+   mapping between forward and reverse paths within a PCEP Tunnel.
 
-   This TLV is used to indicate whether the given path is a forward path
-   or a reverse path in its PCEP Tunnel, as well as give information
-   about the opposite-direction path(s) of the given path.  Note that
-   all reverse paths MUST have the I-flag (Informational) set in the
-   PATH-ATTRIB object, to indicate that these are not to be installed
-   into forwarding by the PCC.
-
-
-
-
-
+   Many-to-many mapping means that a single forward path MAY map to
+   multiple reverse paths and conversely that a single reverse path MAY
+   map to multiple forward paths.  Many-to-many mapping can happen for
+   an SR Policy, when a Segment List contains Node Segment(s) which
+   traverse parallel links at the midpoint.  The reverse of this Segment
+   List may not be able to be expressed as a single Reverse Segment
+   List, but need to return multiple Reverse Segment Lists to cover all
+   the parallel links at the midpoint.
 
 
-Koldychev, et al.        Expires August 29, 2022                [Page 8]
+
+
+Koldychev, et al.        Expires October 1, 2022                [Page 8]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
       0                   1                   2                   3
@@ -501,9 +501,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022                [Page 9]
+Koldychev, et al.        Expires October 1, 2022                [Page 9]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
    Candidate Path contains Colors of other policies.  The traffic that
@@ -557,9 +557,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 10]
+Koldychev, et al.        Expires October 1, 2022               [Page 10]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
    report multiple ERO/RRO objects per PCEP Tunnel to this PCE.  If the
@@ -613,9 +613,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 11]
+Koldychev, et al.        Expires October 1, 2022               [Page 11]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
 5.4.  Signaling Multiple Paths for Protection
@@ -669,9 +669,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 12]
+Koldychev, et al.        Expires October 1, 2022               [Page 12]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
    In this standard, we extend these two elements to allow multiple ERO/
@@ -693,17 +693,17 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
    Consider the following sample SR Policy, taken from
    [I-D.ietf-spring-segment-routing-policy].
 
-           SR policy POL1 <headend, color, endpoint>
-               Candidate-path CP1 <protocol-origin = 20, originator =
-       100:1.1.1.1, discriminator = 1>
-                   Preference 200
-                   Weight W1, SID-List1 <SID11...SID1i>
-                   Weight W2, SID-List2 <SID21...SID2j>
-               Candidate-path CP2 <protocol-origin = 20, originator =
-       100:2.2.2.2, discriminator = 2>
-                   Preference 100
-                   Weight W3, SID-List3 <SID31...SID3i>
-                   Weight W4, SID-List4 <SID41...SID4j>
+   SR policy POL1 <headend, color, endpoint>
+       Candidate-path CP1 <protocol-origin = 20, originator =
+                           100:1.1.1.1, discriminator = 1>
+           Preference 200
+           Weight W1, SID-List1 <SID11...SID1i>
+           Weight W2, SID-List2 <SID21...SID2j>
+       Candidate-path CP2 <protocol-origin = 20, originator =
+                           100:2.2.2.2, discriminator = 2>
+           Preference 100
+           Weight W3, SID-List3 <SID31...SID3i>
+           Weight W4, SID-List4 <SID41...SID4j>
 
    As specified in [I-D.ietf-pce-segment-routing-policy-cp], CP1 and CP2
    are signaled as separate state-report elements and each has a unique
@@ -713,31 +713,31 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
    The state-report for CP1 can be encoded as:
 
    <state-report> =
-           <LSP PLSP_ID=100>
-           <ASSOCIATION>
-           <END-POINT>
-           <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
-           <ERO SID-List1>
-           <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
-           <ERO SID-List2>
+       <LSP PLSP_ID=100>
+       <ASSOCIATION>
+       <END-POINT>
+       <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
+       <ERO SID-List1>
+       <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W2>>
+       <ERO SID-List2>
 
    The state-report for CP2 can be encoded as:
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 13]
+Koldychev, et al.        Expires October 1, 2022               [Page 13]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
    <state-report> =
-           <LSP PLSP_ID=200>
-           <ASSOCIATION>
-           <END-POINT>
-           <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W3>>
-           <ERO SID-List3>
-           <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W4>>
-           <ERO SID-List4>
+       <LSP PLSP_ID=200>
+       <ASSOCIATION>
+       <END-POINT>
+       <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W3>>
+       <ERO SID-List3>
+       <PATH-ATTRIB Path_ID=2 <WEIGHT-TLV Weight=W4>>
+       <ERO SID-List4>
 
    The above sample state-report elements only specify the minimum
    mandatory objects, of course other objects like SRP, LSPA, METRIC,
@@ -758,15 +758,15 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
    as:
 
    <state-report> =
-           <LSP>
-           <ASSOCIATION>
-           <END-POINT>
-           <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
-           <ERO A>
-           <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
-           <ERO B>
-           <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
-           <ERO C>
+       <LSP>
+       <ASSOCIATION>
+       <END-POINT>
+       <PATH-ATTRIB Path_ID=1 <BACKUP-TLV B=0, Backup_Paths=[3]>>
+       <ERO A>
+       <PATH-ATTRIB Path_ID=2 <BACKUP-TLV B=0, Backup_Paths=[3]>>
+       <ERO B>
+       <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
+       <ERO C>
 
    Note that the syntax
 
@@ -781,9 +781,9 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 14]
+Koldychev, et al.        Expires October 1, 2022               [Page 14]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
 7.3.  Composite Candidate Path
@@ -791,12 +791,12 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
    Consider the following Composite Candidate Path, taken from
    [I-D.ietf-spring-segment-routing-policy].
 
-      SR policy POL100 <headend = H1, color = 100, endpoint = E1>
-           Candidate-path CP1 <protocol-origin = 20, originator =
-      100:1.1.1.1, discriminator = 1>
-               Preference 200
-               Weight W1, SR policy <color = 1>
-               Weight W2, SR policy <color = 2>
+   SR policy POL100 <headend = H1, color = 100, endpoint = E1>
+       Candidate-path CP1 <protocol-origin = 20, originator =
+                           100:1.1.1.1, discriminator = 1>
+           Preference 200
+           Weight W1, SR policy <color = 1>
+           Weight W2, SR policy <color = 2>
 
    This is signaled in PCEP as:
 
@@ -837,51 +837,51 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 15]
+Koldychev, et al.        Expires October 1, 2022               [Page 15]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
-       SR policy POL1 <headend = H1, color, endpoint = E1>
-           Candidate-path CP1
-               Preference 200
-               Bidirectional Association = A1
-               SID-List = <H1,M1,M2,E1>
-               SID-List = <H1,M3,M4,E1>
-           Candidate-path CP2
-               Preference 100
-               Bidirectional Association = A2
-               SID-List = <H1,M5,M6,E1>
-               SID-List = <H1,M7,M8,E1>
+   SR policy POL1 <headend = H1, color, endpoint = E1>
+       Candidate-path CP1
+           Preference 200
+           Bidirectional Association = A1
+           SID-List = <H1,M1,M2,E1>
+           SID-List = <H1,M3,M4,E1>
+       Candidate-path CP2
+           Preference 100
+           Bidirectional Association = A2
+           SID-List = <H1,M5,M6,E1>
+           SID-List = <H1,M7,M8,E1>
 
-       SR policy POL2 <headend = E1, color, endpoint = H1>
-           Candidate-path CP1
-               Preference 200
-               Bidirectional Association = A1
-               SID-List = <E1,M2,M1,H1>
-               SID-List = <E1,M4,M3,H1>
-           Candidate-path CP2
-               Preference 100
-               Bidirectional Association = A2
-               SID-List = <E1,M6,M5,H1>
+   SR policy POL2 <headend = E1, color, endpoint = H1>
+       Candidate-path CP1
+           Preference 200
+           Bidirectional Association = A1
+           SID-List = <E1,M2,M1,H1>
+           SID-List = <E1,M4,M3,H1>
+       Candidate-path CP2
+           Preference 100
+           Bidirectional Association = A2
+           SID-List = <E1,M6,M5,H1>
 
    The state-report for POL1, CP1 can be encoded as:
 
-       <state-report> =
-           <LSP PLSP_ID=100>
-           <BIDIRECTIONAL ASSOCIATION = A1>
-           <PATH-ATTRIB PathID=1
-               <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
-           <ERO <H1,M1,M2,E1>>
-           <PATH-ATTRIB PathID=2
-               <OPPDIR-PATH-TLV R-flag=0 OppositePathID=4>>
-           <ERO <H1,M3,M4,E1>>
-           <PATH-ATTRIB PathID=3
-               <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
-           <ERO <E1,M2,M1,H1>>
-           <PATH-ATTRIB PathID=4
-               <OPPDIR-PATH-TLV R-flag=1 OppositePathID=2>>
-           <ERO <E1,M4,M3,H1>>
+   <state-report> =
+       <LSP PLSP_ID=100>
+       <BIDIRECTIONAL ASSOCIATION = A1>
+       <PATH-ATTRIB PathID=1 R-flag=0
+           <OPPDIR-PATH-TLV OppositePathID=3>>
+       <ERO <H1,M1,M2,E1>>
+       <PATH-ATTRIB PathID=2 R-flag=0
+           <OPPDIR-PATH-TLV OppositePathID=4>>
+       <ERO <H1,M3,M4,E1>>
+       <PATH-ATTRIB PathID=3 R-flag=1
+           <OPPDIR-PATH-TLV OppositePathID=1>>
+       <ERO <E1,M2,M1,H1>>
+       <PATH-ATTRIB PathID=4 R-flag=1
+           <OPPDIR-PATH-TLV OppositePathID=2>>
+       <ERO <E1,M4,M3,H1>>
 
    The state-report for POL1, CP2 can be encoded as:
 
@@ -893,70 +893,124 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 16]
+Koldychev, et al.        Expires October 1, 2022               [Page 16]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
-       <state-report> =
-           <LSP PLSP_ID=200>
-           <BIDIRECTIONAL ASSOCIATION = A2>
-           <PATH-ATTRIB PathID=1
-               <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
-           <ERO <H1,M5,N6,E1>>
-           <PATH-ATTRIB PathID=2
-               <OPPDIR-PATH-TLV R-flag=0 OppositePathID=0>>
-           <ERO <H1,M7,M8,E1>>
-           <PATH-ATTRIB PathID=3
-               <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
-           <ERO <E1,M6,M5,H1>>
+   <state-report> =
+       <LSP PLSP_ID=200>
+       <BIDIRECTIONAL ASSOCIATION = A2>
+       <PATH-ATTRIB PathID=1 R-flag=0
+           <OPPDIR-PATH-TLV OppositePathID=3>>
+       <ERO <H1,M5,N6,E1>>
+       <PATH-ATTRIB PathID=2 R-flag=0
+           <OPPDIR-PATH-TLV OppositePathID=0>>
+       <ERO <H1,M7,M8,E1>>
+       <PATH-ATTRIB PathID=3 R-flag=1
+           <OPPDIR-PATH-TLV OppositePathID=1>>
+       <ERO <E1,M6,M5,H1>>
 
    The state-report for POL2, CP1 can be encoded as:
 
-       <state-report> =
-           <LSP PLSP_ID=100>
-           <BIDIRECTIONAL ASSOCIATION = A1>
-           <PATH-ATTRIB PathID=1
-               <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
-           <ERO <E1,M2,M1,H1>>
-           <PATH-ATTRIB PathID=2
-               <OPPDIR-PATH-TLV R-flag=0 OppositePathID=4>>
-           <ERO <E1,M4,M3,H1>>
-           <PATH-ATTRIB PathID=3
-               <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
-           <ERO <H1,M1,M2,E1>>
-           <PATH-ATTRIB PathID=4
-               <OPPDIR-PATH-TLV R-flag=1 OppositePathID=2>>
-           <ERO <H1,M3,M4,E1>>
+   <state-report> =
+       <LSP PLSP_ID=100>
+       <BIDIRECTIONAL ASSOCIATION = A1>
+       <PATH-ATTRIB PathID=1 R-flag=0
+           <OPPDIR-PATH-TLV OppositePathID=3>>
+       <ERO <E1,M2,M1,H1>>
+       <PATH-ATTRIB PathID=2 R-flag=0
+           <OPPDIR-PATH-TLV OppositePathID=4>>
+       <ERO <E1,M4,M3,H1>>
+       <PATH-ATTRIB PathID=3 R-flag=1
+           <OPPDIR-PATH-TLV OppositePathID=1>>
+       <ERO <H1,M1,M2,E1>>
+       <PATH-ATTRIB PathID=4 R-flag=1
+           <OPPDIR-PATH-TLV OppositePathID=2>>
+       <ERO <H1,M3,M4,E1>>
 
    The state-report for POL2, CP2 can be encoded as:
 
-       <state-report> =
-           <LSP PLSP_ID=200>
-           <BIDIRECTIONAL ASSOCIATION = A2>
-           <PATH-ATTRIB PathID=1
-               <OPPDIR-PATH-TLV R-flag=0 OppositePathID=3>>
-           <ERO <E1,M6,M5,H1>>
-           <PATH-ATTRIB PathID=2
-               <OPPDIR-PATH-TLV R-flag=1 OppositePathID=0>>
-           <ERO <H1,M7,M8,E1>>
-           <PATH-ATTRIB PathID=3
-               <OPPDIR-PATH-TLV R-flag=1 OppositePathID=1>>
-           <ERO <H1,M5,N6,E1>>
+   <state-report> =
+       <LSP PLSP_ID=200>
+       <BIDIRECTIONAL ASSOCIATION = A2>
+       <PATH-ATTRIB PathID=1 R-flag=0
+           <OPPDIR-PATH-TLV OppositePathID=3>>
+       <ERO <E1,M6,M5,H1>>
+       <PATH-ATTRIB PathID=2 R-flag=1
+           <OPPDIR-PATH-TLV OppositePathID=0>>
+       <ERO <H1,M7,M8,E1>>
+       <PATH-ATTRIB PathID=3 R-flag=1
+           <OPPDIR-PATH-TLV OppositePathID=1>>
+       <ERO <H1,M5,N6,E1>>
 
 
 
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 17]
+Koldychev, et al.        Expires October 1, 2022               [Page 17]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
-8.  IANA Considerations
+8.  Implementation Status
 
-8.1.  PCEP Object
+   Note to the RFC Editor - remove this section before publication, as
+   well as remove the reference to [RFC7942].
+
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in [RFC7942].
+   The description of implementations in this section is intended to
+   assist the IETF in its decision processes in progressing drafts to
+   RFCs.  Please note that the listing of any individual implementation
+   here does not imply endorsement by the IETF.  Furthermore, no effort
+   has been spent to verify the information presented here that was
+   supplied by IETF contributors.  This is not intended as, and must not
+   be construed to be, a catalog of available implementations or their
+   features.  Readers are advised to note that other implementations may
+   exist.
+
+   According to [RFC7942], "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+   they see fit".
+
+8.1.  Cisco Systems
+
+   Organization: Cisco Systems
+   Implementation: IOS-XR PCC and PCE
+   Description: Circuit-Style SR Policies
+   Maturity Level: Supported feature
+   Coverage: Multiple Segment-Lists and reverse paths in SR Policy
+   Contact: mkoldych@cisco.com
+
+8.2.  Ciena Corp
+
+   Organization: Ciena Corp
+   Implementation: Head-end and controller
+   Maturity Level: Proof of concept
+   Coverage: Full
+   Contact: byadav@ciena.com
+
+9.  IANA Considerations
+
+
+
+
+
+
+
+
+Koldychev, et al.        Expires October 1, 2022               [Page 18]
+
+Internet-Draft        PCEP Extensions for Multipath           March 2022
+
+
+9.1.  PCEP Object
 
    IANA is requested to make the assignment of a new value for the
    existing "PCEP Objects" registry as follows:
@@ -968,7 +1022,7 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
     | TBD2         | PATH-ATTRIB | 1                 | This document   |
     +--------------+-------------+-------------------+-----------------+
 
-8.2.  PCEP TLV
+9.2.  PCEP TLV
 
    IANA is requested to make the assignment of a new value for the
    existing "PCEP TLV Type Indicators" registry as follows:
@@ -986,7 +1040,7 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
     | TBD9       | MULTIPATH-OPPDIR-PATH             | This document   |
     +------------+-----------------------------------+-----------------+
 
-8.3.  PCEP-Error Object
+9.3.  PCEP-Error Object
 
    IANA is requested to make the assignment of a new value for the
    existing "PCEP-ERROR Object Error Types and Values" sub-registry of
@@ -1005,12 +1059,14 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 18]
+
+
+Koldychev, et al.        Expires October 1, 2022               [Page 19]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
-8.4.  Flags in the Multipath Capability TLV
+9.4.  Flags in the Multipath Capability TLV
 
    IANA is requested to create a new sub-registry to manage the Flag
    field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP TLV".
@@ -1031,7 +1087,7 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
     |            | MULTIPATH-WEIGHT TLV              |                 |
     +------------+-----------------------------------+-----------------+
 
-8.5.  Flags in the Path Attribute Object
+9.5.  Flags in the Path Attribute Object
 
    IANA is requested to create a new sub-registry to manage the Flag
    field of the PATH-ATTRIBUTE object, called "Flags in PATH-ATTRIBUTE
@@ -1045,7 +1101,7 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
     | 13-15      | O-flag: Operational state         | This document   |
     +------------+-----------------------------------+-----------------+
 
-8.6.  Flags in the Multipath Backup TLV
+9.6.  Flags in the Multipath Backup TLV
 
    IANA is requested to create a new sub-registry to manage the Flag
    field of the MULTIPATH-BACKUP TLV, called "Flags in MULTIPATH-BACKUP
@@ -1061,12 +1117,12 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 19]
+Koldychev, et al.        Expires October 1, 2022               [Page 20]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
-8.7.  Flags in the Multipath Opposite Direction Path TLV
+9.7.  Flags in the Multipath Opposite Direction Path TLV
 
    IANA is requested to create a new sub-registry to manage the flag
    fields of the MULTIPATH-OPPDIR-PATH TLV, called "Flags in the
@@ -1083,24 +1139,24 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
     | 15         | N-flag: Node co-routed            | This document   |
     +------------+-----------------------------------+-----------------+
 
-9.  Security Considerations
+10.  Security Considerations
 
    None at this time.
 
-10.  Acknowledgement
+11.  Acknowledgement
 
    Thanks to Dhruv Dhody for ideas and discussion.
 
-11.  Contributors
+12.  Contributors
 
       Andrew Stone
       Nokia
 
       Email: andrew.stone@nokia.com
 
-12.  References
+13.  References
 
-12.1.  Normative References
+13.1.  Normative References
 
    [I-D.draft-rajagopalan-pce-pcep-color]
               Rajagopalan, B., Beeram, V. P., Peng, S., Xiong, Q.,
@@ -1117,16 +1173,16 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-Koldychev, et al.        Expires August 29, 2022               [Page 20]
+Koldychev, et al.        Expires October 1, 2022               [Page 21]
 
-Internet-Draft        PCEP Extensions for Multipath        February 2022
+Internet-Draft        PCEP Extensions for Multipath           March 2022
 
 
    [I-D.ietf-spring-segment-routing-policy]
               Filsfils, C., Talaulikar, K., Voyer, D., Bogdanov, A., and
               P. Mattes, "Segment Routing Policy Architecture", draft-
-              ietf-spring-segment-routing-policy-18 (work in progress),
-              February 2022.
+              ietf-spring-segment-routing-policy-22 (work in progress),
+              March 2022.
 
    [I-D.koldychev-pce-operational]
               Koldychev, M., Sivabalan, S., Peng, S., Achaval, D., and
@@ -1135,9 +1191,10 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
               2022.
 
    [I-D.schmutzer-pce-cs-sr-policy]
-              Schmutzer, C., Filsfils, C., Ali, Z., and F. Clad,
-              "Circuit Style Segment Routing Policies", draft-schmutzer-
-              pce-cs-sr-policy-00 (work in progress), September 2021.
+              Schmutzer, C., Filsfils, C., Ali, Z., Clad, F., and P.
+              Maheshwari, "Circuit Style Segment Routing Policies",
+              draft-schmutzer-pce-cs-sr-policy-01 (work in progress),
+              March 2022.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1148,6 +1205,11 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
               Element (PCE) Communication Protocol (PCEP)", RFC 5440,
               DOI 10.17487/RFC5440, March 2009,
               <https://www.rfc-editor.org/info/rfc5440>.
+
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/info/rfc7942>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1165,20 +1227,20 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
               Model", RFC 8281, DOI 10.17487/RFC8281, December 2017,
               <https://www.rfc-editor.org/info/rfc8281>.
 
+
+
+Koldychev, et al.        Expires October 1, 2022               [Page 22]
+
+Internet-Draft        PCEP Extensions for Multipath           March 2022
+
+
    [RFC8664]  Sivabalan, S., Filsfils, C., Tantsura, J., Henderickx, W.,
               and J. Hardwick, "Path Computation Element Communication
               Protocol (PCEP) Extensions for Segment Routing", RFC 8664,
               DOI 10.17487/RFC8664, December 2019,
               <https://www.rfc-editor.org/info/rfc8664>.
 
-
-
-Koldychev, et al.        Expires August 29, 2022               [Page 21]
-
-Internet-Draft        PCEP Extensions for Multipath        February 2022
-
-
-12.2.  Informative References
+13.2.  Informative References
 
    [RFC4655]  Farrel, A., Vasseur, J., and J. Ash, "A Path Computation
               Element (PCE)-Based Architecture", RFC 4655,
@@ -1217,21 +1279,21 @@ Authors' Addresses
    Email: tsaad@juniper.net
 
 
+
+
+
+
+
+
+Koldychev, et al.        Expires October 1, 2022               [Page 23]
+
+Internet-Draft        PCEP Extensions for Multipath           March 2022
+
+
    Vishnu Pavan Beeram
    Juniper Networks, Inc.
 
    Email: vbeeram@juniper.net
-
-
-
-
-
-
-
-
-Koldychev, et al.        Expires August 29, 2022               [Page 22]
-
-Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
    Hooman Bidgoli
@@ -1279,10 +1341,4 @@ Internet-Draft        PCEP Extensions for Multipath        February 2022
 
 
 
-
-
-
-
-
-
-Koldychev, et al.        Expires August 29, 2022               [Page 23]
+Koldychev, et al.        Expires October 1, 2022               [Page 24]
