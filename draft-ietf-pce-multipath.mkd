@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-05
+docname: draft-ietf-pce-multipath-06
 category: std
 ipr: trust200902
 area: Routing 

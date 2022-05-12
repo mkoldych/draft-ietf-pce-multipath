@@ -9,7 +9,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc symrefs="yes"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-pce-multipath-05" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-pce-multipath-06" category="std">
 
   <front>
     <title abbrev="PCEP Extensions for Multipath">PCEP Extensions for Signaling Multipath Information</title>
@@ -1421,10 +1421,10 @@ New values are to be assigned by Standards Action <xref target="RFC8126"/></t>
   </back>
 
 <!-- ##markdown-source:
-H4sIAB1gfWIAA+09a3fbNpbf8Suw7oe1t5JiyU7a+iTZ2rLSeMcPre00szsz
+H4sIAIRgfWIAA+09a3fbNpbf8Suw7oe1t5JiyU7a+iTZ2rLSeMcPre00szsz
 Zw4lQjIbilT5sKsm6W/f+wIJUqTtTOx0dk7V3YlFAbgXF/eNC7Db7aosyEKz
 p8fD0ViPfslMlAZxlOpZnOiLYB55YRDN9UkeZsHSy670UQS/LLwMGilvMknM
-dXPfoofy42nkLQCEn3izrBuYbNZdTk13YVt0t5+qqZeZeZys9nSa+SpYJns6
+dXPfoofy42nkLQCEn3izrBuYbNZdTk13YVt0t5+pqZeZeZys9nSa+SpYJns6
 S/I0G2xvf7c9UF5ivD19HucZYqNu4uTdPInzJcHWb+ErPv8BH2ml0syL/L97
 YRwB1JVJ1TLY03/J4mlHp3GSJWaWwl+rBf7xN6W8PLuKkz2lu0rDJ4jSPX3S
 03+KQ381vTLX9JSncBK8M7Uf4mTuRcGvRJE9PQzSaawvVmlmFgDkKJr2qJVZ
@@ -1629,7 +1629,7 @@ xn9Ek10qrAY2b2r2B5e34wJcvlvA+b253DUK1syNnWORXwqXO7j8lnunP5Pt
 ZwXbp+t8X3M9Gpj/1vZ/SEE7Lv9Uut519o5FCqr3w/4+EnkquFSv5v2SEqnx
 wCZvANSz9QDrFG/Ps2XcuFnMB1P3p7gHDYIyp40Ganp55eFltSAAh1dJfg3/
 G/ucKIExPc61YK1wTheg8ThDZwezKNXdj/wEhOoiA9iMw7vAIxCjhReEezgS
-NOil2OD7CH8t9lD+D+6645NZjwAA
+NOil2OD7CH8t9lD+D/DsjmBZjwAA
 
 -->
 
