@@ -829,6 +829,16 @@ Coverage: Full
 Contact: byadav@ciena.com
 ~~~
 
+## Huawei Technologies
+
+~~~
+Organization: Huawei Technologies Co.,Ltd.
+Implementation: Huawei's Router and Controller
+Maturity Level: Proof of concept
+Coverage: Partial
+Contact: tanren@huawei.com 
+~~~
+
 #  IANA Considerations
 
 ## PCEP Object
@@ -840,7 +850,7 @@ Contact: byadav@ciena.com
  | Object-Class | Name        | Object-Type       | Reference       |
  | Value        |             | Value             |                 |
  +--------------+-------------+-------------------+-----------------+
- | TBD2         | PATH-ATTRIB | 1                 | This document   |
+ | 45           | PATH-ATTRIB | 1                 | This document   |
  +--------------+-------------+-------------------+-----------------+
 ~~~
 
@@ -853,13 +863,13 @@ Contact: byadav@ciena.com
  | TLV Type   | TLV Name                          | Reference       |
  | Value      |                                   |                 |
  +------------+-----------------------------------+-----------------+
- | TBD1       | MULTIPATH-CAP                     | This document   |
+ | 60         | MULTIPATH-CAP                     | This document   |
  +------------+-----------------------------------+-----------------+
- | TBD3       | MULTIPATH-WEIGHT                  | This document   |
+ | 61         | MULTIPATH-WEIGHT                  | This document   |
  +------------+-----------------------------------+-----------------+
- | TBD4       | MULTIPATH-BACKUP                  | This document   |
+ | 62         | MULTIPATH-BACKUP                  | This document   |
  +------------+-----------------------------------+-----------------+
- | TBD9       | MULTIPATH-OPPDIR-PATH             | This document   |
+ | 63         | MULTIPATH-OPPDIR-PATH             | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
 
@@ -872,11 +882,11 @@ Contact: byadav@ciena.com
  +------------+-----------------------------------+-----------------+
  | Error-Type | Error-Value                       | Reference       |
  +------------+-----------------------------------+-----------------+
- | 10         | TBD5 - Conflicting Path ID        | This document   |
+ | 10         | 38 - Conflicting Path ID          | This document   |
  +------------+-----------------------------------+-----------------+
- | 19         | TBD7 - Not supported path backup  | This document   |
+ | 19         | 20 - Not supported path backup    | This document   |
  +------------+-----------------------------------+-----------------+
- | 19         | TBD8 - Non-empty path             | This document   |
+ | 19         | 21 - Non-empty path               | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
 
