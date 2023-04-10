@@ -112,7 +112,7 @@ This extension is motivated by the use-cases described below.
 
 ## Signaling Multiple Segment-Lists of an SR Candidate-Path
 
-The Candidate-Path of an SR Policy is the unit of report/update in PCEP, see
+The Candidate-Path of an SR Policy is the unit of signaling in PCEP, see
 {{!I-D.ietf-pce-segment-routing-policy-cp}}.  Each Candidate-Path can
 contain multiple Segment-Lists and each Segment-List is encoded by
 one ERO.  However, each PCEP LSP can contain only a
@@ -128,8 +128,8 @@ A PCC may request a path with 80 Gbps of bandwidth, but all links in the
 network have only 50 Gbps capacity.  The PCE can return two paths, that can
 together carry 80 Gbps. The PCC can then equally or unequally split the incoming
 80 Gbps of traffic among the two paths. {{WEIGHT-TLV}} introduces a
-new TLV that carries the path weight that allows for distribution of incoming
-traffic on to the multiple paths.
+new TLV that carries the path weight that facilitates control of load-balancing
+of traffic among the multiple paths.
 
 ## Providing Backup path for Protection
 
@@ -155,19 +155,22 @@ Segment List as a separate circuit.
 
 ## Multipath Capability TLV
 
-We define the MULTIPATH-CAP TLV that MAY be present in the OPEN
-object and/or the LSP object.  The purpose of this TLV is two-fold:
+New MULTIPATH-CAP TLV is defined. 
+This TLV MAY be present in the OPEN object during PCEP session establishment.
 
-   1.  From PCC: it tells how many multipaths per PCEP Tunnel, the PCC can install in
-       forwarding.
+From the PCC, this TLV MAY also be present in the LSP object for each individual LSP,
+to specify per-LSP values.
+The PCC MUST NOT include this TLV in the LSP object if the TLV was not
+present in the OPEN objects of both PCEP peers.
+When used per-LSP, the values in the TLV override the values from the PCC's OPEN object.
 
-   2.  From PCE: it tells that the PCE supports this standard and how
-       many multipaths per PCEP Tunnel, the PCE can compute.
-
-Only the first instance of this TLV can be processed, subsequent
-instances SHOULD be ignored. 
-
-{{OP}} specify the usage of this TLV with Open message (within the OPEN object) and other PCEP messages (within the LSP object).
+For example, the PCC includes this TLV in the OPEN object at session establishment,
+setting "Number of Multipaths" to 4 and "O-flag" to 0.
+The PCC also includes this TLV in the LSP object for a particular LSP,
+setting "Number of Multipaths" to 16 and "O-flag" to 1.
+This indicates that the PCC only wants to receive the reverse path information for that
+particular LSP and that this LSP can have up to 16 multipaths, while other LSPs can only
+have up to 4 multipaths.
 
 ~~~
    0                   1                   2                   3
@@ -180,18 +183,21 @@ instances SHOULD be ignored.
 ~~~
 {: #fig-multipath-cap title="MULTIPATH-CAP TLV format"}
 
-Type: TBD1 for "MULTIPATH-CAP" TLV.
+Type: (60) for "MULTIPATH-CAP" TLV.
 
 Length: 4.
 
-Number of Multipaths: the maximum number of multipaths per PCEP 
-Tunnel. The value 0 indicates unlimited number.
+Number of Multipaths: From PCC, it tells how many multipaths the PCC can install in forwarding. 
+From PCE, it tells how many multipaths the PCE can compute.
+The value 255 indicates unlimited number.
+The value 0 is reserved.
 
 W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
 
 B-flag: whether MULTIPATH-BACKUP-TLV is supported.
 
-O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported.
+O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported and requested. 
+If this flag is set, the PCE SHOULD tell the PCC the reverse path information, if it is able to.
 
 ##  Path Attributes Object
 
