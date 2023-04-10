@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-06
+docname: draft-ietf-pce-multipath-07
 category: std
 ipr: trust200902
 area: Routing 
@@ -62,8 +62,9 @@ informative:
 
 --- abstract
 
-Path computation algorithms are not limited to return a single optimal path.
-Multiple paths may exist that satisfy the given objectives and constraints.
+Certain traffic engineering path computation problems require solutions that
+consist of multiple traffic paths, that together form a solution.
+Returning just one single traffic path does not provide a valid solution.
 This document defines a mechanism to encode multiple paths for a single set of
 objectives and constraints.
 This is a generic PCEP mechanism, not specific to
@@ -74,38 +75,20 @@ The mechanism is applicable to both stateless and stateful PCEP.
 
 # Introduction
 
-Path Computation Element (PCE) Communication Protocol (PCEP)
-{{!RFC5440}} enables the communication between a Path Computation Client
-(PCC) and a Path Control Element (PCE), or between two PCEs based on
-the PCE architecture {{?RFC4655}}.
-
-PCEP Extensions for the Stateful PCE Model {{!RFC8231}} describes a set
-of extensions to PCEP that enable active control of Multiprotocol Label
-Switching Traffic Engineering (MPLS-TE) and Generalized MPLS (GMPLS)
-tunnels.  {{!RFC8281}} describes the setup and teardown of PCE-initiated
-LSPs under the active stateful PCE model, without the need for local
-configuration on the PCC, thus allowing for dynamic centralized
-control of a network.
-
-PCEP Extensions for Segment Routing {{!RFC8664}}
-specifies extensions to the Path Computation Element Protocol (PCEP)
-that allow a stateful PCE to compute and initiate Traffic Engineering
-(TE) paths, as well as for a PCC to request a path subject to certain
-constraint(s) and optimization criteria in SR networks.
-
 Segment Routing Policy for Traffic Engineering
-{{!I-D.ietf-spring-segment-routing-policy}} details the concepts of SR
+{{!RFC9256}} details the concepts of SR
 Policy and approaches to steering traffic into an SR Policy.  In
 particular, it describes the SR candidate-path as a collection of one
 or more Segment-Lists.  The current PCEP standards only allow for
 signaling of one Segment-List per Candidate-Path.  PCEP extension to
 support Segment Routing Policy Candidate Paths
 {{!I-D.ietf-pce-segment-routing-policy-cp}} specifically avoids
-defining how to signal multipath information, and states that this
-will be defined in another document.
+defining how to signal multiple Segment Lists.
 
 This document defines the required extensions that allow the signaling
-of multipath information via PCEP.
+of multipath information via PCEP. Although these extensions are
+motivated by the SR Policy use case, they are also applicable
+to other data plane types.
 
 # Terminology
 
@@ -394,7 +377,7 @@ See {{OPPDIREX}} for an example of usage.
 
 ##  Composite Candidate Path {#CCP}
 
-SR Policy Architecture {{!I-D.ietf-spring-segment-routing-policy}} defines the concept of a
+SR Policy Architecture {{!RFC9256}} defines the concept of a
 Composite Candidate Path. Unlike a Non-Composite Candidate Path, which contains
 Segment Lists, the Composite Candidate Path contains
 Colors of other policies. The traffic that is steered into a Composite Candidate Path is
@@ -557,7 +540,7 @@ present in the \<intended-path\>/\<actual-path\>:
 ## SR Policy Candidate-Path with Multiple Segment-Lists
 
 Consider the following sample SR Policy, taken from  
-{{!I-D.ietf-spring-segment-routing-policy}}.
+{{!RFC9256}}.
 
 ~~~
 SR policy POL1 <headend, color, endpoint>
@@ -653,7 +636,7 @@ a single backup path with Backup Path ID of 3.
 ## Composite Candidate Path {#CCPEX}
 
 Consider the following Composite Candidate Path, taken from  
-{{!I-D.ietf-spring-segment-routing-policy}}.
+{{!RFC9256}}.
 
 ~~~
 SR policy POL100 <headend = H1, color = 100, endpoint = E1>
