@@ -370,12 +370,12 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 4.4.  Multipath Backup TLV
 
-   This document introduces a new MULTIPATH-BACKUP TLV that MAY be
-   present in the PATH-ATTRIB object.
+   New MULTIPATH-BACKUP TLV is optional in the PATH-ATTRIB object.
 
    This TLV is used to indicate the presence of a backup path that is
    used for protection in case of failure of the primary path.  The
    format of the MULTIPATH-BACKUP TLV is:
+
 
 
 
