@@ -428,9 +428,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 4.5.  Multipath Opposite Direction Path TLV
 
-   This document introduces a new MULTIPATH-OPPDIR-PATH TLV that MAY be
-   present in the PATH-ATTRIB object.  This TLV encodes a many-to-many
-   mapping between forward and reverse paths within a PCEP Tunnel.
+   New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object.
+   This TLV encodes a many-to-many mapping between forward and reverse
+   paths within a PCEP Tunnel.
 
    Many-to-many mapping means that a single forward path MAY map to
    multiple reverse paths and conversely that a single reverse path MAY
