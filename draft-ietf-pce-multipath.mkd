@@ -106,6 +106,14 @@ PCEP Tunnel:
 
 > The object identified by the PLSP-ID, see {{!I-D.koldychev-pce-operational}} for more details.
 
+ECMP:
+
+> Equal Cost Multi Path, equally distributing traffic among multiple paths/links, where each path/link gets the same share of traffic as others.
+
+W-ECMP:
+
+> Weighted ECMP, un-equally distributing traffic among multiple paths/links, where some paths/links get more traffic than others.
+
 # Motivation
 
 This extension is motivated by the use-cases described below.
@@ -208,7 +216,7 @@ The PATH-ATTRIB object always precedes the ERO/RRO that it applies to.  If
 multiple ERO/RRO objects are present, then each ERO/RRO object MUST be
 preceded by an PATH-ATTRIB object that describes it.
 
-The PATH-ATTRIB Object-Class value is TBD2.
+The PATH-ATTRIB Object-Class value is (45).
 
 The PATH-ATTRIB Object-Type value is 1.
 
@@ -230,24 +238,18 @@ values as the identically named field in the LSP object {{!RFC8231}}.
 
 R (Reverse): Indicates this path is reverse,
 i.e., it
-originates on the Tunnel destination and terminates on the
-Tunnel source (usually the PCC headend itself).
-Paths with this flag set MUST NOT
-be installed into forwarding, they serve only informational
-purposes.
+originates on the LSP destination and terminates on the
+LSP source (usually the PCC headend itself).
+Paths with this flag set serve only informational
+purpose to the PCC.
 
 Path ID: 4-octet identifier that identifies a path (encoded in the 
 ERO/RRO) within the set of multiple paths under the PCEP LSP.
 See {{PATH-ID}} for details.
 
-TLVs that may be included in the PATH-ATTRIB object are described in the
-following sections.  Other optional TLVs could be defined by future
-documents to be included within the PATH-ATTRIB object body.
-
 ##  Multipath Weight TLV {#WEIGHT-TLV}
 
-We define the MULTIPATH-WEIGHT TLV that MAY be present in the
-PATH-ATTRIB object.
+New MULTIPATH-WEIGHT TLV is optional in the PATH-ATTRIB object.
 
 ~~~
    0                   1                   2                   3

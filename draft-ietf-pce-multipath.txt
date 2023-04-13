@@ -5,7 +5,7 @@
 PCE Working Group                                           M. Koldychev
 Internet-Draft                                       Cisco Systems, Inc.
 Intended status: Standards Track                            S. Sivabalan
-Expires: 12 October 2023                               Ciena Corporation
+Expires: 15 October 2023                               Ciena Corporation
                                                                  T. Saad
                                                                V. Beeram
                                                   Juniper Networks, Inc.
@@ -17,7 +17,7 @@ Expires: 12 October 2023                               Ciena Corporation
                                                      Huawei Technologies
                                                                G. Mishra
                                                             Verizon Inc.
-                                                           10 April 2023
+                                                           13 April 2023
 
 
           PCEP Extensions for Signaling Multipath Information
@@ -49,11 +49,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 October 2023.
+   This Internet-Draft will expire on 15 October 2023.
 
 
 
-Koldychev, et al.        Expires 12 October 2023                [Page 1]
+Koldychev, et al.        Expires 15 October 2023                [Page 1]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Koldychev, et al.        Expires 12 October 2023                [Page 2]
+Koldychev, et al.        Expires 15 October 2023                [Page 2]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -165,10 +165,21 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023                [Page 3]
+Koldychev, et al.        Expires 15 October 2023                [Page 3]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
+
+   ECMP:
+
+      Equal Cost Multi Path, equally distributing traffic among multiple
+      paths/links, where each path/link gets the same share of traffic
+      as others.
+
+   W-ECMP:
+
+      Weighted ECMP, un-equally distributing traffic among multiple
+      paths/links, where some paths/links get more traffic than others.
 
 3.  Motivation
 
@@ -206,25 +217,20 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    LSPs.  The use of [RFC8745] with multipath is out of scope of this
    document and is for future study.
 
+
+
+
+
+Koldychev, et al.        Expires 15 October 2023                [Page 4]
+
+Internet-Draft        PCEP Extensions for Multipath           April 2023
+
+
    When multipath is used, a backup path may protect one or more primary
    paths.  For this reason, primary and backup path identifiers are
    needed to indicate which backup path(s) protect which primary
    path(s).  Section 4.4 introduces a new TLV that carries the required
    information.
-
-
-
-
-
-
-
-
-
-
-Koldychev, et al.        Expires 12 October 2023                [Page 4]
-
-Internet-Draft        PCEP Extensions for Multipath           April 2023
-
 
 3.4.  Reverse Path Information
 
@@ -269,18 +275,17 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
    Length: 4.
 
+
+
+Koldychev, et al.        Expires 15 October 2023                [Page 5]
+
+Internet-Draft        PCEP Extensions for Multipath           April 2023
+
+
    Number of Multipaths: From PCC, it tells how many multipaths the PCC
    can install in forwarding.  From PCE, it tells how many multipaths
    the PCE can compute.  The value 255 indicates unlimited number.  The
    value 0 is reserved.
-
-
-
-
-Koldychev, et al.        Expires 12 October 2023                [Page 5]
-
-Internet-Draft        PCEP Extensions for Multipath           April 2023
-
 
    W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
 
@@ -299,7 +304,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    ERO/RRO objects are present, then each ERO/RRO object MUST be
    preceded by an PATH-ATTRIB object that describes it.
 
-   The PATH-ATTRIB Object-Class value is TBD2.
+   The PATH-ATTRIB Object-Class value is (45).
 
    The PATH-ATTRIB Object-Type value is 1.
 
@@ -319,29 +324,26 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    as the identically named field in the LSP object [RFC8231].
 
    R (Reverse): Indicates this path is reverse, i.e., it originates on
-   the Tunnel destination and terminates on the Tunnel source (usually
-   the PCC headend itself).  Paths with this flag set MUST NOT be
-   installed into forwarding, they serve only informational purposes.
+   the LSP destination and terminates on the LSP source (usually the PCC
+   headend itself).  Paths with this flag set serve only informational
+   purpose to the PCC.
 
    Path ID: 4-octet identifier that identifies a path (encoded in the
-   ERO/RRO) within the set of multiple paths under the PCEP LSP.  See
-   Section 5.2 for details.
-
-   TLVs that may be included in the PATH-ATTRIB object are described in
-   the following sections.  Other optional TLVs could be defined by
-   future documents to be included within the PATH-ATTRIB object body.
 
 
 
-Koldychev, et al.        Expires 12 October 2023                [Page 6]
+
+Koldychev, et al.        Expires 15 October 2023                [Page 6]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
+   ERO/RRO) within the set of multiple paths under the PCEP LSP.  See
+   Section 5.2 for details.
+
 4.3.  Multipath Weight TLV
 
-   We define the MULTIPATH-WEIGHT TLV that MAY be present in the PATH-
-   ATTRIB object.
+   New MULTIPATH-WEIGHT TLV is optional in the PATH-ATTRIB object.
 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -387,9 +389,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-
-
-Koldychev, et al.        Expires 12 October 2023                [Page 7]
+Koldychev, et al.        Expires 15 October 2023                [Page 7]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -445,7 +445,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023                [Page 8]
+Koldychev, et al.        Expires 15 October 2023                [Page 8]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -501,7 +501,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023                [Page 9]
+Koldychev, et al.        Expires 15 October 2023                [Page 9]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -557,7 +557,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 10]
+Koldychev, et al.        Expires 15 October 2023               [Page 10]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -613,7 +613,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 11]
+Koldychev, et al.        Expires 15 October 2023               [Page 11]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -669,7 +669,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 12]
+Koldychev, et al.        Expires 15 October 2023               [Page 12]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -725,7 +725,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 13]
+Koldychev, et al.        Expires 15 October 2023               [Page 13]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -781,7 +781,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 14]
+Koldychev, et al.        Expires 15 October 2023               [Page 14]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -837,7 +837,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 15]
+Koldychev, et al.        Expires 15 October 2023               [Page 15]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -893,7 +893,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 16]
+Koldychev, et al.        Expires 15 October 2023               [Page 16]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -949,7 +949,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 17]
+Koldychev, et al.        Expires 15 October 2023               [Page 17]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -1005,7 +1005,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 18]
+Koldychev, et al.        Expires 15 October 2023               [Page 18]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 19]
+Koldychev, et al.        Expires 15 October 2023               [Page 19]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -1117,7 +1117,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 20]
+Koldychev, et al.        Expires 15 October 2023               [Page 20]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -1173,7 +1173,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 21]
+Koldychev, et al.        Expires 15 October 2023               [Page 21]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -1229,7 +1229,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 22]
+Koldychev, et al.        Expires 15 October 2023               [Page 22]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -1285,7 +1285,7 @@ Authors' Addresses
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 23]
+Koldychev, et al.        Expires 15 October 2023               [Page 23]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -1341,4 +1341,4 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 12 October 2023               [Page 24]
+Koldychev, et al.        Expires 15 October 2023               [Page 24]
