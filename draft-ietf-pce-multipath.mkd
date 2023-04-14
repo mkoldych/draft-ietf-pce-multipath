@@ -376,36 +376,34 @@ opposite-direction paths corresponding to the given path. This allows for
 many-to-many relationship among the paths of two opposite direction Tunnels.
 
 Whenever path A references another path B as being the
-opposite-direction path, then path B typically also reference path A as its
+opposite-direction path, then path B SHOULD also reference path A as its
 own opposite-direction path.
+Furthermore, their values of the R-flag (Reverse) in the PATH-ATTRIB
+object MUST have opposite values. 
 
 See {{OPPDIREX}} for an example of usage.
 
 ##  Composite Candidate Path {#CCP}
 
 SR Policy Architecture {{!RFC9256}} defines the concept of a
-Composite Candidate Path. Unlike a Non-Composite Candidate Path, which contains
-Segment Lists, the Composite Candidate Path contains
-Colors of other policies. The traffic that is steered into a Composite Candidate Path is
-split among the policies that are identified by the Colors contained in
-the Composite Candidate Path. The split can be either ECMP or UCMP by adjusting the
-weight of each color in the Composite Candidate Path,
-in the same manner as the weight of each
-Segment List in the Non-Composite Candidate Path is adjusted.
+Composite Candidate Path. 
+A regular SR Policy Candidate Path outputs traffic to a set of Segment Lists, 
+while an SR Policy Composite Candidate Path outputs traffic recursively to 
+a set of SR Policies on the same headend.
+In PCEP, the Composite Candidate Path still consists of PATH-ATTRIB objects,
+but ERO is replaced by Color of the recursively used SR Policy.
 
 To signal the Composite Candidate Path, we make use of the COLOR TLV, defined in
 {{!I-D.draft-rajagopalan-pce-pcep-color}}. For a Composite Candidate Path, the COLOR TLV
 is included in the PATH-ATTRIB Object, thus allowing each Composite Candidate Path
-to do ECMP/UCMP among SR Policies or Tunnels identified by its constituent Colors.
+to do ECMP/W-ECMP among SR Policies identified by its constituent Colors.
 Only one COLOR TLV SHOULD be included into the PATH-ATTRIB object. If multiple
 COLOR TLVs are contained in the PATH-ATTRIB object, only the first one MUST be
 processed and the others SHOULD be ignored.
 
-An empty ERO object MUST be included as per the existing RBNF, i.e.,
-ERO MUST contain no sub-objects.
-If the head-end receives a non-empty ERO,
-then it MUST send PCError message with Error-Type 19 ("Invalid Operation") and
-Error-Value = TBD8 ("Non-empty path").
+An ERO object MUST be included as per the existing RBNF, 
+this ERO SHOULD contain no sub-objects.
+If the head-end receives a non-empty ERO, the contents SHOULD be ignored.
 
 See {{CCPEX}} for an example of the encoding.
 
