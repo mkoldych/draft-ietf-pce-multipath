@@ -367,49 +367,10 @@ See {{CCPEX}} for an example of the encoding.
 
 ## Capability Negotiation
 
-When the PCC wants to indicate to the PCE that it wants to get
-multipaths for a PCEP Tunnel, instead of a single path, it can do
-either (1) or both (1) and (2) of the following:
-
-   (1) Send the MULTIPATH-CAP TLV in the OPEN object during session
-       establishment.  This applies to all PCEP Tunnels on the PCC,
-       unless overridden by PCEP Tunnel specific information.
-
-   (2) Additionally send the MULTIPATH-CAP TLV in the LSP object for a particular
-       PCEP Tunnel in the PCRpt or PCReq message.  This applies to the specified
-       PCEP Tunnel and overrides the information from the OPEN object.
-
-     
-When PCE computes the path for a PCEP Tunnel, it MUST NOT return more
-multipaths than the corresponding value of "Number of Multipaths"
-from the MULTIPATH-CAP TLV.  If this TLV is absent (from both OPEN
-and LSP objects), then the "Number of Multipaths" is assumed to be 1.
-
-If the PCE supports this standard, then it MUST include the
-MULTIPATH-CAP TLV in the OPEN object.  This tells the PCC that it can
-report multiple ERO/RRO objects per PCEP Tunnel to this PCE.  If the PCE does not include
-the MULTIPATH-CAP TLV in the OPEN object, then the PCC MUST assume
-that the PCE does not support this standard and fall back to
-reporting only a single ERO/RRO.
-
 ### Multipath Capability TLV
 
 New MULTIPATH-CAP TLV is defined. 
 This TLV MAY be present in the OPEN object during PCEP session establishment.
-
-From the PCC, this TLV MAY also be present in the LSP object for each individual LSP,
-to specify per-LSP values.
-The PCC MUST NOT include this TLV in the LSP object if the TLV was not
-present in the OPEN objects of both PCEP peers.
-When used per-LSP, the values in the TLV override the values from the PCC's OPEN object.
-
-For example, the PCC includes this TLV in the OPEN object at session establishment,
-setting "Number of Multipaths" to 4 and "O-flag" to 0.
-The PCC also includes this TLV in the LSP object for a particular LSP,
-setting "Number of Multipaths" to 16 and "O-flag" to 1.
-This indicates that the PCC only wants to receive the reverse path information for that
-particular LSP and that this LSP can have up to 16 multipaths, while other LSPs can only
-have up to 4 multipaths.
 
 ~~~
    0                   1                   2                   3
@@ -437,6 +398,27 @@ B-flag: whether MULTIPATH-BACKUP-TLV is supported.
 
 O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported and requested. 
 If this flag is set, the PCE SHOULD tell the PCC the reverse path information, if it is able to.
+
+### Usage
+
+When PCE computes the LSP path, it MUST NOT return more forward 
+multipaths than the corresponding value of "Number of Multipaths"
+from the MULTIPATH-CAP TLV.  If this TLV is absent (from both OPEN
+and LSP objects), then the "Number of Multipaths" is assumed to be 1.
+
+From the PCC, the MULTIPATH-CAP TLV MAY also be present in the LSP object for each individual LSP, to specify per-LSP values.
+The PCC MUST NOT include this TLV in the LSP object if the TLV was not
+present in the OPEN objects of both PCEP peers.
+TLV values in the LSP object override the session default values 
+in the OPEN object.
+
+For example, the PCC includes this TLV in the OPEN object at session establishment,
+setting "Number of Multipaths" to 4 and "O-flag" to 0.
+The PCC also includes this TLV in the LSP object for a particular LSP,
+setting "Number of Multipaths" to 16 and "O-flag" to 1.
+This indicates that the PCC only wants to receive the reverse path information for that
+particular LSP and that this LSP can have up to 16 multipaths, 
+while other LSPs can only have up to 4 multipaths.
 
 ## Path ID {#PATH-ID}
 
