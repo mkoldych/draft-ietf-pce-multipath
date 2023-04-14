@@ -84,14 +84,14 @@ Table of Contents
      3.3.  Providing Backup path for Protection  . . . . . . . . . .   4
      3.4.  Reverse Path Information  . . . . . . . . . . . . . . . .   5
    4.  Protocol Extensions . . . . . . . . . . . . . . . . . . . . .   5
-     4.1.  Multipath Capability TLV  . . . . . . . . . . . . . . . .   5
-     4.2.  Path Attributes Object  . . . . . . . . . . . . . . . . .   6
-     4.3.  Multipath Weight TLV  . . . . . . . . . . . . . . . . . .   7
-     4.4.  Multipath Backup TLV  . . . . . . . . . . . . . . . . . .   7
-     4.5.  Multipath Opposite Direction Path TLV . . . . . . . . . .   8
-     4.6.  Composite Candidate Path  . . . . . . . . . . . . . . . .  10
-   5.  Operation . . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     5.1.  Capability Negotiation  . . . . . . . . . . . . . . . . .  10
+     4.1.  Path Attributes Object  . . . . . . . . . . . . . . . . .   5
+     4.2.  Multipath Weight TLV  . . . . . . . . . . . . . . . . . .   6
+     4.3.  Multipath Backup TLV  . . . . . . . . . . . . . . . . . .   6
+     4.4.  Multipath Opposite Direction Path TLV . . . . . . . . . .   7
+     4.5.  Composite Candidate Path  . . . . . . . . . . . . . . . .   9
+   5.  Operation . . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     5.1.  Capability Negotiation  . . . . . . . . . . . . . . . . .   9
+       5.1.1.  Multipath Capability TLV  . . . . . . . . . . . . . .  10
      5.2.  Path ID . . . . . . . . . . . . . . . . . . . . . . . . .  11
      5.3.  Signaling Multiple Paths for Loadbalancing  . . . . . . .  11
      5.4.  Signaling Multiple Paths for Protection . . . . . . . . .  12
@@ -203,7 +203,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    the network have only 50 Gbps capacity.  The PCE can return two
    paths, that can together carry 80 Gbps.  The PCC can then equally or
    unequally split the incoming 80 Gbps of traffic among the two paths.
-   Section 4.3 introduces a new TLV that carries the path weight that
+   Section 4.2 introduces a new TLV that carries the path weight that
    facilitates control of load-balancing of traffic among the multiple
    paths.
 
@@ -229,7 +229,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    When multipath is used, a backup path may protect one or more primary
    paths.  For this reason, primary and backup path identifiers are
    needed to indicate which backup path(s) protect which primary
-   path(s).  Section 4.4 introduces a new TLV that carries the required
+   path(s).  Section 4.3 introduces a new TLV that carries the required
    information.
 
 3.4.  Reverse Path Information
@@ -242,60 +242,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 4.  Protocol Extensions
 
-4.1.  Multipath Capability TLV
-
-   New MULTIPATH-CAP TLV is defined.  This TLV MAY be present in the
-   OPEN object during PCEP session establishment.
-
-   From the PCC, this TLV MAY also be present in the LSP object for each
-   individual LSP, to specify per-LSP values.  The PCC MUST NOT include
-   this TLV in the LSP object if the TLV was not present in the OPEN
-   objects of both PCEP peers.  When used per-LSP, the values in the TLV
-   override the values from the PCC's OPEN object.
-
-   For example, the PCC includes this TLV in the OPEN object at session
-   establishment, setting "Number of Multipaths" to 4 and "O-flag" to 0.
-   The PCC also includes this TLV in the LSP object for a particular
-   LSP, setting "Number of Multipaths" to 16 and "O-flag" to 1.  This
-   indicates that the PCC only wants to receive the reverse path
-   information for that particular LSP and that this LSP can have up to
-   16 multipaths, while other LSPs can only have up to 4 multipaths.
-
-      0                   1                   2                   3
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |             Type              |             Length            |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |     Number of Multipaths      |            Flags        |O|B|W|
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-
-                     Figure 1: MULTIPATH-CAP TLV format
-
-   Type: (60) for "MULTIPATH-CAP" TLV.
-
-   Length: 4.
-
-
-
-Koldychev, et al.        Expires 16 October 2023                [Page 5]
-
-Internet-Draft        PCEP Extensions for Multipath           April 2023
-
-
-   Number of Multipaths: From PCC, it tells how many multipaths the PCC
-   can install in forwarding.  From PCE, it tells how many multipaths
-   the PCE can compute.  The value 255 indicates unlimited number.  The
-   value 0 is reserved.
-
-   W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
-
-   B-flag: whether MULTIPATH-BACKUP-TLV is supported.
-
-   O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported and requested.
-   If this flag is set, the PCE SHOULD tell the PCC the reverse path
-   information, if it is able to.
-
-4.2.  Path Attributes Object
+4.1.  Path Attributes Object
 
    We define the PATH-ATTRIB object that is used to carry per-path
    information and to act as a separator between several ERO/RRO objects
@@ -318,7 +265,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
      ~                          Optional TLVs                        ~
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                    Figure 2: PATH-ATTRIB object format
+                    Figure 1: PATH-ATTRIB object format
 
    O (Operational - 3 bits): operational state of the path, same values
    as the identically named field in the LSP object [RFC8231].
@@ -328,20 +275,18 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    headend itself).  Paths with this flag set serve only informational
    purpose to the PCC.
 
-   Path ID: 4-octet identifier that identifies a path (encoded in the
 
 
-
-
-Koldychev, et al.        Expires 16 October 2023                [Page 6]
+Koldychev, et al.        Expires 16 October 2023                [Page 5]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
+   Path ID: 4-octet identifier that identifies a path (encoded in the
    ERO/RRO) within the set of multiple paths under the PCEP LSP.  See
    Section 5.2 for details.
 
-4.3.  Multipath Weight TLV
+4.2.  Multipath Weight TLV
 
    New MULTIPATH-WEIGHT TLV is optional in the PATH-ATTRIB object.
 
@@ -353,7 +298,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
      |                             Weight                            |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                   Figure 3: MULTIPATH-WEIGHT TLV format
+                   Figure 2: MULTIPATH-WEIGHT TLV format
 
    Type: TBD3 for "MULTIPATH-WEIGHT" TLV.
 
@@ -368,7 +313,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    or the PATH-ATTRIB object is absent from the <intended-path>/<actual-
    path>, then the Weight of the corresponding path is taken to be "1".
 
-4.4.  Multipath Backup TLV
+4.3.  Multipath Backup TLV
 
    New MULTIPATH-BACKUP TLV is optional in the PATH-ATTRIB object.
 
@@ -388,8 +333,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-
-Koldychev, et al.        Expires 16 October 2023                [Page 7]
+Koldychev, et al.        Expires 16 October 2023                [Page 6]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -410,7 +354,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
      |                         Backup Path ID n                      |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                   Figure 4: MULTIPATH-BACKUP TLV format
+                   Figure 3: MULTIPATH-BACKUP TLV format
 
    Type: TBD4 for "MULTIPATH-BACKUP" TLV
 
@@ -426,7 +370,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    Backup Path ID(s): a series of 4-octet identifier(s) that identify
    the backup path(s) in the set that protect this primary path.
 
-4.5.  Multipath Opposite Direction Path TLV
+4.4.  Multipath Opposite Direction Path TLV
 
    New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object.
    This TLV encodes a many-to-many mapping between forward and reverse
@@ -445,7 +389,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 16 October 2023                [Page 8]
+Koldychev, et al.        Expires 16 October 2023                [Page 7]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -460,7 +404,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
      |                 Opposite Direction Path ID                    |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                 Figure 5: MULTIPATH-OPPDIR-PATH TLV format
+                 Figure 4: MULTIPATH-OPPDIR-PATH TLV format
 
    Type: TBD9 for "MULTIPATH-OPPDIR-PATH" TLV
 
@@ -501,12 +445,12 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 16 October 2023                [Page 9]
+Koldychev, et al.        Expires 16 October 2023                [Page 8]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
-4.6.  Composite Candidate Path
+4.5.  Composite Candidate Path
 
    SR Policy Architecture [RFC9256] defines the concept of a Composite
    Candidate Path.  A regular SR Policy Candidate Path outputs traffic
@@ -557,7 +501,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-Koldychev, et al.        Expires 16 October 2023               [Page 10]
+Koldychev, et al.        Expires 16 October 2023                [Page 9]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
@@ -568,6 +512,59 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    PCE does not include the MULTIPATH-CAP TLV in the OPEN object, then
    the PCC MUST assume that the PCE does not support this standard and
    fall back to reporting only a single ERO/RRO.
+
+5.1.1.  Multipath Capability TLV
+
+   New MULTIPATH-CAP TLV is defined.  This TLV MAY be present in the
+   OPEN object during PCEP session establishment.
+
+   From the PCC, this TLV MAY also be present in the LSP object for each
+   individual LSP, to specify per-LSP values.  The PCC MUST NOT include
+   this TLV in the LSP object if the TLV was not present in the OPEN
+   objects of both PCEP peers.  When used per-LSP, the values in the TLV
+   override the values from the PCC's OPEN object.
+
+   For example, the PCC includes this TLV in the OPEN object at session
+   establishment, setting "Number of Multipaths" to 4 and "O-flag" to 0.
+   The PCC also includes this TLV in the LSP object for a particular
+   LSP, setting "Number of Multipaths" to 16 and "O-flag" to 1.  This
+   indicates that the PCC only wants to receive the reverse path
+   information for that particular LSP and that this LSP can have up to
+   16 multipaths, while other LSPs can only have up to 4 multipaths.
+
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |             Type              |             Length            |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |     Number of Multipaths      |            Flags        |O|B|W|
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                     Figure 5: MULTIPATH-CAP TLV format
+
+   Type: (60) for "MULTIPATH-CAP" TLV.
+
+   Length: 4.
+
+   Number of Multipaths: From PCC, it tells how many multipaths the PCC
+   can install in forwarding.  From PCE, it tells how many multipaths
+   the PCE can compute.  The value 255 indicates unlimited number.  The
+   value 0 is reserved.
+
+   W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
+
+   B-flag: whether MULTIPATH-BACKUP-TLV is supported.
+
+
+
+Koldychev, et al.        Expires 16 October 2023               [Page 10]
+
+Internet-Draft        PCEP Extensions for Multipath           April 2023
+
+
+   O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported and requested.
+   If this flag is set, the PCE SHOULD tell the PCC the reverse path
+   information, if it is able to.
 
 5.2.  Path ID
 
@@ -610,6 +607,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    3.  The fraction of flows carried by a specific primary path is
        derived from the ratio of its weight to the sum of all other
        multipath weights.
+
+
+
 
 
 

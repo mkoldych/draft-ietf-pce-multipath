@@ -161,51 +161,6 @@ Segment List as a separate circuit.
 
 # Protocol Extensions
 
-## Multipath Capability TLV
-
-New MULTIPATH-CAP TLV is defined. 
-This TLV MAY be present in the OPEN object during PCEP session establishment.
-
-From the PCC, this TLV MAY also be present in the LSP object for each individual LSP,
-to specify per-LSP values.
-The PCC MUST NOT include this TLV in the LSP object if the TLV was not
-present in the OPEN objects of both PCEP peers.
-When used per-LSP, the values in the TLV override the values from the PCC's OPEN object.
-
-For example, the PCC includes this TLV in the OPEN object at session establishment,
-setting "Number of Multipaths" to 4 and "O-flag" to 0.
-The PCC also includes this TLV in the LSP object for a particular LSP,
-setting "Number of Multipaths" to 16 and "O-flag" to 1.
-This indicates that the PCC only wants to receive the reverse path information for that
-particular LSP and that this LSP can have up to 16 multipaths, while other LSPs can only
-have up to 4 multipaths.
-
-~~~
-   0                   1                   2                   3
-   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |             Type              |             Length            |
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |     Number of Multipaths      |            Flags        |O|B|W|
-  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-~~~
-{: #fig-multipath-cap title="MULTIPATH-CAP TLV format"}
-
-Type: (60) for "MULTIPATH-CAP" TLV.
-
-Length: 4.
-
-Number of Multipaths: From PCC, it tells how many multipaths the PCC can install in forwarding. 
-From PCE, it tells how many multipaths the PCE can compute.
-The value 255 indicates unlimited number.
-The value 0 is reserved.
-
-W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
-
-B-flag: whether MULTIPATH-BACKUP-TLV is supported.
-
-O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported and requested. 
-If this flag is set, the PCE SHOULD tell the PCC the reverse path information, if it is able to.
 
 ##  Path Attributes Object
 
@@ -436,6 +391,52 @@ report multiple ERO/RRO objects per PCEP Tunnel to this PCE.  If the PCE does no
 the MULTIPATH-CAP TLV in the OPEN object, then the PCC MUST assume
 that the PCE does not support this standard and fall back to
 reporting only a single ERO/RRO.
+
+### Multipath Capability TLV
+
+New MULTIPATH-CAP TLV is defined. 
+This TLV MAY be present in the OPEN object during PCEP session establishment.
+
+From the PCC, this TLV MAY also be present in the LSP object for each individual LSP,
+to specify per-LSP values.
+The PCC MUST NOT include this TLV in the LSP object if the TLV was not
+present in the OPEN objects of both PCEP peers.
+When used per-LSP, the values in the TLV override the values from the PCC's OPEN object.
+
+For example, the PCC includes this TLV in the OPEN object at session establishment,
+setting "Number of Multipaths" to 4 and "O-flag" to 0.
+The PCC also includes this TLV in the LSP object for a particular LSP,
+setting "Number of Multipaths" to 16 and "O-flag" to 1.
+This indicates that the PCC only wants to receive the reverse path information for that
+particular LSP and that this LSP can have up to 16 multipaths, while other LSPs can only
+have up to 4 multipaths.
+
+~~~
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |             Type              |             Length            |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |     Number of Multipaths      |            Flags        |O|B|W|
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~
+{: #fig-multipath-cap title="MULTIPATH-CAP TLV format"}
+
+Type: (60) for "MULTIPATH-CAP" TLV.
+
+Length: 4.
+
+Number of Multipaths: From PCC, it tells how many multipaths the PCC can install in forwarding. 
+From PCE, it tells how many multipaths the PCE can compute.
+The value 255 indicates unlimited number.
+The value 0 is reserved.
+
+W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
+
+B-flag: whether MULTIPATH-BACKUP-TLV is supported.
+
+O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported and requested. 
+If this flag is set, the PCE SHOULD tell the PCC the reverse path information, if it is able to.
 
 ## Path ID {#PATH-ID}
 
