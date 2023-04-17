@@ -275,7 +275,8 @@ backup path(s) in the set that protect this primary path.
  
 ##  Multipath Opposite Direction Path TLV {#OPPDIR-PATH-TLV}
 
-New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object.
+New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object,
+multiple instances of the TLV are allowed.
 This TLV encodes a many-to-many mapping between forward and reverse
 paths within a PCEP Tunnel.
 
