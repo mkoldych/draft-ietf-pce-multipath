@@ -208,9 +208,9 @@ New MULTIPATH-WEIGHT TLV is optional in the PATH-ATTRIB object.
   |                             Weight                            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
-{: #fig-multipath-path-attrib title="MULTIPATH-WEIGHT TLV format"}
+{: #fig-multipath-weight title="MULTIPATH-WEIGHT TLV format"}
 
-Type: TBD3 for "MULTIPATH-WEIGHT" TLV.
+Type: (61) for "MULTIPATH-WEIGHT" TLV.
 
 Length: 4.
 
@@ -252,7 +252,7 @@ specialized use cases.
 ~~~
 {: #fig-multipath-backup title="MULTIPATH-BACKUP TLV format"}
 
-Type: TBD4 for "MULTIPATH-BACKUP" TLV
+Type: (62) for "MULTIPATH-BACKUP" TLV
 
 Length: 4 + (N * 4) (where N is the Backup Path Count)
 
@@ -298,7 +298,7 @@ to cover all the parallel links at the midpoint.
 ~~~
 {: #fig-multipath-oppdir title="MULTIPATH-OPPDIR-PATH TLV format"}
 
-Type: TBD9 for "MULTIPATH-OPPDIR-PATH" TLV
+Type: (63) for "MULTIPATH-OPPDIR-PATH" TLV
 
 Length: 16.
 
@@ -356,6 +356,33 @@ this ERO SHOULD contain no sub-objects.
 If the head-end receives a non-empty ERO, the contents SHOULD be ignored.
 
 See {{CCPEX}} for an example of the encoding.
+
+### Per-Flow Candidate Path {#PFP}
+
+Per-Flow Candidate Path builds on top of the concept of the Composite Candidate Path.
+Each Path in a Per-Flow Candidate Path is assigned a 3-bit forward class value, 
+which allows QoS classified traffic to be steered depending on the forward class.
+
+New MULTIPATH-FORWARD-CLASS TLV is optional in the PATH-ATTRIB object.
+
+~~~
+   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |             Type              |             Length            |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                            MBZ                          | FC  |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~
+{: #fig-multipath-forward-class title="MULTIPATH-FORWARD-CLASS TLV format"}
+
+Type: (TBD1) for "MULTIPATH-FORWARD-CLASS" TLV.
+
+Length: 4.
+
+FC: Forward class value that is given by the QoS classifier to traffic entering 
+the given Candidate Path. Different classes of traffic that enter the given 
+Candidate Path can be differentially steered into different Colors.
 
 
 #  Operation {#OP}
@@ -432,7 +459,7 @@ Path IDs and sends them in the PCReq/PCRpt messages.
 If a PCEP speaker detects that there are two Paths with the same Path ID,
 then the PCEP speaker SHOULD send PCError message with
 Error-Type = 1 ("Reception of an invalid object") and
-Error-Value = TBD5 ("Conflicting Path ID"). 
+Error-Value = 38 ("Conflicting Path ID"). 
 
 ## Signaling Multiple Paths for Loadbalancing
 
@@ -484,7 +511,7 @@ such as a backup path that is itself protected by another backup path, etc.
 If a PCC is not able to implement a requested backup scenario,
 the PCC SHOULD send a PCError message with
 Error-Type = 19 ("Invalid Operation") and
-Error-Value = TBD7 ("Not supported path backup").
+Error-Value = 20 ("Not supported path backup").
 
 #  PCEP Message Extensions {#RBNF}
 
@@ -832,6 +859,8 @@ Contact: tanren@huawei.com
  | 62         | MULTIPATH-BACKUP                  | This document   |
  +------------+-----------------------------------+-----------------+
  | 63         | MULTIPATH-OPPDIR-PATH             | This document   |
+ +------------+-----------------------------------+-----------------+
+ | TBD1       | MULTIPATH-FORWARD-CLASS           | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
 
