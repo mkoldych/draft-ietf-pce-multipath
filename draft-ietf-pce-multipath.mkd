@@ -102,10 +102,6 @@ they appear in all capitals, as shown here.
 
 The following terms are used in this document:
 
-PCEP Tunnel:
-
-> The object identified by the PLSP-ID, see {{!I-D.koldychev-pce-operational}} for more details.
-
 ECMP:
 
 > Equal Cost Multi Path, equally distributing traffic among multiple paths/links, where each path/link gets the same share of traffic as others.
@@ -272,7 +268,7 @@ backup path(s) in the set that protect this primary path.
 New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object.
 Multiple instances of the TLV are allowed in the same PATH-ATTRIB object.
 This TLV encodes a many-to-many mapping between forward and reverse
-paths within a PCEP Tunnel.
+paths.
 
 Many-to-many mapping means that a single forward path MAY map
 to multiple reverse paths and conversely that a single reverse
@@ -323,7 +319,7 @@ which is reserved to indicate the absense of a Path ID.
 Multiple instances of this TLV
 present in the same PATH-ATTRIB object indicate that there are multiple
 opposite-direction paths corresponding to the given path. This allows for
-many-to-many relationship among the paths of two opposite direction Tunnels.
+many-to-many relationship among the paths of two opposite direction LSPs.
 
 Whenever path A references another path B as being the
 opposite-direction path, then path B SHOULD also reference path A as its
@@ -444,16 +440,16 @@ while other LSPs can only have up to 4 multipaths.
 
 The Path ID uniquely identifies a Path within the context of an LSP.
 Note that when the LSP is an SR Policy Candidate Path, the 
-Paths within that tunnel are the Segment Lists.
+Paths within that LSP are the Segment Lists.
 
 Value 0x0 is reserved to indicate the absense of a Path ID.
 The value of 0x0 MAY be used when this Path is not being referenced 
 and the allocation of a Path ID is not necessary.
 
 Path IDs are allocated by the PCEP peer that owns the LSP.
-If the Tunnel is delegated to the PCE, then the PCE allocates the Path IDs
+If the LSP is delegated to the PCE, then the PCE allocates the Path IDs
 and sends them in the PCReply/PCUpd/PCInit messages.
-If the Tunnel is locally computed on the PCC, then the PCC allocates the
+If the LSP is locally computed on the PCC, then the PCC allocates the
 Path IDs and sends them in the PCReq/PCRpt messages.
 
 If a PCEP speaker detects that there are two Paths with the same Path ID,
@@ -469,7 +465,7 @@ PATH-ATTRIB is populated for each ERO as follows:
 
    1. The PCE assigns a unique Path ID to each ERO path and populates
       it inside the PATH-ATTRIB object. The Path ID is unique within the
-      context of a PLSP or PCEP Tunnel.
+      context of a PLSP.
 
    2. The MULTIPATH-WEIGHT TLV MAY be carried inside the PATH-ATTRIB object. A
       weight is populated to reflect the relative loadshare that is to be
@@ -483,12 +479,12 @@ PATH-ATTRIB is populated for each ERO as follows:
 ## Signaling Multiple Paths for Protection
 
 The PATH-ATTRIB object can be used to describe a set of backup path(s) protecting
-a primary path within a PCEP Tunnel. In this case, the PATH-ATTRIB is populated for each ERO as
+a primary path within a PCEP LSP. In this case, the PATH-ATTRIB is populated for each ERO as
 follows:
 
    1. The PCE assigns a unique Path ID to each ERO path and populates
       it inside the PATH-ATTRIB object. The Path ID is unique within the
-      context of a PLSP or PCEP Tunnel.
+      context of a PLSP.
 
    2. The MULTIPATH-BACKUP TLV MAY be added inside the PATH-ATTRIB object for each
       ERO that is protected. The backup path ID(s) are populated in the
