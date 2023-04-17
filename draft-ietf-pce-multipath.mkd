@@ -139,29 +139,19 @@ together carry 80 Gbps. The PCC can then equally or unequally split the incoming
 new TLV that carries the path weight that facilitates control of load-balancing
 of traffic among the multiple paths.
 
-## Providing Backup path for Protection
-
-It is desirable for the PCE to compute and signal to the PCC a backup path
-that is used to protect a primary path within the multipaths in a given LSP. 
-
-Note that {{?RFC8745}} specify the Path Protection association among LSPs. The use of {{?RFC8745}} with multipath is out of scope of this document and is for future study. 
-
-When multipath is used, a backup path may protect one or more primary
-paths.  For this reason, primary and backup path identifiers are needed to
-indicate which backup path(s) protect which primary path(s).
-{{BACKUP-TLV}} introduces a new TLV that carries the required information.
-
 ## Reverse Path Information
 
 Path Computation Element Communication Protocol (PCEP) Extensions for Associated 
 Bidirectional Label Switched Paths (LSPs) {{?RFC9059}} defines a mechanism in PCEP
 to associate two opposite direction SR Policy Candidate Paths. 
-However, each Candidate Path contains Segment Lists and 
-certain applications, such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
-require the knowledge of reverse path(s) for each Segment List, not just per Candidate path.
+However, when each Candidate Path contains multiple Segment Lists,  
+certain applications such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
+require the knowledge of reverse path(s) per Segment List, not just per Candidate path.
 For example, when the headend knows the reverse Segment List for each forward Segment List, 
 then PM/BFD can run a separate session on every Segment List, 
 by imposing a double stack (forward stack followed by reverse stack) on the packet.
+This PM/BFD session would traverse the same links in the forward and reverse directions,
+thus allowing to catch failures in both directions on every Segment List.
 
 # Protocol Extensions
 
@@ -237,9 +227,10 @@ path is taken to be "1".
 
 New MULTIPATH-BACKUP TLV is optional in the PATH-ATTRIB object.
 
-This TLV is used to indicate the presence of a backup path that is
-used for protection in case of failure of the primary path. The format of
-the MULTIPATH-BACKUP TLV is:
+This TLV is used to specify protecting path(s), similar to FRR or TI-LFA.
+This functionality is not part of the SR Policy Architecture {{!RFC9256}},
+but is something optional that MAY be implemented for certain 
+specialized use cases.
 
 ~~~
    0                   1                   2                   3
