@@ -92,7 +92,6 @@ Table of Contents
    5.  Operation . . . . . . . . . . . . . . . . . . . . . . . . . .   9
      5.1.  Capability Negotiation  . . . . . . . . . . . . . . . . .   9
        5.1.1.  Multipath Capability TLV  . . . . . . . . . . . . . .   9
-       5.1.2.  Usage . . . . . . . . . . . . . . . . . . . . . . . .  10
      5.2.  Path ID . . . . . . . . . . . . . . . . . . . . . . . . .  10
      5.3.  Signaling Multiple Paths for Loadbalancing  . . . . . . .  11
      5.4.  Signaling Multiple Paths for Protection . . . . . . . . .  11
@@ -106,6 +105,7 @@ Table of Contents
      8.1.  Cisco Systems . . . . . . . . . . . . . . . . . . . . . .  17
      8.2.  Ciena Corp  . . . . . . . . . . . . . . . . . . . . . . .  18
      8.3.  Huawei Technologies . . . . . . . . . . . . . . . . . . .  18
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
@@ -114,7 +114,6 @@ Koldychev, et al.        Expires 19 October 2023                [Page 2]
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
      9.1.  PCEP Object . . . . . . . . . . . . . . . . . . . . . . .  18
      9.2.  PCEP TLV  . . . . . . . . . . . . . . . . . . . . . . . .  18
      9.3.  PCEP-Error Object . . . . . . . . . . . . . . . . . . . .  19
@@ -162,6 +161,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
       The object identified by the PLSP-ID, see
       [I-D.koldychev-pce-operational] for more details.
+
 
 
 
@@ -234,11 +234,17 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 3.4.  Reverse Path Information
 
-   Certain applications, such as Circuit Style SR Policy
-   [I-D.schmutzer-pce-cs-sr-policy], require the head-end to know both
-   forward and reverse paths for each of the segment lists of an SR
-   Policy in order to run OAM/PM/BFD protocols on each Segment List as a
-   separate circuit.
+   Path Computation Element Communication Protocol (PCEP) Extensions for
+   Associated Bidirectional Label Switched Paths (LSPs) [RFC9059]
+   defines a mechanism in PCEP to associate two opposite direction SR
+   Policy Candidate Paths.  However, each Candidate Path contains
+   Segment Lists and certain applications, such as Circuit Style SR
+   Policy [I-D.schmutzer-pce-cs-sr-policy], require the knowledge of
+   reverse path(s) for each Segment List, not just per Candidate path.
+   For example, when the headend knows the reverse Segment List for each
+   forward Segment List, then PM/BFD can run a separate session on every
+   Segment List, by imposing a double stack (forward stack followed by
+   reverse stack) on the packet.
 
 4.  Protocol Extensions
 
@@ -267,13 +273,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
                     Figure 1: PATH-ATTRIB object format
 
-   O (Operational - 3 bits): operational state of the path, same values
-   as the identically named field in the LSP object [RFC8231].
 
-   R (Reverse): Indicates this path is reverse, i.e., it originates on
-   the LSP destination and terminates on the LSP source (usually the PCC
-   headend itself).  Paths with this flag set serve only informational
-   purpose to the PCC.
 
 
 
@@ -281,6 +281,14 @@ Koldychev, et al.        Expires 19 October 2023                [Page 5]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
+
+   O (Operational - 3 bits): operational state of the path, same values
+   as the identically named field in the LSP object [RFC8231].
+
+   R (Reverse): Indicates this path is reverse, i.e., it originates on
+   the LSP destination and terminates on the LSP source (usually the PCC
+   headend itself).  Paths with this flag set serve only informational
+   purpose to the PCC.
 
    Path ID: 4-octet identifier that identifies a path (encoded in the
    ERO/RRO) within the set of multiple paths under the PCEP LSP.  See
@@ -325,14 +333,6 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 
 
-
-
-
-
-
-
-
-
 Koldychev, et al.        Expires 19 October 2023                [Page 6]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
@@ -372,10 +372,10 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
 4.4.  Multipath Opposite Direction Path TLV
 
-   New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object,
-   multiple instances of the TLV are allowed.  This TLV encodes a many-
-   to-many mapping between forward and reverse paths within a PCEP
-   Tunnel.
+   New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object.
+   Multiple instances of the TLV are allowed in the same PATH-ATTRIB
+   object.  This TLV encodes a many-to-many mapping between forward and
+   reverse paths within a PCEP Tunnel.
 
    Many-to-many mapping means that a single forward path MAY map to
    multiple reverse paths and conversely that a single reverse path MAY
@@ -519,8 +519,6 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    If this flag is set, the PCE SHOULD tell the PCC the reverse path
    information, if it is able to.
 
-5.1.2.  Usage
-
    When PCE computes the LSP path, it MUST NOT return more forward
    multipaths than the corresponding value of "Number of Multipaths"
    from the MULTIPATH-CAP TLV.  If this TLV is absent (from both OPEN
@@ -553,6 +551,8 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    Path IDs are allocated by the PCEP peer that owns the LSP.  If the
    Tunnel is delegated to the PCE, then the PCE allocates the Path IDs
    and sends them in the PCReply/PCUpd/PCInit messages.  If the Tunnel
+   is locally computed on the PCC, then the PCC allocates the Path IDs
+   and sends them in the PCReq/PCRpt messages.
 
 
 
@@ -561,9 +561,6 @@ Koldychev, et al.        Expires 19 October 2023               [Page 10]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
-
-   is locally computed on the PCC, then the PCC allocates the Path IDs
-   and sends them in the PCReq/PCRpt messages.
 
    If a PCEP speaker detects that there are two Paths with the same Path
    ID, then the PCEP speaker SHOULD send PCError message with Error-Type
@@ -610,6 +607,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    3.  The MULTIPATH-BACKUP TLV MAY be added inside the PATH-ATTRIB
        object for each ERO that is unprotected.  In this case,
        MULTIPATH-BACKUP does not carry any backup path IDs in the TLV.
+       If the path acts as a pure backup -- i.e. the path only carries
+       rerouted traffic after the protected path(s) fail-- then the B
+       flag MUST be set.
 
 
 
@@ -617,10 +617,6 @@ Koldychev, et al.        Expires 19 October 2023               [Page 11]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
 
-
-       If the path acts as a pure backup -- i.e. the path only carries
-       rerouted traffic after the protected path(s) fail-- then the B
-       flag MUST be set.
 
    Note that primary paths which do not include the MULTIPATH-BACKUP TLV
    are assumed to be protected by all the backup paths.  I.e., omitting
@@ -663,6 +659,10 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
 
    Consider the following sample SR Policy, taken from
    [RFC9256].
+
+
+
+
 
 
 
@@ -1212,6 +1212,12 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
               RFC 8745, DOI 10.17487/RFC8745, March 2020,
               <https://doi.org/10.17487/RFC8745>.
 
+   [RFC9059]  Gandhi, R., Ed., Barth, C., and B. Wen, "Path Computation
+              Element Communication Protocol (PCEP) Extensions for
+              Associated Bidirectional Label Switched Paths (LSPs)",
+              RFC 9059, DOI 10.17487/RFC9059, June 2021,
+              <https://doi.org/10.17487/RFC9059>.
+
 Authors' Addresses
 
    Mike Koldychev
@@ -1220,18 +1226,18 @@ Authors' Addresses
    Email: mkoldych@cisco.com
 
 
-   Siva Sivabalan
-   Ciena Corporation
-
-   Email: ssivabal@ciena.com
-
-
 
 
 
 Koldychev, et al.        Expires 19 October 2023               [Page 22]
 
 Internet-Draft        PCEP Extensions for Multipath           April 2023
+
+
+   Siva Sivabalan
+   Ciena Corporation
+
+   Email: ssivabal@ciena.com
 
 
    Tarek Saad
@@ -1268,12 +1274,6 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    Verizon Inc.
 
    Email: gyan.s.mishra@verizon.com
-
-
-
-
-
-
 
 
 

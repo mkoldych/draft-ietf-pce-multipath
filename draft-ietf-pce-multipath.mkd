@@ -153,14 +153,17 @@ indicate which backup path(s) protect which primary path(s).
 
 ## Reverse Path Information
 
-Certain applications, such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
-require the head-end to know both forward and reverse paths for each of the
-segment lists of an SR Policy in order to run OAM/PM/BFD protocols on each
-Segment List as a separate circuit.
-
+Path Computation Element Communication Protocol (PCEP) Extensions for Associated 
+Bidirectional Label Switched Paths (LSPs) {{?RFC9059}} defines a mechanism in PCEP
+to associate two opposite direction SR Policy Candidate Paths. 
+However, each Candidate Path contains Segment Lists and 
+certain applications, such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
+require the knowledge of reverse path(s) for each Segment List, not just per Candidate path.
+For example, when the headend knows the reverse Segment List for each forward Segment List, 
+then PM/BFD can run a separate session on every Segment List, 
+by imposing a double stack (forward stack followed by reverse stack) on the packet.
 
 # Protocol Extensions
-
 
 ##  Path Attributes Object
 
@@ -275,8 +278,8 @@ backup path(s) in the set that protect this primary path.
  
 ##  Multipath Opposite Direction Path TLV {#OPPDIR-PATH-TLV}
 
-New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object,
-multiple instances of the TLV are allowed.
+New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object.
+Multiple instances of the TLV are allowed in the same PATH-ATTRIB object.
 This TLV encodes a many-to-many mapping between forward and reverse
 paths within a PCEP Tunnel.
 
@@ -399,8 +402,6 @@ B-flag: whether MULTIPATH-BACKUP-TLV is supported.
 
 O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported and requested. 
 If this flag is set, the PCE SHOULD tell the PCC the reverse path information, if it is able to.
-
-### Usage
 
 When PCE computes the LSP path, it MUST NOT return more forward 
 multipaths than the corresponding value of "Number of Multipaths"
