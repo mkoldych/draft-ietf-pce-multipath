@@ -396,7 +396,7 @@ This TLV MAY be present in the OPEN object during PCEP session establishment.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             Type              |             Length            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |     Number of Multipaths      |            Flags        |O|B|W|
+  |     Number of Multipaths      |            Flags      |F|O|B|W|
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 {: #fig-multipath-cap title="MULTIPATH-CAP TLV format"}
@@ -410,12 +410,14 @@ From PCE, it tells how many multipaths the PCE can compute.
 The value 255 indicates unlimited number.
 The value 0 is reserved.
 
-W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
+W-flag: whether MULTIPATH-WEIGHT TLV is supported.
 
-B-flag: whether MULTIPATH-BACKUP-TLV is supported.
+B-flag: whether MULTIPATH-BACKUP TLV is supported.
 
-O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported and requested. 
+O-flag: whether MULTIPATH-OPPDIR-PATH TLV is supported and requested. 
 If this flag is set, the PCE SHOULD tell the PCC the reverse path information, if it is able to.
+
+F-flag: whether MULTIPATH-FORWARD-CLASS TLV is supported.
 
 When PCE computes the LSP path, it MUST NOT return more forward 
 multipaths than the corresponding value of "Number of Multipaths"

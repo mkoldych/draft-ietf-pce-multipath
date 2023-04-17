@@ -511,7 +511,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      |             Type              |             Length            |
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |     Number of Multipaths      |            Flags        |O|B|W|
+     |     Number of Multipaths      |            Flags      |F|O|B|W|
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                      Figure 6: MULTIPATH-CAP TLV format
@@ -525,13 +525,15 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    the PCE can compute.  The value 255 indicates unlimited number.  The
    value 0 is reserved.
 
-   W-flag: whether MULTIPATH-WEIGHT-TLV is supported.
+   W-flag: whether MULTIPATH-WEIGHT TLV is supported.
 
-   B-flag: whether MULTIPATH-BACKUP-TLV is supported.
+   B-flag: whether MULTIPATH-BACKUP TLV is supported.
 
-   O-flag: whether MULTIPATH-OPPDIR-PATH-TLV is supported and requested.
+   O-flag: whether MULTIPATH-OPPDIR-PATH TLV is supported and requested.
    If this flag is set, the PCE SHOULD tell the PCC the reverse path
    information, if it is able to.
+
+   F-flag: whether MULTIPATH-FORWARD-CLASS TLV is supported.
 
    When PCE computes the LSP path, it MUST NOT return more forward
    multipaths than the corresponding value of "Number of Multipaths"
@@ -551,8 +553,6 @@ Internet-Draft        PCEP Extensions for Multipath           April 2023
    indicates that the PCC only wants to receive the reverse path
    information for that particular LSP and that this LSP can have up to
    16 multipaths, while other LSPs can only have up to 4 multipaths.
-
-
 
 
 
