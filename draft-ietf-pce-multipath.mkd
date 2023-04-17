@@ -422,16 +422,15 @@ while other LSPs can only have up to 4 multipaths.
 
 ## Path ID {#PATH-ID}
 
-The Path ID uniquely identifies a Path within the context of a
-PCEP Tunnel.
-Note that when the PCEP Tunnel is an SR Policy Candidate Path, the 
-Paths within that tunnel are the Segment Lists of that Candidate Path.
+The Path ID uniquely identifies a Path within the context of an LSP.
+Note that when the LSP is an SR Policy Candidate Path, the 
+Paths within that tunnel are the Segment Lists.
 
 Value 0x0 is reserved to indicate the absense of a Path ID.
 The value of 0x0 MAY be used when this Path is not being referenced 
 and the allocation of a Path ID is not necessary.
 
-Path IDs are allocated by the PCEP peer that currently owns the Tunnel.
+Path IDs are allocated by the PCEP peer that owns the LSP.
 If the Tunnel is delegated to the PCE, then the PCE allocates the Path IDs
 and sends them in the PCReply/PCUpd/PCInit messages.
 If the Tunnel is locally computed on the PCC, then the PCC allocates the
