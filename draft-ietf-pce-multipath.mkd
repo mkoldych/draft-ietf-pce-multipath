@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-07
+docname: draft-ietf-pce-multipath-08
 category: std
 ipr: trust200902
 area: Routing 
@@ -83,7 +83,7 @@ or more Segment-Lists.  The current PCEP standards only allow for
 signaling of one Segment-List per Candidate-Path.  PCEP extension to
 support Segment Routing Policy Candidate Paths
 {{!I-D.ietf-pce-segment-routing-policy-cp}} specifically avoids
-defining how to signal multiple Segment Lists.
+defining how to signal multiple Segment-Lists.
 
 This document defines the required extensions that allow the signaling
 of multipath information via PCEP. Although these extensions are
@@ -120,16 +120,13 @@ The Candidate-Path of an SR Policy is the unit of signaling in PCEP, see
 {{!I-D.ietf-pce-segment-routing-policy-cp}}.  Each Candidate-Path can
 contain multiple Segment-Lists and each Segment-List is encoded by
 one ERO.  However, each PCEP LSP can contain only a
-single ERO, which prevents us from encoding multiple Segment-
-Lists within the same SR Candidate-Path.
-
-With the help of the protocol extensions defined in this document,
-this limitation is overcome.
+single ERO, which prevents us from encoding multiple Segment-Lists 
+within the same SR Candidate-Path.
 
 ## Splitting of Requested Bandwidth
 
 A PCC may request a path with 80 Gbps of bandwidth, but all links in the
-network have only 50 Gbps capacity.  The PCE can return two paths, that can
+network have only 60 Gbps capacity.  The PCE can return two paths, that can
 together carry 80 Gbps. The PCC can then equally or unequally split the incoming
 80 Gbps of traffic among the two paths. {{WEIGHT-TLV}} introduces a
 new TLV that carries the path weight that facilitates control of load-balancing
@@ -140,14 +137,15 @@ of traffic among the multiple paths.
 Path Computation Element Communication Protocol (PCEP) Extensions for Associated 
 Bidirectional Label Switched Paths (LSPs) {{?RFC9059}} defines a mechanism in PCEP
 to associate two opposite direction SR Policy Candidate Paths. 
-However, when each Candidate Path contains multiple Segment Lists,  
+However, when each Candidate Path contains multiple Segment-Lists,  
 certain applications such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
-require the knowledge of reverse path(s) per Segment List, not just per Candidate path.
-For example, when the headend knows the reverse Segment List for each forward Segment List, 
-then PM/BFD can run a separate session on every Segment List, 
+require the knowledge of reverse path(s) per Segment-List, not just per Candidate path.
+For example, when the headend knows the reverse Segment-List for each forward Segment-List, 
+then PM/BFD can run a separate session on every Segment-List, 
 by imposing a double stack (forward stack followed by reverse stack) on the packet.
-This PM/BFD session would traverse the same links in the forward and reverse directions,
-thus allowing to catch failures in both directions on every Segment List.
+If the reverse Segment-List is co-routed with the forward Segment-List, then 
+the PM/BFD session would traverse the same links in the forward and reverse directions,
+thus allowing to detect link/node failures in both directions.
 
 # Protocol Extensions
 
@@ -274,10 +272,10 @@ Many-to-many mapping means that a single forward path MAY map
 to multiple reverse paths and conversely that a single reverse
 path MAY map to multiple forward paths.
 Many-to-many mapping can happen for an SR Policy,
-when a Segment List contains Node Segment(s)
+when a Segment-List contains Node Segment(s)
 which traverse parallel links at the midpoint.
-The reverse of this Segment List may not be able to be expressed as a single
-Reverse Segment List, but need to return multiple Reverse Segment Lists
+The reverse of this Segment-List may not be able to be expressed as a single
+Reverse Segment-List, but need to return multiple Reverse Segment-Lists
 to cover all the parallel links at the midpoint.
 
 ~~~
@@ -333,7 +331,7 @@ See {{OPPDIREX}} for an example of usage.
 
 SR Policy Architecture {{!RFC9256}} defines the concept of a
 Composite Candidate Path. 
-A regular SR Policy Candidate Path outputs traffic to a set of Segment Lists, 
+A regular SR Policy Candidate Path outputs traffic to a set of Segment-Lists, 
 while an SR Policy Composite Candidate Path outputs traffic recursively to 
 a set of SR Policies on the same headend.
 In PCEP, the Composite Candidate Path still consists of PATH-ATTRIB objects,
@@ -442,7 +440,7 @@ while other LSPs can only have up to 4 multipaths.
 
 The Path ID uniquely identifies a Path within the context of an LSP.
 Note that when the LSP is an SR Policy Candidate Path, the 
-Paths within that LSP are the Segment Lists.
+Paths within that LSP are the Segment-Lists.
 
 Value 0x0 is reserved to indicate the absense of a Path ID.
 The value of 0x0 MAY be used when this Path is not being referenced 
