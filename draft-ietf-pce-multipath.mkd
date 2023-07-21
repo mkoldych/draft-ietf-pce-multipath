@@ -494,8 +494,8 @@ follows:
 
    3. The MULTIPATH-BACKUP TLV MAY be added inside the PATH-ATTRIB object for each
       ERO that is unprotected. In this case, MULTIPATH-BACKUP does not carry
-      any backup path IDs in the TLV. If the path acts as a pure backup -- i.e.
-      the path only carries rerouted traffic after the protected path(s) fail-- then
+      any backup path IDs in the TLV. If the path acts as a pure backup i.e.
+      the path only carries rerouted traffic after the protected path(s) fail then
       the B flag MUST be set.
 
 Note that primary paths which do not include the MULTIPATH-BACKUP TLV are assumed

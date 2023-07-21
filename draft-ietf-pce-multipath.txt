@@ -5,7 +5,7 @@
 PCE Working Group                                           M. Koldychev
 Internet-Draft                                       Cisco Systems, Inc.
 Intended status: Standards Track                            S. Sivabalan
-Expires: 2 November 2023                               Ciena Corporation
+Expires: 22 January 2024                               Ciena Corporation
                                                                  T. Saad
                                                                V. Beeram
                                                   Juniper Networks, Inc.
@@ -17,7 +17,7 @@ Expires: 2 November 2023                               Ciena Corporation
                                                      Huawei Technologies
                                                                G. Mishra
                                                             Verizon Inc.
-                                                              1 May 2023
+                                                            21 July 2023
 
 
           PCEP Extensions for Signaling Multipath Information
@@ -49,13 +49,13 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 November 2023.
+   This Internet-Draft will expire on 22 January 2024.
 
 
 
-Koldychev, et al.        Expires 2 November 2023                [Page 1]
+Koldychev, et al.        Expires 22 January 2024                [Page 1]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 Copyright Notice
@@ -68,9 +68,9 @@ Copyright Notice
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
-   extracted from this document must include Simplified BSD License text
-   as described in Section 4.e of the Trust Legal Provisions and are
-   provided without warranty as described in the Simplified BSD License.
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
 
 Table of Contents
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Koldychev, et al.        Expires 2 November 2023                [Page 2]
+Koldychev, et al.        Expires 22 January 2024                [Page 2]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
      9.1.  PCEP Object . . . . . . . . . . . . . . . . . . . . . . .  18
@@ -165,9 +165,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023                [Page 3]
+Koldychev, et al.        Expires 22 January 2024                [Page 3]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    W-ECMP:
@@ -221,9 +221,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023                [Page 4]
+Koldychev, et al.        Expires 22 January 2024                [Page 4]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 4.1.  Path Attributes Object
@@ -277,9 +277,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023                [Page 5]
+Koldychev, et al.        Expires 22 January 2024                [Page 5]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
                    Figure 2: MULTIPATH-WEIGHT TLV format
@@ -333,9 +333,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023                [Page 6]
+Koldychev, et al.        Expires 22 January 2024                [Page 6]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    B: If set, indicates a pure backup path.  This is a path that only
@@ -383,17 +383,19 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
    opposite direction paths are node co-routed if they traverse the same
    nodes, but MAY traverse different links.
 
+
+
+
+
+
+
+Koldychev, et al.        Expires 22 January 2024                [Page 7]
+
+Internet-Draft        PCEP Extensions for Multipath            July 2023
+
+
    L (Link co-routed): If set, indicates this path is link co-routed
    with its opposite directions path, specified in this TLV.  Two
-
-
-
-
-Koldychev, et al.        Expires 2 November 2023                [Page 7]
-
-Internet-Draft        PCEP Extensions for Multipath             May 2023
-
-
    opposite direction paths are link co-routed if they traverse the same
    links (but in the opposite directions).
 
@@ -443,11 +445,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-
-
-Koldychev, et al.        Expires 2 November 2023                [Page 8]
+Koldychev, et al.        Expires 22 January 2024                [Page 8]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 4.5.1.  Per-Flow Candidate Path
@@ -501,9 +501,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023                [Page 9]
+Koldychev, et al.        Expires 22 January 2024                [Page 9]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    Type: (60) for "MULTIPATH-CAP" TLV.
@@ -557,9 +557,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 10]
+Koldychev, et al.        Expires 22 January 2024               [Page 10]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    Path IDs are allocated by the PCEP peer that owns the LSP.  If the
@@ -613,17 +613,17 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 11]
+Koldychev, et al.        Expires 22 January 2024               [Page 11]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    3.  The MULTIPATH-BACKUP TLV MAY be added inside the PATH-ATTRIB
        object for each ERO that is unprotected.  In this case,
        MULTIPATH-BACKUP does not carry any backup path IDs in the TLV.
-       If the path acts as a pure backup -- i.e. the path only carries
-       rerouted traffic after the protected path(s) fail-- then the B
-       flag MUST be set.
+       If the path acts as a pure backup i.e. the path only carries
+       rerouted traffic after the protected path(s) fail then the B flag
+       MUST be set.
 
    Note that primary paths which do not include the MULTIPATH-BACKUP TLV
    are assumed to be protected by all the backup paths.  I.e., omitting
@@ -669,9 +669,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 12]
+Koldychev, et al.        Expires 22 January 2024               [Page 12]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    SR policy POL1 <headend, color, endpoint>
@@ -725,9 +725,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 13]
+Koldychev, et al.        Expires 22 January 2024               [Page 13]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    , simply means that this is PATH-ATTRIB object with Path ID field set
@@ -781,9 +781,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 14]
+Koldychev, et al.        Expires 22 January 2024               [Page 14]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
        <LSP PLSP_ID=100>
@@ -837,9 +837,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 15]
+Koldychev, et al.        Expires 22 January 2024               [Page 15]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    <state-report> =
@@ -893,9 +893,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 16]
+Koldychev, et al.        Expires 22 January 2024               [Page 16]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    The state-report for POL2, CP2 can be encoded as:
@@ -949,9 +949,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 17]
+Koldychev, et al.        Expires 22 January 2024               [Page 17]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 8.2.  Ciena Corp
@@ -1005,9 +1005,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 18]
+Koldychev, et al.        Expires 22 January 2024               [Page 18]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
     +------------+-----------------------------------+-----------------+
@@ -1061,9 +1061,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 19]
+Koldychev, et al.        Expires 22 January 2024               [Page 19]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
     +------------+-----------------------------------+-----------------+
@@ -1117,9 +1117,9 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 20]
+Koldychev, et al.        Expires 22 January 2024               [Page 20]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 9.7.  Flags in the Multipath Opposite Direction Path TLV
@@ -1163,8 +1163,8 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
               Koldychev, M., and G. S. Mishra, "Path Computation Element
               Protocol(PCEP) Extension for Color", Work in Progress,
               Internet-Draft, draft-rajagopalan-pce-pcep-color-03, 3
-              January 2023, <https://tools.ietf.org/html/draft-
-              rajagopalan-pce-pcep-color-03>.
+              January 2023, <https://datatracker.ietf.org/doc/html/
+              draft-rajagopalan-pce-pcep-color-03>.
 
    [I-D.ietf-pce-segment-routing-policy-cp]
               Koldychev, M., Sivabalan, S., Barth, C., Peng, S., and H.
@@ -1173,14 +1173,14 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 21]
+Koldychev, et al.        Expires 22 January 2024               [Page 21]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
-              ietf-pce-segment-routing-policy-cp-10, 21 April 2023,
-              <https://tools.ietf.org/html/draft-ietf-pce-segment-
-              routing-policy-cp-10>.
+              ietf-pce-segment-routing-policy-cp-11, 20 June 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-pce-
+              segment-routing-policy-cp-11>.
 
    [I-D.schmutzer-pce-cs-sr-policy]
               Schmutzer, C., Filsfils, C., Ali, Z., Clad, F.,
@@ -1188,40 +1188,40 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
               Saad, T., and D. Voyer, "Circuit Style Segment Routing
               Policies", Work in Progress, Internet-Draft, draft-
               schmutzer-pce-cs-sr-policy-02, 5 May 2022,
-              <https://tools.ietf.org/html/draft-schmutzer-pce-cs-sr-
-              policy-02>.
+              <https://datatracker.ietf.org/doc/html/draft-schmutzer-
+              pce-cs-sr-policy-02>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
-              <https://doi.org/10.17487/RFC2119>.
+              <https://www.rfc-editor.org/rfc/rfc2119>.
 
    [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
               Code: The Implementation Status Section", BCP 205,
               RFC 7942, DOI 10.17487/RFC7942, July 2016,
-              <https://doi.org/10.17487/RFC7942>.
+              <https://www.rfc-editor.org/rfc/rfc7942>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://doi.org/10.17487/RFC8174>.
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
    [RFC8231]  Crabbe, E., Minei, I., Medved, J., and R. Varga, "Path
               Computation Element Communication Protocol (PCEP)
               Extensions for Stateful PCE", RFC 8231,
               DOI 10.17487/RFC8231, September 2017,
-              <https://doi.org/10.17487/RFC8231>.
+              <https://www.rfc-editor.org/rfc/rfc8231>.
 
    [RFC9256]  Filsfils, C., Talaulikar, K., Ed., Voyer, D., Bogdanov,
               A., and P. Mattes, "Segment Routing Policy Architecture",
               RFC 9256, DOI 10.17487/RFC9256, July 2022,
-              <https://doi.org/10.17487/RFC9256>.
+              <https://www.rfc-editor.org/rfc/rfc9256>.
 
 13.2.  Informative References
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
-              <https://doi.org/10.17487/RFC8126>.
+              <https://www.rfc-editor.org/rfc/rfc8126>.
 
    [RFC8745]  Ananthakrishnan, H., Sivabalan, S., Barth, C., Minei, I.,
               and M. Negi, "Path Computation Element Communication
@@ -1229,76 +1229,69 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 22]
+Koldychev, et al.        Expires 22 January 2024               [Page 22]
 
-Internet-Draft        PCEP Extensions for Multipath             May 2023
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
               Protection Label Switched Paths (LSPs) with Stateful PCE",
               RFC 8745, DOI 10.17487/RFC8745, March 2020,
-              <https://doi.org/10.17487/RFC8745>.
+              <https://www.rfc-editor.org/rfc/rfc8745>.
 
    [RFC9059]  Gandhi, R., Ed., Barth, C., and B. Wen, "Path Computation
               Element Communication Protocol (PCEP) Extensions for
               Associated Bidirectional Label Switched Paths (LSPs)",
               RFC 9059, DOI 10.17487/RFC9059, June 2021,
-              <https://doi.org/10.17487/RFC9059>.
+              <https://www.rfc-editor.org/rfc/rfc9059>.
 
 Authors' Addresses
 
    Mike Koldychev
    Cisco Systems, Inc.
-
    Email: mkoldych@cisco.com
 
 
    Siva Sivabalan
    Ciena Corporation
-
    Email: ssivabal@ciena.com
 
 
    Tarek Saad
    Juniper Networks, Inc.
-
    Email: tsaad@juniper.net
 
 
    Vishnu Pavan Beeram
    Juniper Networks, Inc.
-
    Email: vbeeram@juniper.net
 
 
    Hooman Bidgoli
    Nokia
-
    Email: hooman.bidgoli@nokia.com
 
 
    Bhupendra Yadav
    Ciena
-
    Email: byadav@ciena.com
-
-
-
-
-
-Koldychev, et al.        Expires 2 November 2023               [Page 23]
-
-Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
    Shuping Peng
    Huawei Technologies
-
    Email: pengshuping@huawei.com
+
+
+
+
+
+
+Koldychev, et al.        Expires 22 January 2024               [Page 23]
+
+Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
    Gyan Mishra
    Verizon Inc.
-
    Email: gyan.s.mishra@verizon.com
 
 
@@ -1341,4 +1334,11 @@ Internet-Draft        PCEP Extensions for Multipath             May 2023
 
 
 
-Koldychev, et al.        Expires 2 November 2023               [Page 24]
+
+
+
+
+
+
+
+Koldychev, et al.        Expires 22 January 2024               [Page 24]
