@@ -427,7 +427,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
    used SR Policy.
 
    To signal the Composite Candidate Path, we make use of the COLOR TLV,
-   defined in [I-D.draft-rajagopalan-pce-pcep-color].  For a Composite
+   defined in [I-D.draft-ietf-pce-pcep-color].  For a Composite
    Candidate Path, the COLOR TLV is included in the PATH-ATTRIB Object,
    thus allowing each Composite Candidate Path to do ECMP/W-ECMP among
    SR Policies identified by its constituent Colors.  Only one COLOR TLV
@@ -1158,13 +1158,13 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 13.1.  Normative References
 
-   [I-D.draft-rajagopalan-pce-pcep-color]
+   [I-D.draft-ietf-pce-pcep-color]
               Rajagopalan, B., Beeram, V. P., Peng, S., Xiong, Q.,
               Koldychev, M., and G. S. Mishra, "Path Computation Element
               Protocol(PCEP) Extension for Color", Work in Progress,
-              Internet-Draft, draft-rajagopalan-pce-pcep-color-03, 3
-              January 2023, <https://datatracker.ietf.org/doc/html/
-              draft-rajagopalan-pce-pcep-color-03>.
+              Internet-Draft, draft-ietf-pce-pcep-color-01, 10 July
+              2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              pce-pcep-color-01>.
 
    [I-D.ietf-pce-segment-routing-policy-cp]
               Koldychev, M., Sivabalan, S., Barth, C., Peng, S., and H.

@@ -338,7 +338,7 @@ In PCEP, the Composite Candidate Path still consists of PATH-ATTRIB objects,
 but ERO is replaced by Color of the recursively used SR Policy.
 
 To signal the Composite Candidate Path, we make use of the COLOR TLV, defined in
-{{!I-D.draft-rajagopalan-pce-pcep-color}}. For a Composite Candidate Path, the COLOR TLV
+{{!I-D.draft-ietf-pce-pcep-color}}. For a Composite Candidate Path, the COLOR TLV
 is included in the PATH-ATTRIB Object, thus allowing each Composite Candidate Path
 to do ECMP/W-ECMP among SR Policies identified by its constituent Colors.
 Only one COLOR TLV SHOULD be included into the PATH-ATTRIB object. If multiple
