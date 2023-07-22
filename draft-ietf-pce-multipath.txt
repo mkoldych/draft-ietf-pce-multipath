@@ -1151,8 +1151,11 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
       Andrew Stone
       Nokia
-
       Email: andrew.stone@nokia.com
+
+      Chen Ran
+      ZTE
+      Email: chen.ran@zte.com.cn
 
 13.  References
 
@@ -1166,10 +1169,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
               2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
               pce-pcep-color-01>.
 
-   [I-D.ietf-pce-segment-routing-policy-cp]
-              Koldychev, M., Sivabalan, S., Barth, C., Peng, S., and H.
-              Bidgoli, "PCEP extension to support Segment Routing Policy
-              Candidate Paths", Work in Progress, Internet-Draft, draft-
+
 
 
 
@@ -1178,6 +1178,10 @@ Koldychev, et al.        Expires 23 January 2024               [Page 21]
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
+   [I-D.ietf-pce-segment-routing-policy-cp]
+              Koldychev, M., Sivabalan, S., Barth, C., Peng, S., and H.
+              Bidgoli, "PCEP extension to support Segment Routing Policy
+              Candidate Paths", Work in Progress, Internet-Draft, draft-
               ietf-pce-segment-routing-policy-cp-11, 20 June 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-pce-
               segment-routing-policy-cp-11>.
@@ -1223,10 +1227,6 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/rfc/rfc8126>.
 
-   [RFC8745]  Ananthakrishnan, H., Sivabalan, S., Barth, C., Minei, I.,
-              and M. Negi, "Path Computation Element Communication
-              Protocol (PCEP) Extensions for Associating Working and
-
 
 
 Koldychev, et al.        Expires 23 January 2024               [Page 22]
@@ -1234,6 +1234,9 @@ Koldychev, et al.        Expires 23 January 2024               [Page 22]
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
+   [RFC8745]  Ananthakrishnan, H., Sivabalan, S., Barth, C., Minei, I.,
+              and M. Negi, "Path Computation Element Communication
+              Protocol (PCEP) Extensions for Associating Working and
               Protection Label Switched Paths (LSPs) with Stateful PCE",
               RFC 8745, DOI 10.17487/RFC8745, March 2020,
               <https://www.rfc-editor.org/rfc/rfc8745>.
@@ -1279,9 +1282,6 @@ Authors' Addresses
    Shuping Peng
    Huawei Technologies
    Email: pengshuping@huawei.com
-
-
-
 
 
 
