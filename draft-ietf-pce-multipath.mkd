@@ -965,6 +965,7 @@ New values are to be assigned by Standards Action {{?RFC8126}}
 #  Acknowledgement
 
    Thanks to Dhruv Dhody for ideas and discussion.
+   Thanks to Yuan Yaping for review comments.
 
 #  Contributors
 

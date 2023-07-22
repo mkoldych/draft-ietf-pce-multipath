@@ -1145,7 +1145,8 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 11.  Acknowledgement
 
-   Thanks to Dhruv Dhody for ideas and discussion.
+   Thanks to Dhruv Dhody for ideas and discussion.  Thanks to Yuan
+   Yaping for review comments.
 
 12.  Contributors
 
@@ -1168,7 +1169,6 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
               Internet-Draft, draft-ietf-pce-pcep-color-01, 10 July
               2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
               pce-pcep-color-01>.
-
 
 
 
