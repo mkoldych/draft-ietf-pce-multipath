@@ -394,7 +394,7 @@ This TLV MAY be present in the OPEN object during PCEP session establishment.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             Type              |             Length            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |     Number of Multipaths      |            Flags      |F|O|B|W|
+  |     Number of Multipaths      |            Flags    |C|F|O|B|W|
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 {: #fig-multipath-cap title="MULTIPATH-CAP TLV format"}
@@ -416,6 +416,10 @@ O-flag: whether MULTIPATH-OPPDIR-PATH TLV is supported and requested.
 If this flag is set, the PCE SHOULD tell the PCC the reverse path information, if it is able to.
 
 F-flag: whether MULTIPATH-FORWARD-CLASS TLV is supported.
+
+C-flag: whether Composite Candidate Path ({{CCP}}) is supported.
+Note that F-flag and C-flag can be set independently,
+i.e., F-flag can be set, but C-flag not set, etc.
 
 When PCE computes the LSP path, it MUST NOT return more forward 
 multipaths than the corresponding value of "Number of Multipaths"
