@@ -137,8 +137,10 @@ of traffic among the multiple paths.
 Path Computation Element Communication Protocol (PCEP) Extensions for Associated 
 Bidirectional Label Switched Paths (LSPs) {{?RFC9059}} defines a mechanism in PCEP
 to associate two opposite direction SR Policy Candidate Paths. 
-However, when each Candidate Path contains multiple Segment-Lists,  
-certain applications such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
+However, within each Candidate Path there can be multiple Segment-Lists,
+and {{?RFC9059}} does not define a mechanism to specify Segment-List to Segment-List
+mapping between the forward and reverse Candidate Paths.
+Certain applications such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
 require the knowledge of reverse path(s) per Segment-List, not just per Candidate path.
 For example, when the headend knows the reverse Segment-List for each forward Segment-List, 
 then PM/BFD can run a separate session on every Segment-List, 
@@ -446,7 +448,7 @@ The Path ID uniquely identifies a Path within the context of an LSP.
 Note that when the LSP is an SR Policy Candidate Path, the 
 Paths within that LSP are the Segment-Lists.
 
-Value 0x0 is reserved to indicate the absense of a Path ID.
+Value 0x0 indicates unallocated Path ID.
 The value of 0x0 MAY be used when this Path is not being referenced 
 and the allocation of a Path ID is not necessary.
 
