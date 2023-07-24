@@ -5,7 +5,7 @@
 PCE Working Group                                           M. Koldychev
 Internet-Draft                                       Cisco Systems, Inc.
 Intended status: Standards Track                            S. Sivabalan
-Expires: 23 January 2024                               Ciena Corporation
+Expires: 25 January 2024                               Ciena Corporation
                                                                  T. Saad
                                                                V. Beeram
                                                   Juniper Networks, Inc.
@@ -17,11 +17,11 @@ Expires: 23 January 2024                               Ciena Corporation
                                                      Huawei Technologies
                                                                G. Mishra
                                                             Verizon Inc.
-                                                            22 July 2023
+                                                            24 July 2023
 
 
           PCEP Extensions for Signaling Multipath Information
-                      draft-ietf-pce-multipath-08
+                      draft-ietf-pce-multipath-09
 
 Abstract
 
@@ -49,11 +49,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 January 2024.
+   This Internet-Draft will expire on 25 January 2024.
 
 
 
-Koldychev, et al.        Expires 23 January 2024                [Page 1]
+Koldychev, et al.        Expires 25 January 2024                [Page 1]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Koldychev, et al.        Expires 23 January 2024                [Page 2]
+Koldychev, et al.        Expires 25 January 2024                [Page 2]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -165,7 +165,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024                [Page 3]
+Koldychev, et al.        Expires 25 January 2024                [Page 3]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -221,7 +221,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024                [Page 4]
+Koldychev, et al.        Expires 25 January 2024                [Page 4]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -277,7 +277,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024                [Page 5]
+Koldychev, et al.        Expires 25 January 2024                [Page 5]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -333,7 +333,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024                [Page 6]
+Koldychev, et al.        Expires 25 January 2024                [Page 6]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -389,7 +389,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024                [Page 7]
+Koldychev, et al.        Expires 25 January 2024                [Page 7]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -445,7 +445,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024                [Page 8]
+Koldychev, et al.        Expires 25 January 2024                [Page 8]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -501,7 +501,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024                [Page 9]
+Koldychev, et al.        Expires 25 January 2024                [Page 9]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -557,7 +557,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 10]
+Koldychev, et al.        Expires 25 January 2024               [Page 10]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -613,7 +613,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 11]
+Koldychev, et al.        Expires 25 January 2024               [Page 11]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -669,7 +669,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 12]
+Koldychev, et al.        Expires 25 January 2024               [Page 12]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -725,7 +725,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 13]
+Koldychev, et al.        Expires 25 January 2024               [Page 13]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -781,7 +781,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 14]
+Koldychev, et al.        Expires 25 January 2024               [Page 14]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -837,7 +837,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 15]
+Koldychev, et al.        Expires 25 January 2024               [Page 15]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -893,7 +893,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 16]
+Koldychev, et al.        Expires 25 January 2024               [Page 16]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -949,7 +949,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 17]
+Koldychev, et al.        Expires 25 January 2024               [Page 17]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -1005,7 +1005,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 18]
+Koldychev, et al.        Expires 25 January 2024               [Page 18]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 19]
+Koldychev, et al.        Expires 25 January 2024               [Page 19]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -1117,7 +1117,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 20]
+Koldychev, et al.        Expires 25 January 2024               [Page 20]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -1173,7 +1173,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 21]
+Koldychev, et al.        Expires 25 January 2024               [Page 21]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -1202,9 +1202,9 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
               Koldychev, M., Sivabalan, S., Barth, C., Peng, S., and H.
               Bidgoli, "PCEP extension to support Segment Routing Policy
               Candidate Paths", Work in Progress, Internet-Draft, draft-
-              ietf-pce-segment-routing-policy-cp-11, 20 June 2023,
+              ietf-pce-segment-routing-policy-cp-12, 24 July 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-pce-
-              segment-routing-policy-cp-11>.
+              segment-routing-policy-cp-12>.
 
    [I-D.schmutzer-pce-cs-sr-policy]
               Schmutzer, C., Filsfils, C., Ali, Z., Clad, F.,
@@ -1229,7 +1229,7 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 22]
+Koldychev, et al.        Expires 25 January 2024               [Page 22]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -1285,7 +1285,7 @@ Authors' Addresses
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 23]
+Koldychev, et al.        Expires 25 January 2024               [Page 23]
 
 Internet-Draft        PCEP Extensions for Multipath            July 2023
 
@@ -1341,4 +1341,4 @@ Internet-Draft        PCEP Extensions for Multipath            July 2023
 
 
 
-Koldychev, et al.        Expires 23 January 2024               [Page 24]
+Koldychev, et al.        Expires 25 January 2024               [Page 24]

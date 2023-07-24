@@ -12,7 +12,7 @@
 ]>
 
 
-<rfc ipr="trust200902" docName="draft-ietf-pce-multipath-08" category="std" consensus="true" tocInclude="true" sortRefs="true" symRefs="true">
+<rfc ipr="trust200902" docName="draft-ietf-pce-multipath-09" category="std" consensus="true" tocInclude="true" sortRefs="true" symRefs="true">
   <front>
     <title abbrev="PCEP Extensions for Multipath">PCEP Extensions for Signaling Multipath Information</title>
 
@@ -65,7 +65,7 @@
       </address>
     </author>
 
-    <date year="2023" month="July" day="22"/>
+    <date year="2023" month="July" day="24"/>
 
     <area>Routing</area>
     <workgroup>PCE Working Group</workgroup>
@@ -1101,7 +1101,7 @@ New values are to be assigned by Standards Action <xref target="RFC8126"/></t>
       <author fullname='Hooman Bidgoli' initials='H.' surname='Bidgoli'>
          <organization>Nokia</organization>
       </author>
-      <date day='20' month='June' year='2023'/>
+      <date day='24' month='July' year='2023'/>
       <abstract>
 	 <t>   A Segment Routing (SR) Policy [RFC9256] is a non-empty set of SR
    Candidate Paths, that share the same &lt;headend, color, endpoint&gt;
@@ -1116,7 +1116,7 @@ New values are to be assigned by Standards Action <xref target="RFC8126"/></t>
 	 </t>
       </abstract>
    </front>
-   <seriesInfo name='Internet-Draft' value='draft-ietf-pce-segment-routing-policy-cp-11'/>
+   <seriesInfo name='Internet-Draft' value='draft-ietf-pce-segment-routing-policy-cp-12'/>
    
 </reference>
 
@@ -1328,7 +1328,7 @@ New values are to be assigned by Standards Action <xref target="RFC8126"/></t>
 H4sIAAAAAAAAA+19a3vbNpbwd/wKrPth7beSaslO2vpJsrVlufG7vmhlt5nu
 zDzzUBJks6FIDS923Tr97XtuAEGKtJNNnJmdp+4lMQngHBycOw7Abrer8jCP
 zJ4eD0djPfolN3EWJnGmF0mqL8KrOIjC+EqfFlEeroL8Wh/H8GYZ5NBIBdNp
-am6a+7oeap7M4mAJIOZpsMi7ockX3dXMdJe2RXf7GzULcnOVpHd7OsvnKlyl
+am6a+7oeap7M4mAJIOZpsMi7ockX3dXMdJe2RXf7WzULcnOVpHd7OsvnKlyl
 ezpPiywfbG9/uz1QQWqCPT1JihyxUbdJ+vYqTYoVwdZv4Fd8/j0+0kpleRDP
 /xZESQxQ70ymVuGe/nOezDo6S9I8NYsM/na3xL/8VamgyK+TdE/prtLwE8bZ
 nj7t6f9Movnd7Nrc0FOewmn41tReJOlVEIe/EkX29DDMZom+uMtyswQgx/Gs
@@ -1530,7 +1530,7 @@ Fdv2+yfKNmtz/IQz2vXgHHziGXklMbU1esoZPfPgvPnEM/Kq3T7TjBq1GVkZ
 /WzA55RIjcc/eTOivnMAsM7wQmFbM44b13zMdX/mPuSNSFHTy+sAL9IHATi8
 Tosb+H8y50QJjBlwrgXrlgu6YqpX7fJTEcT6p4C+tYJdeNcRj7jS/iFDHXp7
 r67IeD+ep9DyIgdMGeO3IV2XMVoGYbSHYOF9L8P338X4kjZ/sMUQj0VMAjoJ
-/t+XI6/TDN700iD+7tfcYPPeLCZ4/wMjoSapHI8AAA==
+/t+XI6/TDN700iD+7tfcYPPeLCZ4/wP4iYvNHI8AAA==
 
 -->
 
