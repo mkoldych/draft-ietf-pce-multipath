@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-09
+docname: draft-ietf-pce-multipath-11
 category: std
 ipr: trust200902
 area: Routing 
@@ -14,8 +14,8 @@ author:
  -
     ins: M. Koldychev
     name: Mike Koldychev
-    organization: Cisco Systems, Inc.
-    email: mkoldych@cisco.com
+    organization: Ciena Corporation
+    email: mkoldych@ciena.com
  -
     ins: S. Sivabalan
     name: Siva Sivabalan
@@ -56,6 +56,7 @@ author:
 
 normative:
   RFC2119:
+  RFC8664:
 
 informative:
   RFC8745:
@@ -65,11 +66,13 @@ informative:
 Certain traffic engineering path computation problems require solutions that
 consist of multiple traffic paths, that together form a solution.
 Returning just one single traffic path does not provide a valid solution.
-This document defines a mechanism to encode multiple paths for a single set of
+This document defines mechanisms to encode multiple paths for a single set of
 objectives and constraints.
-This is a generic PCEP mechanism, not specific to
-any path setup type or dataplane.
-The mechanism is applicable to both stateless and stateful PCEP.
+This allows encoding of multiple Segment Lists per
+Candidate Path within a Segment Routing Policy.
+The new PCEP mechanisms are meant to be generic, where possible,
+to allow for future re-use outside of SR Policy.
+The new PCEP mechanisms are applicable to both stateless and stateful PCEP.
 
 --- middle
 
@@ -223,7 +226,10 @@ path is taken to be "1".
 
 New MULTIPATH-BACKUP TLV is optional in the PATH-ATTRIB object.
 
-This TLV is used to specify protecting path(s), similar to FRR or TI-LFA.
+This TLV is used to specify protecting standby path(s),
+for each ECMP path within a PCEP LSP.
+This is similar to path protection, but works at the ECMP path level
+instead of at the PCEP LSP level.
 This functionality is not part of the SR Policy Architecture {{!RFC9256}},
 but is something optional that MAY be implemented for certain 
 specialized use cases.
@@ -439,7 +445,7 @@ setting "Number of Multipaths" to 4 and "O-flag" to 0.
 The PCC also includes this TLV in the LSP object for a particular LSP,
 setting "Number of Multipaths" to 16 and "O-flag" to 1.
 This indicates that the PCC only wants to receive the reverse path information for that
-particular LSP and that this LSP can have up to 16 multipaths, 
+particular LSP and that this LSP can have up to 16 multipaths,
 while other LSPs can only have up to 4 multipaths.
 
 ## Path ID {#PATH-ID}
@@ -972,6 +978,14 @@ New values are to be assigned by Standards Action {{?RFC8126}}
 #  Contributors
 
 ~~~
+   Zafar Ali
+   Cisco Systems
+   Email: zali@cisco.com
+
+   Samuel Sidor
+   Cisco Systems
+   Email: ssidor@cisco.com
+
    Andrew Stone
    Nokia
    Email: andrew.stone@nokia.com
