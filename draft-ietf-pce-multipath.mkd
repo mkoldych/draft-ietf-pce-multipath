@@ -1,7 +1,7 @@
 ---
 title: PCEP Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-11
+docname: draft-ietf-pce-multipath-12
 category: std
 ipr: trust200902
 area: Routing 
@@ -193,6 +193,12 @@ purpose to the PCC.
 Path ID: 4-octet identifier that identifies a path (encoded in the 
 ERO/RRO) within the set of multiple paths under the PCEP LSP.
 See {{PATH-ID}} for details.
+
+##  Metric {#METRIC}
+
+The PCEP METRIC object can continue to be used at the LSP level.
+The metric value encoded into the LSP level METRIC object SHOULD be
+the maximum value of all the per PATH metrics.
 
 ##  Multipath Weight TLV {#WEIGHT-TLV}
 
@@ -475,9 +481,9 @@ The PATH-ATTRIB object can be used to signal multiple path(s) and indicate
 (un)equal loadbalancing amongst the set of multipaths. In this case, the
 PATH-ATTRIB is populated for each ERO as follows:
 
-   1. The PCE assigns a unique Path ID to each ERO path and populates
+   1. The PCE MAY assign a unique Path ID to each ERO path and populate
       it inside the PATH-ATTRIB object. The Path ID is unique within the
-      context of a PLSP.
+      context of a PLSP (when non-zero).
 
    2. The MULTIPATH-WEIGHT TLV MAY be carried inside the PATH-ATTRIB object. A
       weight is populated to reflect the relative loadshare that is to be

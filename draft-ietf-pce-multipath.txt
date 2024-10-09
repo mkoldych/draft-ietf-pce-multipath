@@ -5,7 +5,7 @@
 PCE Working Group                                           M. Koldychev
 Internet-Draft                                              S. Sivabalan
 Intended status: Standards Track                       Ciena Corporation
-Expires: 10 October 2024                                         T. Saad
+Expires: 12 April 2025                                           T. Saad
                                                                V. Beeram
                                                   Juniper Networks, Inc.
                                                               H. Bidgoli
@@ -16,11 +16,11 @@ Expires: 10 October 2024                                         T. Saad
                                                      Huawei Technologies
                                                                G. Mishra
                                                             Verizon Inc.
-                                                            8 April 2024
+                                                          9 October 2024
 
 
           PCEP Extensions for Signaling Multipath Information
-                      draft-ietf-pce-multipath-11
+                      draft-ietf-pce-multipath-12
 
 Abstract
 
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Koldychev, et al.        Expires 10 October 2024                [Page 1]
+Koldychev, et al.         Expires 12 April 2025                 [Page 1]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
-   This Internet-Draft will expire on 10 October 2024.
+   This Internet-Draft will expire on 12 April 2025.
 
 Copyright Notice
 
@@ -86,11 +86,12 @@ Table of Contents
      3.3.  Reverse Path Information  . . . . . . . . . . . . . . . .   4
    4.  Protocol Extensions . . . . . . . . . . . . . . . . . . . . .   5
      4.1.  Path Attributes Object  . . . . . . . . . . . . . . . . .   5
-     4.2.  Multipath Weight TLV  . . . . . . . . . . . . . . . . . .   5
-     4.3.  Multipath Backup TLV  . . . . . . . . . . . . . . . . . .   6
-     4.4.  Multipath Opposite Direction Path TLV . . . . . . . . . .   7
-     4.5.  Composite Candidate Path  . . . . . . . . . . . . . . . .   9
-       4.5.1.  Per-Flow Candidate Path . . . . . . . . . . . . . . .   9
+     4.2.  Metric  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     4.3.  Multipath Weight TLV  . . . . . . . . . . . . . . . . . .   6
+     4.4.  Multipath Backup TLV  . . . . . . . . . . . . . . . . . .   6
+     4.5.  Multipath Opposite Direction Path TLV . . . . . . . . . .   7
+     4.6.  Composite Candidate Path  . . . . . . . . . . . . . . . .   9
+       4.6.1.  Per-Flow Candidate Path . . . . . . . . . . . . . . .   9
    5.  Operation . . . . . . . . . . . . . . . . . . . . . . . . . .  10
      5.1.  Capability Negotiation  . . . . . . . . . . . . . . . . .  10
        5.1.1.  Multipath Capability TLV  . . . . . . . . . . . . . .  10
@@ -105,15 +106,15 @@ Table of Contents
      7.4.  Opposite Direction Tunnels  . . . . . . . . . . . . . . .  16
    8.  Implementation Status . . . . . . . . . . . . . . . . . . . .  18
      8.1.  Cisco Systems . . . . . . . . . . . . . . . . . . . . . .  18
-     8.2.  Ciena Corp  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
-Koldychev, et al.        Expires 10 October 2024                [Page 2]
+Koldychev, et al.         Expires 12 April 2025                 [Page 2]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
+     8.2.  Ciena Corp  . . . . . . . . . . . . . . . . . . . . . . .  18
      8.3.  Huawei Technologies . . . . . . . . . . . . . . . . . . .  18
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
      9.1.  PCEP Object . . . . . . . . . . . . . . . . . . . . . . .  19
@@ -164,10 +165,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-
-Koldychev, et al.        Expires 10 October 2024                [Page 3]
+Koldychev, et al.         Expires 12 April 2025                 [Page 3]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
       Equal Cost Multi Path, equally distributing traffic among multiple
@@ -198,7 +198,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
    the network have only 60 Gbps capacity.  The PCE can return two
    paths, that can together carry 80 Gbps.  The PCC can then equally or
    unequally split the incoming 80 Gbps of traffic among the two paths.
-   Section 4.2 introduces a new TLV that carries the path weight that
+   Section 4.3 introduces a new TLV that carries the path weight that
    facilitates control of load-balancing of traffic among the multiple
    paths.
 
@@ -221,9 +221,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024                [Page 4]
+Koldychev, et al.         Expires 12 April 2025                 [Page 4]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    session would traverse the same links in the forward and reverse
@@ -269,18 +269,22 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
    ERO/RRO) within the set of multiple paths under the PCEP LSP.  See
    Section 5.2 for details.
 
-4.2.  Multipath Weight TLV
+4.2.  Metric
+
+   The PCEP METRIC object can continue to be used at the LSP level.  The
+   metric value encoded into the LSP level METRIC object SHOULD be the
+   maximum value of all the per PATH metrics.
+
+
+
+Koldychev, et al.         Expires 12 April 2025                 [Page 5]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2024
+
+
+4.3.  Multipath Weight TLV
 
    New MULTIPATH-WEIGHT TLV is optional in the PATH-ATTRIB object.
-
-
-
-
-
-Koldychev, et al.        Expires 10 October 2024                [Page 5]
-
-Internet-Draft        PCEP Extensions for Multipath           April 2024
-
 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -305,7 +309,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
    or the PATH-ATTRIB object is absent from the <intended-path>/<actual-
    path>, then the Weight of the corresponding path is taken to be "1".
 
-4.3.  Multipath Backup TLV
+4.4.  Multipath Backup TLV
 
    New MULTIPATH-BACKUP TLV is optional in the PATH-ATTRIB object.
 
@@ -329,13 +333,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-
-
-
-
-Koldychev, et al.        Expires 10 October 2024                [Page 6]
+Koldychev, et al.         Expires 12 April 2025                 [Page 6]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
       0                   1                   2                   3
@@ -370,7 +370,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
    Backup Path ID(s): a series of 4-octet identifier(s) that identify
    the backup path(s) in the set that protect this primary path.
 
-4.4.  Multipath Opposite Direction Path TLV
+4.5.  Multipath Opposite Direction Path TLV
 
    New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object.
    Multiple instances of the TLV are allowed in the same PATH-ATTRIB
@@ -389,9 +389,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024                [Page 7]
+Koldychev, et al.         Expires 12 April 2025                 [Page 7]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
       0                   1                   2                   3
@@ -445,12 +445,12 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024                [Page 8]
+Koldychev, et al.         Expires 12 April 2025                 [Page 8]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
-4.5.  Composite Candidate Path
+4.6.  Composite Candidate Path
 
    SR Policy Architecture [RFC9256] defines the concept of a Composite
    Candidate Path.  A regular SR Policy Candidate Path outputs traffic
@@ -475,7 +475,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
    See Section 7.3 for an example of the encoding.
 
-4.5.1.  Per-Flow Candidate Path
+4.6.1.  Per-Flow Candidate Path
 
    Per-Flow Candidate Path builds on top of the concept of the Composite
    Candidate Path.  Each Path in a Per-Flow Candidate Path is assigned a
@@ -501,9 +501,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024                [Page 9]
+Koldychev, et al.         Expires 12 April 2025                 [Page 9]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    FC: Forward class value that is given by the QoS classifier to
@@ -549,7 +549,7 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
    F-flag: whether MULTIPATH-FORWARD-CLASS TLV is supported.
 
-   C-flag: whether Composite Candidate Path (Section 4.5) is supported.
+   C-flag: whether Composite Candidate Path (Section 4.6) is supported.
    Note that F-flag and C-flag can be set independently, i.e., F-flag
    can be set, but C-flag not set, etc.
 
@@ -557,9 +557,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 10]
+Koldychev, et al.         Expires 12 April 2025                [Page 10]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    When PCE computes the LSP path, it MUST NOT return more forward
@@ -613,14 +613,14 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 11]
+Koldychev, et al.         Expires 12 April 2025                [Page 11]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
-   1.  The PCE assigns a unique Path ID to each ERO path and populates
+   1.  The PCE MAY assign a unique Path ID to each ERO path and populate
        it inside the PATH-ATTRIB object.  The Path ID is unique within
-       the context of a PLSP.
+       the context of a PLSP (when non-zero).
 
    2.  The MULTIPATH-WEIGHT TLV MAY be carried inside the PATH-ATTRIB
        object.  A weight is populated to reflect the relative loadshare
@@ -669,9 +669,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 12]
+Koldychev, et al.         Expires 12 April 2025                [Page 12]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    Note that a given PCC may not support certain backup combinations,
@@ -725,9 +725,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 13]
+Koldychev, et al.         Expires 12 April 2025                [Page 13]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    As specified in [I-D.ietf-pce-segment-routing-policy-cp], CP1 and CP2
@@ -781,9 +781,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 14]
+Koldychev, et al.         Expires 12 April 2025                [Page 14]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    <state-report> =
@@ -837,9 +837,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 15]
+Koldychev, et al.         Expires 12 April 2025                [Page 15]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
 7.4.  Opposite Direction Tunnels
@@ -893,9 +893,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 16]
+Koldychev, et al.         Expires 12 April 2025                [Page 16]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    <state-report> =
@@ -949,9 +949,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 17]
+Koldychev, et al.         Expires 12 April 2025                [Page 17]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
 8.  Implementation Status
@@ -1005,9 +1005,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 18]
+Koldychev, et al.         Expires 12 April 2025                [Page 18]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    Organization: Huawei Technologies Co.,Ltd.
@@ -1061,9 +1061,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 19]
+Koldychev, et al.         Expires 12 April 2025                [Page 19]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
     +------------+-----------------------------------+-----------------+
@@ -1117,9 +1117,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 20]
+Koldychev, et al.         Expires 12 April 2025                [Page 20]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
 9.6.  Flags in the Multipath Backup TLV
@@ -1173,9 +1173,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 21]
+Koldychev, et al.         Expires 12 April 2025                [Page 21]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
       Zafar Ali
@@ -1202,18 +1202,18 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
               Rajagopalan, B., Beeram, V. P., Peng, S., Koldychev, M.,
               and G. S. Mishra, "Path Computation Element Protocol(PCEP)
               Extension for Color", Work in Progress, Internet-Draft,
-              draft-ietf-pce-pcep-color-03, 29 March 2024,
+              draft-ietf-pce-pcep-color-04, 27 May 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-pce-
-              pcep-color-03>.
+              pcep-color-04>.
 
    [I-D.ietf-pce-segment-routing-policy-cp]
               Koldychev, M., Sivabalan, S., Barth, C., Peng, S., and H.
               Bidgoli, "Path Computation Element Communication Protocol
               (PCEP) Extensions for Segment Routing (SR) Policy
               Candidate Paths", Work in Progress, Internet-Draft, draft-
-              ietf-pce-segment-routing-policy-cp-15, 17 March 2024,
+              ietf-pce-segment-routing-policy-cp-17, 25 June 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-pce-
-              segment-routing-policy-cp-15>.
+              segment-routing-policy-cp-17>.
 
    [I-D.schmutzer-pce-cs-sr-policy]
               Schmutzer, C., Filsfils, C., Ali, Z., Clad, F.,
@@ -1229,9 +1229,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 22]
+Koldychev, et al.         Expires 12 April 2025                [Page 22]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -1285,9 +1285,9 @@ Internet-Draft        PCEP Extensions for Multipath           April 2024
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 23]
+Koldychev, et al.         Expires 12 April 2025                [Page 23]
 
-Internet-Draft        PCEP Extensions for Multipath           April 2024
+Internet-Draft        PCEP Extensions for Multipath         October 2024
 
 
    [RFC9059]  Gandhi, R., Ed., Barth, C., and B. Wen, "Path Computation
@@ -1341,4 +1341,4 @@ Authors' Addresses
 
 
 
-Koldychev, et al.        Expires 10 October 2024               [Page 24]
+Koldychev, et al.         Expires 12 April 2025                [Page 24]
