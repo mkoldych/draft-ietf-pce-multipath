@@ -1,11 +1,13 @@
 ---
-title: PCEP Extensions for Signaling Multipath Information
+title: Path Computation Element Communication Protocol (PCEP) Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-13
+docname: draft-ietf-pce-multipath-14
 category: std
 ipr: trust200902
 area: Routing 
-workgroup: PCE Working Group 
+workgroup: PCE Working Group
+stream: IETF
+updates: 8231
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs]
@@ -51,15 +53,16 @@ author:
     name: Gyan Mishra
     organization: Verizon Inc.
     email: gyan.s.mishra@verizon.com
+ -
+    ins: S. Sidor
+    name: Samuel Sidor
+    organization: Cisco Systems.
+    email: ssidor@cisco.com
 
 
 
 normative:
   RFC2119:
-  RFC8664:
-
-informative:
-  RFC8745:
 
 --- abstract
 
@@ -70,9 +73,10 @@ This document defines mechanisms to encode multiple paths for a single set of
 objectives and constraints.
 This allows encoding of multiple Segment Lists per
 Candidate Path within a Segment Routing Policy.
-The new PCEP mechanisms are meant to be generic, where possible,
-to allow for future re-use outside of SR Policy.
-The new PCEP mechanisms are applicable to both stateless and stateful PCEP.
+The new Path Computation Element Communication Protocol (PCEP) mechanisms are meant to be generic,
+where possible, to allow for future re-use outside of SR Policy.
+The new PCEP mechanisms are applicable to both stateless and stateful PCEP. Additionally,
+this document updates RFC 8231 to allow encoding of multiple Segment Lists in PCEP.
 
 --- middle
 
@@ -143,7 +147,7 @@ to associate two opposite direction SR Policy Candidate Paths.
 However, within each Candidate Path there can be multiple Segment-Lists,
 and {{?RFC9059}} does not define a mechanism to specify Segment-List to Segment-List
 mapping between the forward and reverse Candidate Paths.
-Certain applications such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
+Certain applications such as Circuit Style SR Policy {{?I-D.ietf-spring-cs-sr-policy}},
 require the knowledge of reverse path(s) per Segment-List, not just per Candidate path.
 For example, when the headend knows the reverse Segment-List for each forward Segment-List, 
 then PM/BFD can run a separate session on every Segment-List, 
@@ -198,7 +202,8 @@ See {{PATH-ID}} for details.
 
 The PCEP METRIC object can continue to be used at the LSP level.
 The metric value encoded into the LSP level METRIC object SHOULD be
-the maximum value of all the per PATH metrics.
+the maximum value of all the per PATH metrics. Per-path metrics are
+outside the scope of this document and would require further extensions.
 
 ##  Multipath Weight TLV {#WEIGHT-TLV}
 
@@ -446,7 +451,9 @@ From the PCC, the MULTIPATH-CAP TLV MAY also be present in the LSP object for ea
 The PCC MUST NOT include this TLV in the LSP object if the TLV was not
 present in the OPEN objects of both PCEP peers.
 TLV values in the LSP object override the session default values 
-in the OPEN object.
+in the OPEN object. Furthermore, the PATH-ATTRIB object and its associated TLVs MUST NOT be included
+in PCEP messages if the MULTIPATH-CAP TLV was not present in the OPEN objects
+exchanged by both PCEP peers during session establishment.
 
 For example, the PCC includes this TLV in the OPEN object at session establishment,
 setting "Number of Multipaths" to 4 and "O-flag" to 0.
@@ -542,7 +549,7 @@ ERO object and \<actual-path\> is represented by the RRO object:
    <actual-path> ::= <RRO>
 ~~~
 
-In this standard, we extend these two elements to allow multiple ERO/RRO objects to be
+This document updates {{!RFC8231}} to allow multiple ERO/RRO objects to be
 present in the \<intended-path\>/\<actual-path\>:
 
 ~~~
@@ -847,8 +854,9 @@ Contact: tanren@huawei.com
 #  IANA Considerations
 
 ## PCEP Object
-   IANA is requested to make the assignment of a new value for the
-   existing "PCEP Objects" registry as follows:
+   IANA is requested to confirm the following allocation in the "PCEP Objects"
+   within the "Path Computation Element Protocol (PCEP) Numbers" registry
+   group:
 
 ~~~
  +--------------+-------------+-------------------+-----------------+
@@ -860,8 +868,9 @@ Contact: tanren@huawei.com
 ~~~
 
 ## PCEP TLV
-   IANA is requested to make the assignment of a new value for the
-   existing "PCEP TLV Type Indicators" registry as follows:
+   IANA is requested to confirm the following allocations within the
+   "PCEP TLV Type Indicators" within the "Path Computation Element Protocol
+   (PCEP) Numbers" registry group:
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -876,14 +885,25 @@ Contact: tanren@huawei.com
  +------------+-----------------------------------+-----------------+
  | 63         | MULTIPATH-OPPDIR-PATH             | This document   |
  +------------+-----------------------------------+-----------------+
+~~~
+
+   IANA is requested to make new allocations within the
+   "PCEP TLV Type Indicators" within the "Path Computation Element Protocol
+   (PCEP) Numbers" registry group:
+
+~~~
+ +------------+-----------------------------------+-----------------+
+ | TLV Type   | TLV Name                          | Reference       |
+ | Value      |                                   |                 |
+ +------------+-----------------------------------+-----------------+
  | TBD1       | MULTIPATH-FORWARD-CLASS           | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
 
 ## PCEP-Error Object
-   IANA is requested to make the assignment of a new value for the
-   existing "PCEP-ERROR Object Error Types and Values" sub-registry of the
-   PCEP Numbers registry for the following errors:
+   IANA is requested to confirm the following allocations within the
+   "PCEP-ERROR Object Error Types and Values" within the "Path
+   Computation Element Protocol (PCEP) Numbers" registry group:
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -901,8 +921,9 @@ Contact: tanren@huawei.com
 
 IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP
-TLV".
-New values are to be assigned by Standards Action {{?RFC8126}}
+TLV" within the "Path Computation Element Protocol (PCEP) Numbers"
+registry group.
+New values are to be assigned by "IETF review" {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -925,8 +946,9 @@ New values are to be assigned by Standards Action {{?RFC8126}}
 
 IANA is requested to create a new sub-registry to manage the Flag
 field of the PATH-ATTRIBUTE object,
-called "Flags in PATH-ATTRIBUTE Object".
-New values are to be assigned by Standards Action {{?RFC8126}}
+called "Flags in PATH-ATTRIBUTE Object" within the "Path Computation
+Element Protocol (PCEP) Numbers" registry group.
+New values are to be assigned by "IETF review" {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -942,8 +964,9 @@ New values are to be assigned by Standards Action {{?RFC8126}}
 
 IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-BACKUP TLV,
-called "Flags in MULTIPATH-BACKUP TLV".
-New values are to be assigned by Standards Action {{?RFC8126}}
+called "Flags in MULTIPATH-BACKUP TLV" within the "Path Computation
+Element Protocol (PCEP) Numbers" registry group.
+New values are to be assigned by "IETF review" {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -959,8 +982,9 @@ New values are to be assigned by Standards Action {{?RFC8126}}
 
 IANA is requested to create a new sub-registry to manage the flag
 fields of the MULTIPATH-OPPDIR-PATH TLV,
-called "Flags in the MULTIPATH-OPPDIR-PATH TLV".
-New values are to be assigned by Standards Action {{?RFC8126}}
+called "Flags in the MULTIPATH-OPPDIR-PATH TLV" within the "Path
+Computation Element Protocol (PCEP) Numbers" registry group.
+New values are to be assigned by "IETF review" {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -989,10 +1013,6 @@ New values are to be assigned by Standards Action {{?RFC8126}}
    Zafar Ali
    Cisco Systems
    Email: zali@cisco.com
-
-   Samuel Sidor
-   Cisco Systems
-   Email: ssidor@cisco.com
 
    Andrew Stone
    Nokia
