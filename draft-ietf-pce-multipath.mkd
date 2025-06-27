@@ -1000,7 +1000,17 @@ New values are to be assigned by "IETF review" {{?RFC8126}}
 
 #  Security Considerations
 
-   None at this time.
+The security considerations described in {{!RFC5440}}, {{!RFC8231}},
+{{!RFC8281}}, {{!RFC8664}}, {{!RFC9256}},
+{{!I-D.ietf-pce-segment-routing-policy-cp}} and
+{{!I-D.draft-ietf-pce-pcep-color}} are applicable to this specification.
+
+As per {{!RFC8231}}, it is RECOMMENDED that these PCEP extensions can only
+be activated on authenticated and encrypted sessions across PCEs and PCCs
+belonging to the same administrative authority, using Transport Layer
+Security (TLS) {{!RFC8253}} as per the recommendations and best current
+practices in {{!RFC9325}}.
+
 
 #  Acknowledgement
 
