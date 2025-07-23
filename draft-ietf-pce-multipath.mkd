@@ -1,11 +1,13 @@
 ---
-title: PCEP Extensions for Signaling Multipath Information
+title: Path Computation Element Communication Protocol (PCEP) Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-13
+docname: draft-ietf-pce-multipath-14
 category: std
 ipr: trust200902
 area: Routing 
-workgroup: PCE Working Group 
+workgroup: PCE Working Group
+stream: IETF
+updates: 8231
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs]
@@ -51,15 +53,16 @@ author:
     name: Gyan Mishra
     organization: Verizon Inc.
     email: gyan.s.mishra@verizon.com
+ -
+    ins: S. Sidor
+    name: Samuel Sidor
+    organization: Cisco Systems.
+    email: ssidor@cisco.com
 
 
 
 normative:
   RFC2119:
-  RFC8664:
-
-informative:
-  RFC8745:
 
 --- abstract
 
@@ -70,9 +73,10 @@ This document defines mechanisms to encode multiple paths for a single set of
 objectives and constraints.
 This allows encoding of multiple Segment Lists per
 Candidate Path within a Segment Routing Policy.
-The new PCEP mechanisms are meant to be generic, where possible,
-to allow for future re-use outside of SR Policy.
-The new PCEP mechanisms are applicable to both stateless and stateful PCEP.
+The new Path Computation Element Communication Protocol (PCEP) mechanisms are meant to be generic,
+where possible, to allow for future re-use outside of SR Policy.
+The new PCEP mechanisms are applicable to both stateless and stateful PCEP. Additionally,
+this document updates RFC 8231 to allow encoding of multiple Segment Lists in PCEP.
 
 --- middle
 
@@ -143,7 +147,7 @@ to associate two opposite direction SR Policy Candidate Paths.
 However, within each Candidate Path there can be multiple Segment-Lists,
 and {{?RFC9059}} does not define a mechanism to specify Segment-List to Segment-List
 mapping between the forward and reverse Candidate Paths.
-Certain applications such as Circuit Style SR Policy {{!I-D.schmutzer-pce-cs-sr-policy}},
+Certain applications such as Circuit Style SR Policy {{?I-D.ietf-spring-cs-sr-policy}},
 require the knowledge of reverse path(s) per Segment-List, not just per Candidate path.
 For example, when the headend knows the reverse Segment-List for each forward Segment-List, 
 then PM/BFD can run a separate session on every Segment-List, 
@@ -173,32 +177,37 @@ The PATH-ATTRIB Object-Type value is 1.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                         Flags                         |R|  O  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |                         Path ID                               |
+  |                        Path ID                                |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  ~                          Optional TLVs                        ~
+  ~                     Optional TLVs                             ~
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 {: #fig-path-attrib title="PATH-ATTRIB object format"}
 
-O (Operational - 3 bits): operational state of the path, same 
+Flags (32 bits):
+
+* O (Operational - 3 bits): operational state of the path, same 
 values as the identically named field in the LSP object {{!RFC8231}}.
 
-R (Reverse): Indicates this path is reverse,
-i.e., it
+* R (Reverse - 1 bit): Indicates this path is reverse, i.e., it
 originates on the LSP destination and terminates on the
 LSP source (usually the PCC headend itself).
 Paths with this flag set serve only informational
 purpose to the PCC.
 
-Path ID: 4-octet identifier that identifies a path (encoded in the 
-ERO/RRO) within the set of multiple paths under the PCEP LSP.
+* Unassigned bits MUST be set to '0' on transmission and MUST be
+ignored on receipt.
+
+Path ID (32 bits): 4-octet identifier that identifies a path (encoded
+in the ERO/RRO) within the set of multiple paths under the PCEP LSP.
 See {{PATH-ID}} for details.
 
 ##  Metric {#METRIC}
 
 The PCEP METRIC object can continue to be used at the LSP level.
 The metric value encoded into the LSP level METRIC object SHOULD be
-the maximum value of all the per PATH metrics.
+the maximum value of all the per PATH metrics. Per-path metrics are
+outside the scope of this document and would require further extensions.
 
 ##  Multipath Weight TLV {#WEIGHT-TLV}
 
@@ -219,8 +228,8 @@ Type: (61) for "MULTIPATH-WEIGHT" TLV.
 
 Length: 4.
 
-Weight: weight of this path within the multipath, if W-ECMP is
-desired. The fraction of flows a specific ERO/RRO carries is derived
+Weight (32 bits): weight of this path within the multipath, if W-ECMP
+is desired. The fraction of flows a specific ERO/RRO carries is derived
 from the ratio of its weight to the sum of all other path weights.
 
 When the MULTIPATH-WEIGHT TLV is absent from the PATH-ATTRIB object,
@@ -266,13 +275,18 @@ Type: (62) for "MULTIPATH-BACKUP" TLV
 
 Length: 4 + (N * 4) (where N is the Backup Path Count)
 
-Backup Path Count: Number of backup path(s).
+Backup Path Count (16 bits): Number of backup path(s).
 
-B: If set, indicates a pure backup path. This is a path that only
+Flags (16 bits):
+
+* B: If set, indicates a pure backup path. This is a path that only
 carries rerouted traffic after the protected path fails. If this flag
 is not set, or if the MULTIPATH-BACKUP TLV is absent,
 then the path is assumed to be primary that
 carries normal traffic.
+
+* Unassigned bits MUST be set to '0' on transmission and MUST be
+ignored on receipt.
 
 Backup Path ID(s): a series of 4-octet identifier(s) that identify the
 backup path(s) in the set that protect this primary path.
@@ -300,7 +314,7 @@ to cover all the parallel links at the midpoint.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             Type              |             Length            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |        Reserved (MBZ)         |             Flags         |L|N|
+  |           Reserved            |             Flags         |L|N|
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |                 Opposite Direction Path ID                    |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -312,20 +326,28 @@ Type: (63) for "MULTIPATH-OPPDIR-PATH" TLV
 
 Length: 16.
 
-N (Node co-routed): If set, indicates this path is
+Reserved: This field MUST be set to zero on transmission and MUST be
+ignored on receipt.
+
+Flags (16 bits):
+
+* N (Node co-routed): If set, indicates this path is
 node co-routed with
 its opposite direction path, specified in this TLV.
 Two opposite direction paths are node co-routed if they
 traverse the same nodes,
 but MAY traverse different links.
 
-L (Link co-routed): If set, indicates this path is
+* L (Link co-routed): If set, indicates this path is
 link co-routed with
 its opposite directions path, specified in this TLV.
 Two opposite direction paths are link co-routed if they
 traverse the same links (but in opposite directions).
 
-Opposite Direction Path ID: Identifies a path that
+* Unassigned bits MUST be set to '0' on transmission and MUST be
+ignored on receipt.
+
+Opposite Direction Path ID (32 bits): Identifies a path that
 goes in the opposite direction to this path.
 If no such path exists, then this field MUST be set to 0x0,
 which is reserved to indicate the absence of a Path ID.
@@ -359,7 +381,7 @@ is included in the PATH-ATTRIB Object, thus allowing each Composite Candidate Pa
 to do ECMP/W-ECMP among SR Policies identified by its constituent Colors.
 Only one COLOR TLV SHOULD be included into the PATH-ATTRIB object. If multiple
 COLOR TLVs are contained in the PATH-ATTRIB object, only the first one MUST be
-processed and the others SHOULD be ignored.
+processed and the others MUST be ignored.
 
 An ERO object MUST be included as per the existing RBNF, 
 this ERO SHOULD contain no sub-objects.
@@ -381,7 +403,7 @@ New MULTIPATH-FORWARD-CLASS TLV is optional in the PATH-ATTRIB object.
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   |             Type              |             Length            |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-  |                            MBZ                          | FC  |
+  |                          Reserved                       | FC  |
   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
 {: #fig-multipath-forward-class title="MULTIPATH-FORWARD-CLASS TLV format"}
@@ -390,9 +412,13 @@ Type: (TBD1) for "MULTIPATH-FORWARD-CLASS" TLV.
 
 Length: 4.
 
-FC: Forward class value that is given by the QoS classifier to traffic entering 
-the given Candidate Path. Different classes of traffic that enter the given 
-Candidate Path can be differentially steered into different Colors.
+Reserved: This field MUST be set to zero on transmission and MUST be
+ignored on receipt.
+
+FC (3 bits): Forward class value that is given by the QoS classifier to
+traffic entering the given Candidate Path. Different classes of traffic
+that enter the given Candidate Path can be differentially steered into
+different Colors.
 
 
 #  Operation {#OP}
@@ -419,21 +445,27 @@ Type: (60) for "MULTIPATH-CAP" TLV.
 
 Length: 4.
 
-Number of Multipaths: From PCC, it tells how many multipaths the PCC can install in forwarding. 
+Number of Multipaths (16 bits): From PCC, it tells how many multipaths the PCC
+can install in forwarding. 
 From PCE, it tells how many multipaths the PCE can compute.
 The value 255 indicates unlimited number.
 The value 0 is reserved.
 
-W-flag: whether MULTIPATH-WEIGHT TLV is supported.
+Flags (16 bits):
 
-B-flag: whether MULTIPATH-BACKUP TLV is supported.
+ * W-flag: whether MULTIPATH-WEIGHT TLV is supported.
 
-O-flag: whether MULTIPATH-OPPDIR-PATH TLV is supported and requested. 
+ * B-flag: whether MULTIPATH-BACKUP TLV is supported.
+
+ * O-flag: whether MULTIPATH-OPPDIR-PATH TLV is supported and requested. 
 If this flag is set, the PCE SHOULD tell the PCC the reverse path information, if it is able to.
 
-F-flag: whether MULTIPATH-FORWARD-CLASS TLV is supported.
+ * F-flag: whether MULTIPATH-FORWARD-CLASS TLV is supported.
 
-C-flag: whether Composite Candidate Path ({{CCP}}) is supported.
+ * C-flag: whether Composite Candidate Path ({{CCP}}) is supported.
+ 
+ * Unassigned bits MUST be set to '0' on transmission and MUST be ignored on receipt.
+
 Note that F-flag and C-flag can be set independently,
 i.e., F-flag can be set, but C-flag not set, etc.
 
@@ -446,7 +478,9 @@ From the PCC, the MULTIPATH-CAP TLV MAY also be present in the LSP object for ea
 The PCC MUST NOT include this TLV in the LSP object if the TLV was not
 present in the OPEN objects of both PCEP peers.
 TLV values in the LSP object override the session default values 
-in the OPEN object.
+in the OPEN object. Furthermore, the PATH-ATTRIB object and its associated TLVs MUST NOT be included
+in PCEP messages if the MULTIPATH-CAP TLV was not present in the OPEN objects
+exchanged by both PCEP peers during session establishment.
 
 For example, the PCC includes this TLV in the OPEN object at session establishment,
 setting "Number of Multipaths" to 4 and "O-flag" to 0.
@@ -542,7 +576,7 @@ ERO object and \<actual-path\> is represented by the RRO object:
    <actual-path> ::= <RRO>
 ~~~
 
-In this standard, we extend these two elements to allow multiple ERO/RRO objects to be
+This document updates {{!RFC8231}} to allow multiple ERO/RRO objects to be
 present in the \<intended-path\>/\<actual-path\>:
 
 ~~~
@@ -847,8 +881,9 @@ Contact: tanren@huawei.com
 #  IANA Considerations
 
 ## PCEP Object
-   IANA is requested to make the assignment of a new value for the
-   existing "PCEP Objects" registry as follows:
+   IANA is requested to confirm the following allocation in the "PCEP Objects"
+   within the "Path Computation Element Protocol (PCEP) Numbers" registry
+   group:
 
 ~~~
  +--------------+-------------+-------------------+-----------------+
@@ -860,8 +895,9 @@ Contact: tanren@huawei.com
 ~~~
 
 ## PCEP TLV
-   IANA is requested to make the assignment of a new value for the
-   existing "PCEP TLV Type Indicators" registry as follows:
+   IANA is requested to confirm the following allocations within the
+   "PCEP TLV Type Indicators" within the "Path Computation Element Protocol
+   (PCEP) Numbers" registry group:
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -876,14 +912,25 @@ Contact: tanren@huawei.com
  +------------+-----------------------------------+-----------------+
  | 63         | MULTIPATH-OPPDIR-PATH             | This document   |
  +------------+-----------------------------------+-----------------+
+~~~
+
+   IANA is requested to make new allocations within the
+   "PCEP TLV Type Indicators" within the "Path Computation Element Protocol
+   (PCEP) Numbers" registry group:
+
+~~~
+ +------------+-----------------------------------+-----------------+
+ | TLV Type   | TLV Name                          | Reference       |
+ | Value      |                                   |                 |
+ +------------+-----------------------------------+-----------------+
  | TBD1       | MULTIPATH-FORWARD-CLASS           | This document   |
  +------------+-----------------------------------+-----------------+
 ~~~
 
 ## PCEP-Error Object
-   IANA is requested to make the assignment of a new value for the
-   existing "PCEP-ERROR Object Error Types and Values" sub-registry of the
-   PCEP Numbers registry for the following errors:
+   IANA is requested to confirm the following allocations within the
+   "PCEP-ERROR Object Error Types and Values" within the "Path
+   Computation Element Protocol (PCEP) Numbers" registry group:
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -901,8 +948,9 @@ Contact: tanren@huawei.com
 
 IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP
-TLV".
-New values are to be assigned by Standards Action {{?RFC8126}}
+TLV" within the "Path Computation Element Protocol (PCEP) Numbers"
+registry group.
+New values are to be assigned by "IETF review" {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -925,8 +973,9 @@ New values are to be assigned by Standards Action {{?RFC8126}}
 
 IANA is requested to create a new sub-registry to manage the Flag
 field of the PATH-ATTRIBUTE object,
-called "Flags in PATH-ATTRIBUTE Object".
-New values are to be assigned by Standards Action {{?RFC8126}}
+called "Flags in PATH-ATTRIBUTE Object" within the "Path Computation
+Element Protocol (PCEP) Numbers" registry group.
+New values are to be assigned by "IETF review" {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -942,8 +991,9 @@ New values are to be assigned by Standards Action {{?RFC8126}}
 
 IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-BACKUP TLV,
-called "Flags in MULTIPATH-BACKUP TLV".
-New values are to be assigned by Standards Action {{?RFC8126}}
+called "Flags in MULTIPATH-BACKUP TLV" within the "Path Computation
+Element Protocol (PCEP) Numbers" registry group.
+New values are to be assigned by "IETF review" {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -959,8 +1009,9 @@ New values are to be assigned by Standards Action {{?RFC8126}}
 
 IANA is requested to create a new sub-registry to manage the flag
 fields of the MULTIPATH-OPPDIR-PATH TLV,
-called "Flags in the MULTIPATH-OPPDIR-PATH TLV".
-New values are to be assigned by Standards Action {{?RFC8126}}
+called "Flags in the MULTIPATH-OPPDIR-PATH TLV" within the "Path
+Computation Element Protocol (PCEP) Numbers" registry group.
+New values are to be assigned by "IETF review" {{?RFC8126}}
 
 ~~~
  +------------+-----------------------------------+-----------------+
@@ -976,7 +1027,17 @@ New values are to be assigned by Standards Action {{?RFC8126}}
 
 #  Security Considerations
 
-   None at this time.
+The security considerations described in {{!RFC5440}}, {{!RFC8231}},
+{{!RFC8281}}, {{!RFC8664}}, {{!RFC9256}},
+{{!I-D.ietf-pce-segment-routing-policy-cp}} and
+{{!I-D.draft-ietf-pce-pcep-color}} are applicable to this specification.
+
+As per {{!RFC8231}}, it is RECOMMENDED that these PCEP extensions can only
+be activated on authenticated and encrypted sessions across PCEs and PCCs
+belonging to the same administrative authority, using Transport Layer
+Security (TLS) {{!RFC8253}} as per the recommendations and best current
+practices in {{!RFC9325}}.
+
 
 #  Acknowledgement
 
@@ -989,10 +1050,6 @@ New values are to be assigned by Standards Action {{?RFC8126}}
    Zafar Ali
    Cisco Systems
    Email: zali@cisco.com
-
-   Samuel Sidor
-   Cisco Systems
-   Email: ssidor@cisco.com
 
    Andrew Stone
    Nokia
