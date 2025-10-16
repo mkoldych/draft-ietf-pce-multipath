@@ -1,7 +1,7 @@
 ---
 title: Path Computation Element Communication Protocol (PCEP) Extensions for Signaling Multipath Information
 abbrev: PCEP Extensions for Multipath
-docname: draft-ietf-pce-multipath-15
+docname: draft-ietf-pce-multipath-16
 category: std
 ipr: trust200902
 area: Routing 
@@ -127,7 +127,7 @@ This extension is motivated by the use-cases described below.
 The Candidate Path of an SR Policy is the unit of signaling in PCEP, see
 {{!I-D.ietf-pce-segment-routing-policy-cp}}.  Each Candidate Path can
 contain multiple Segment Lists and each Segment List is encoded by
-one ERO.  However, each PCEP LSP can contain only a
+one Explicit Route Object (ERO).  However, each PCEP LSP can contain only a
 single ERO, which prevents us from encoding multiple Segment Lists 
 within the same SR Candidate Path.
 
@@ -159,7 +159,7 @@ thus allowing detection of link/node failures in both directions.
 
 # Protocol Extensions
 
-##  Path Attributes Object
+##  PATH-ATTRIB Object
 
 We define the PATH-ATTRIB object that is used to carry per-path
 information and to act as a separator between several ERO/RRO objects
@@ -203,14 +203,14 @@ Path ID (32 bits): 4-octet identifier that identifies a path (encoded
 in the ERO/RRO) within the set of multiple paths under the PCEP LSP.
 See {{PATH-ID}} for details.
 
-##  Metric {#METRIC}
+##  METRIC Object {#METRIC}
 
 The PCEP METRIC object can continue to be used at the LSP level.
 The metric value encoded into the LSP level METRIC object SHOULD be
 the maximum value of all the per PATH metrics. Per-path metrics are
 outside the scope of this document and would require further extensions.
 
-##  Multipath Weight TLV {#WEIGHT-TLV}
+##  MULTIPATH-WEIGHT TLV {#WEIGHT-TLV}
 
 New MULTIPATH-WEIGHT TLV is optional in the PATH-ATTRIB object.
 
@@ -238,7 +238,7 @@ or the PATH-ATTRIB object is absent from the
 \<intended-path\>/\<actual-path\>, then the Weight of the corresponding
 path is taken to be "1".
 
-##  Multipath Backup TLV {#BACKUP-TLV}
+##  MULTIPATH-BACKUP TLV {#BACKUP-TLV}
 
 New MULTIPATH-BACKUP TLV is optional in the PATH-ATTRIB object.
 
@@ -292,7 +292,7 @@ ignored on receipt.
 Backup Path ID(s): a series of 4-octet identifier(s) that identify the
 backup path(s) in the set that protect this primary path.
  
-##  Multipath Opposite Direction Path TLV {#OPPDIR-PATH-TLV}
+##  MULTIPATH-OPPDIR-PATH TLV {#OPPDIR-PATH-TLV}
 
 New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object.
 Multiple instances of the TLV are allowed in the same PATH-ATTRIB object.
@@ -350,7 +350,7 @@ ignored on receipt.
 
 Opposite Direction Path ID (32 bits): Identifies a path that
 goes in the opposite direction to this path.
-If no such path exists, then this field MUST be set to 0x0,
+If no such path exists, then this field MUST be set to 0,
 a value reserved to indicate the absence of a Path ID.
 
 Multiple instances of this TLV
@@ -362,7 +362,12 @@ Whenever path A references another path B as being the
 opposite-direction path, then path B MUST also reference path A as its
 own opposite-direction path.
 Furthermore, their values of the R-flag (Reverse) in the PATH-ATTRIB
-object MUST have opposite values. 
+object MUST have opposite values. If a PCEP speaker receives an
+opposite-direction path mapping that is asymmetric or where the
+R-flags are inconsistent, it MUST treat this as an error. The PCEP
+speaker MUST send a PCError message with Error-Type = 19
+("Invalid Operation") and Error-Value = TBD3 ("Invalid
+opposite-direction path mapping").
 
 See {{OPPDIREX}} for an example of usage.
 
@@ -385,8 +390,11 @@ COLOR TLVs are contained in the PATH-ATTRIB object, only the first one MUST be
 processed and the others MUST be ignored.
 
 An ERO object MUST be included as per the existing RBNF, 
-this ERO MUST contain no sub-objects.
-If the head-end receives a non-empty ERO, the contents SHOULD be ignored.
+this ERO MUST contain no sub-objects. This empty ERO serves as a placeholder
+to maintain compatibility with existing implementations based on the RBNF defined in {{!RFC8231}}.
+If the head-end receives a non-empty ERO for a Composite Candidate Path,
+it MUST send a PCError message with Error-Type = 19 ("Invalid Operation")
+and Error-Value = 21 ("Non-empty path").
 
 See {{CCPEX}} for an example of the encoding.
 
@@ -394,7 +402,7 @@ See {{CCPEX}} for an example of the encoding.
 
 Per-Flow Candidate Path builds on top of the concept of the Composite Candidate Path.
 Each Path in a Per-Flow Candidate Path is assigned a 3-bit forward class value, 
-which allows QoS classified traffic to be steered depending on the forward class.
+which allows Quality of Service (QoS) classified traffic to be steered depending on the forward class.
 
 New MULTIPATH-FORWARD-CLASS TLV is optional in the PATH-ATTRIB object.
 
@@ -479,9 +487,12 @@ From the PCC, the MULTIPATH-CAP TLV MAY also be present in the LSP object for ea
 The PCC MUST NOT include this TLV in the LSP object if the TLV was not
 present in the OPEN objects of both PCEP peers.
 TLV values in the LSP object override the session default values 
-in the OPEN object. Furthermore, the PATH-ATTRIB object and its associated TLVs MUST NOT be included
-in PCEP messages if the MULTIPATH-CAP TLV was not present in the OPEN objects
-exchanged by both PCEP peers during session establishment.
+in the OPEN object. If a PCEP speaker receives a PATH-ATTRIB object but the multipath
+capability was not successfully negotiated during session
+establishment, it MUST treat this as an error. The PCEP speaker
+MUST send a PCError message with Error-Type = 10 ("Reception of an
+invalid object") and Error-Value = TBD2 ("Unexpected PATH-ATTRIB
+object").
 
 For example, the PCC includes this TLV in the OPEN object at session establishment,
 setting "Number of Multipaths" to 4 and "O-flag" to 0.
@@ -497,18 +508,18 @@ The Path ID uniquely identifies a Path within the context of an LSP.
 Note that when the LSP is an SR Policy Candidate Path, the 
 Paths within that LSP are the Segment Lists.
 
-Value 0x0 indicates an unallocated Path ID.
-The value of 0x0 MAY be used when this Path is not referenced 
+Value 0 indicates an unallocated Path ID.
+The value of 0 MAY be used when this Path is not referenced 
 and the allocation of a Path ID is not necessary.
 
 Path IDs are allocated by the PCEP peer that owns the LSP.
 If the LSP is delegated to the PCE, then the PCE allocates the Path IDs
-and sends them in the PCReply/PCUpd/PCInit messages.
+and sends them in the PCReply/PCUpd/PCInitiate messages.
 If the LSP is locally computed on the PCC, then the PCC allocates the
 Path IDs and sends them in the PCReq/PCRpt messages.
 
 If a PCEP speaker detects that there are two Paths with the same Path ID,
-then the PCEP speaker SHOULD send PCError message with
+then the PCEP speaker MUST send PCError message with
 Error-Type = 1 ("Reception of an invalid object") and
 Error-Value = 38 ("Conflicting Path ID"). 
 
@@ -553,23 +564,20 @@ follows:
       the path only carries rerouted traffic after the protected path(s) fail then
       the B flag MUST be set.
 
-Note that primary paths which do not include the MULTIPATH-BACKUP TLV are assumed
+Primary paths which do not include the MULTIPATH-BACKUP TLV are assumed
 to be protected by all the backup paths. I.e., omitting the TLV is equivalent to
 including the TLV with all the backup path IDs filled in.
 
 Note that a given PCC may not support certain backup combinations,
 such as a backup path that is itself protected by another backup path, etc.
-If a PCC is not able to implement a requested backup scenario,
-the PCC SHOULD send a PCError message with
+If a PCC does not support a requested backup scenario,
+the PCC MUST send a PCError message with
 Error-Type = 19 ("Invalid Operation") and
 Error-Value = 20 ("Not supported path backup").
 
 #  PCEP Message Extensions {#RBNF}
 
-The RBNF of PCReq, PCRep, PCRpt, PCUpd and PCInit messages currently use a combination
-of \<intended-path\> and/or \<actual-path\>.
-As specified in Section 6.1 of {{!RFC8231}}, \<intended-path\> is represented by the
-ERO object and \<actual-path\> is represented by the RRO object:
+The RBNF of PCRpt, PCUpd and PCInitiate messages currently use a combination of \<intended-path\> and/or \<actual-path\>. PCReq and PCRep messages, as defined in {{!RFC5440}} and extended by {{!RFC8231}}, directly include ERO and RRO objects within their respective message structures rather than encapsulating them within \<intended-path\> or \<actual-path\> constructs. As specified in Section 6.1 of {{!RFC8231}}, within the context of messages that utilize these constructs, \<intended-path\> is represented by the ERO object and \<actual-path\> is represented by the RRO object:
 
 ~~~
    <intended-path> ::= <ERO>
@@ -826,11 +834,11 @@ The state-report for POL2, CP2 can be encoded as:
 
 #  Implementation Status
 Note to the RFC Editor - remove this section before publication, as
-well as remove the reference to {{!RFC7942}}.
+well as remove the reference to {{?RFC7942}}.
 
 This section records the status of known implementations of the
 protocol defined by this specification at the time of posting of this
-Internet-Draft, and is based on a proposal described in {{!RFC7942}}.
+Internet-Draft, and is based on a proposal described in {{?RFC7942}}.
 The description of implementations in this section
 is intended to assist the IETF in its decision processes in progressing
 drafts to RFCs. Please note that the listing of any individual
@@ -841,7 +849,7 @@ be construed to be, a catalog of available implementations or their
 features. Readers are advised to note that other implementations may
 exist.
 
-According to {{!RFC7942}}, "this will allow reviewers and
+According to {{?RFC7942}}, "this will allow reviewers and
 working groups to assign due consideration to documents that have the
 benefit of running code, which may serve as evidence of valuable
 experimentation and feedback that have made the implemented protocols
@@ -945,7 +953,24 @@ Contact: tanren@huawei.com
  +------------+-----------------------------------+-----------------+
 ~~~
 
-## Flags in the Multipath Capability TLV
+   IANA is requested to make new allocations within the
+   "PCEP-ERROR Object Error Types and Values" within the "Path
+   Computation Element Protocol (PCEP) Numbers" registry group:
+
+~~~
+ +------------+-----------------------------------+-----------------+
+ | Error-Type | Error-Value                       | Reference       |
+ +------------+-----------------------------------+-----------------+
+ | 10         | TBD2 - Unexpected PATH-ATTRIB     | This document   |
+ |            |        Object                     |                 |
+ +------------+-----------------------------------+-----------------+
+ | 19         | TBD3 - Invalid opposite-direction | This document   |
+ |            |        path mapping               |                 |
+ +------------+-----------------------------------+-----------------+
+~~~
+
+
+## Flags in the MULTIPATH-CAP TLV
 
 IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP
@@ -957,7 +982,13 @@ New values are to be assigned by "IETF review" {{?RFC8126}}
  +------------+-----------------------------------+-----------------+
  | Bit        | Description                       | Reference       |
  +------------+-----------------------------------+-----------------+
- | 0-12       | Unassigned                        | This document   |
+ | 0-10       | Unassigned                        | This document   |
+ +------------+-----------------------------------+-----------------+
+ | 11         | C-flag: support for Composite     | This document   |
+ |            |  Candidate Path processing        |                 |
+ +------------+-----------------------------------+-----------------+
+ | 12         | F-flag: support for processing    | This document   |
+ |            | MULTIPATH-FORWARD-CLASS TLV       |                 |
  +------------+-----------------------------------+-----------------+
  | 13         | 0-flag: support for processing    | This document   |
  |            | MULTIPATH-OPPDIR-PATH TLV         |                 |
@@ -970,7 +1001,7 @@ New values are to be assigned by "IETF review" {{?RFC8126}}
  +------------+-----------------------------------+-----------------+
 ~~~
 
-## Flags in the Path Attribute Object
+## Flags in the PATH-ATTRIBUTE Object
 
 IANA is requested to create a new sub-registry to manage the Flag
 field of the PATH-ATTRIBUTE object,
@@ -988,7 +1019,7 @@ New values are to be assigned by "IETF review" {{?RFC8126}}
  +------------+-----------------------------------+-----------------+
 ~~~
 
-## Flags in the Multipath Backup TLV
+## Flags in the MULTIPATH-BACKUP TLV
 
 IANA is requested to create a new sub-registry to manage the Flag
 field of the MULTIPATH-BACKUP TLV,
@@ -1006,7 +1037,7 @@ New values are to be assigned by "IETF review" {{?RFC8126}}
  +------------+-----------------------------------+-----------------+
 ~~~
 
-## Flags in the Multipath Opposite Direction Path TLV
+## Flags in the MULTIPATH-OPPDIR-PATH TLV
 
 IANA is requested to create a new sub-registry to manage the flag
 fields of the MULTIPATH-OPPDIR-PATH TLV,

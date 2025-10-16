@@ -6,7 +6,7 @@ PCE Working Group                                           M. Koldychev
 Internet-Draft                                              S. Sivabalan
 Updates: 8231 (if approved)                            Ciena Corporation
 Intended status: Standards Track                                 T. Saad
-Expires: 18 April 2026                                     Cisco Systems
+Expires: 19 April 2026                                     Cisco Systems
                                                                V. Beeram
                                                   Juniper Networks, Inc.
                                                               H. Bidgoli
@@ -19,12 +19,12 @@ Expires: 18 April 2026                                     Cisco Systems
                                                             Verizon Inc.
                                                            S. Sidor, Ed.
                                                           Cisco Systems.
-                                                         15 October 2025
+                                                         16 October 2025
 
 
  Path Computation Element Communication Protocol (PCEP) Extensions for
                     Signaling Multipath Information
-                      draft-ietf-pce-multipath-15
+                      draft-ietf-pce-multipath-16
 
 Abstract
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Koldychev, et al.         Expires 18 April 2026                 [Page 1]
+Koldychev, et al.         Expires 19 April 2026                 [Page 1]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
@@ -63,7 +63,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 April 2026.
+   This Internet-Draft will expire on 19 April 2026.
 
 Copyright Notice
 
@@ -90,18 +90,18 @@ Table of Contents
      2.2.  Splitting of Requested Bandwidth  . . . . . . . . . . . .   4
      2.3.  Reverse Path Information  . . . . . . . . . . . . . . . .   5
    3.  Protocol Extensions . . . . . . . . . . . . . . . . . . . . .   5
-     3.1.  Path Attributes Object  . . . . . . . . . . . . . . . . .   5
-     3.2.  Metric  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     3.3.  Multipath Weight TLV  . . . . . . . . . . . . . . . . . .   6
-     3.4.  Multipath Backup TLV  . . . . . . . . . . . . . . . . . .   7
-     3.5.  Multipath Opposite Direction Path TLV . . . . . . . . . .   8
+     3.1.  PATH-ATTRIB Object  . . . . . . . . . . . . . . . . . . .   5
+     3.2.  METRIC Object . . . . . . . . . . . . . . . . . . . . . .   6
+     3.3.  MULTIPATH-WEIGHT TLV  . . . . . . . . . . . . . . . . . .   6
+     3.4.  MULTIPATH-BACKUP TLV  . . . . . . . . . . . . . . . . . .   7
+     3.5.  MULTIPATH-OPPDIR-PATH TLV . . . . . . . . . . . . . . . .   8
      3.6.  Composite Candidate Path  . . . . . . . . . . . . . . . .   9
        3.6.1.  Per-Flow Candidate Path . . . . . . . . . . . . . . .  10
    4.  Operation . . . . . . . . . . . . . . . . . . . . . . . . . .  10
      4.1.  Capability Negotiation  . . . . . . . . . . . . . . . . .  10
-       4.1.1.  Multipath Capability TLV  . . . . . . . . . . . . . .  10
+       4.1.1.  Multipath Capability TLV  . . . . . . . . . . . . . .  11
      4.2.  Path ID . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     4.3.  Signaling Multiple Paths for Loadbalancing  . . . . . . .  12
+     4.3.  Signaling Multiple Paths for Loadbalancing  . . . . . . .  13
      4.4.  Signaling Multiple Paths for Protection . . . . . . . . .  13
    5.  PCEP Message Extensions . . . . . . . . . . . . . . . . . . .  14
    6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  14
@@ -109,40 +109,40 @@ Table of Contents
 
 
 
-Koldychev, et al.         Expires 18 April 2026                 [Page 2]
+Koldychev, et al.         Expires 19 April 2026                 [Page 2]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
-     6.2.  Two Primary Paths Protected by One Backup Path  . . . . .  15
+     6.2.  Two Primary Paths Protected by One Backup Path  . . . . .  16
      6.3.  Composite Candidate Path  . . . . . . . . . . . . . . . .  16
-     6.4.  Opposite Direction Tunnels  . . . . . . . . . . . . . . .  16
+     6.4.  Opposite Direction Tunnels  . . . . . . . . . . . . . . .  17
    7.  Implementation Status . . . . . . . . . . . . . . . . . . . .  19
      7.1.  Cisco Systems . . . . . . . . . . . . . . . . . . . . . .  19
-     7.2.  Ciena Corp  . . . . . . . . . . . . . . . . . . . . . . .  19
-     7.3.  Huawei Technologies . . . . . . . . . . . . . . . . . . .  19
+     7.2.  Ciena Corp  . . . . . . . . . . . . . . . . . . . . . . .  20
+     7.3.  Huawei Technologies . . . . . . . . . . . . . . . . . . .  20
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  20
      8.1.  PCEP Object . . . . . . . . . . . . . . . . . . . . . . .  20
      8.2.  PCEP TLV  . . . . . . . . . . . . . . . . . . . . . . . .  20
      8.3.  PCEP-Error Object . . . . . . . . . . . . . . . . . . . .  21
-     8.4.  Flags in the Multipath Capability TLV . . . . . . . . . .  21
-     8.5.  Flags in the Path Attribute Object  . . . . . . . . . . .  22
-     8.6.  Flags in the Multipath Backup TLV . . . . . . . . . . . .  22
-     8.7.  Flags in the Multipath Opposite Direction Path TLV  . . .  22
+     8.4.  Flags in the MULTIPATH-CAP TLV  . . . . . . . . . . . . .  22
+     8.5.  Flags in the PATH-ATTRIBUTE Object  . . . . . . . . . . .  22
+     8.6.  Flags in the MULTIPATH-BACKUP TLV . . . . . . . . . . . .  23
+     8.7.  Flags in the MULTIPATH-OPPDIR-PATH TLV  . . . . . . . . .  23
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
-   10. Manageability Considerations  . . . . . . . . . . . . . . . .  23
-     10.1.  Control of Function and Policy . . . . . . . . . . . . .  23
-     10.2.  Information and Data Models  . . . . . . . . . . . . . .  23
-     10.3.  Liveness Detection and Monitoring  . . . . . . . . . . .  23
+   10. Manageability Considerations  . . . . . . . . . . . . . . . .  24
+     10.1.  Control of Function and Policy . . . . . . . . . . . . .  24
+     10.2.  Information and Data Models  . . . . . . . . . . . . . .  24
+     10.3.  Liveness Detection and Monitoring  . . . . . . . . . . .  24
      10.4.  Verify Correct Operations  . . . . . . . . . . . . . . .  24
-     10.5.  Requirements On Other Protocols  . . . . . . . . . . . .  24
-     10.6.  Impact On Network Operations . . . . . . . . . . . . . .  24
-   11. Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  24
-   12. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  24
+     10.5.  Requirements On Other Protocols  . . . . . . . . . . . .  25
+     10.6.  Impact On Network Operations . . . . . . . . . . . . . .  25
+   11. Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  25
+   12. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  25
    13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
      13.1.  Normative References . . . . . . . . . . . . . . . . . .  25
      13.2.  Informative References . . . . . . . . . . . . . . . . .  27
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  27
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
 
 1.  Introduction
 
@@ -165,7 +165,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
 
-Koldychev, et al.         Expires 18 April 2026                 [Page 3]
+Koldychev, et al.         Expires 19 April 2026                 [Page 3]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
@@ -202,9 +202,9 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    The Candidate Path of an SR Policy is the unit of signaling in PCEP,
    see [I-D.ietf-pce-segment-routing-policy-cp].  Each Candidate Path
    can contain multiple Segment Lists and each Segment List is encoded
-   by one ERO.  However, each PCEP LSP can contain only a single ERO,
-   which prevents us from encoding multiple Segment Lists within the
-   same SR Candidate Path.
+   by one Explicit Route Object (ERO).  However, each PCEP LSP can
+   contain only a single ERO, which prevents us from encoding multiple
+   Segment Lists within the same SR Candidate Path.
 
 2.2.  Splitting of Requested Bandwidth
 
@@ -221,7 +221,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
 
-Koldychev, et al.         Expires 18 April 2026                 [Page 4]
+Koldychev, et al.         Expires 19 April 2026                 [Page 4]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
@@ -247,7 +247,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 3.  Protocol Extensions
 
-3.1.  Path Attributes Object
+3.1.  PATH-ATTRIB Object
 
    We define the PATH-ATTRIB object that is used to carry per-path
    information and to act as a separator between several ERO/RRO objects
@@ -277,7 +277,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
 
-Koldychev, et al.         Expires 18 April 2026                 [Page 5]
+Koldychev, et al.         Expires 19 April 2026                 [Page 5]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
@@ -297,7 +297,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    in the ERO/RRO) within the set of multiple paths under the PCEP LSP.
    See Section 4.2 for details.
 
-3.2.  Metric
+3.2.  METRIC Object
 
    The PCEP METRIC object can continue to be used at the LSP level.  The
    metric value encoded into the LSP level METRIC object SHOULD be the
@@ -305,7 +305,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    outside the scope of this document and would require further
    extensions.
 
-3.3.  Multipath Weight TLV
+3.3.  MULTIPATH-WEIGHT TLV
 
    New MULTIPATH-WEIGHT TLV is optional in the PATH-ATTRIB object.
 
@@ -333,7 +333,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
 
-Koldychev, et al.         Expires 18 April 2026                 [Page 6]
+Koldychev, et al.         Expires 19 April 2026                 [Page 6]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
@@ -342,7 +342,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    or the PATH-ATTRIB object is absent from the <intended-path>/<actual-
    path>, then the Weight of the corresponding path is taken to be "1".
 
-3.4.  Multipath Backup TLV
+3.4.  MULTIPATH-BACKUP TLV
 
    New MULTIPATH-BACKUP TLV is optional in the PATH-ATTRIB object.
 
@@ -389,7 +389,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
 
-Koldychev, et al.         Expires 18 April 2026                 [Page 7]
+Koldychev, et al.         Expires 19 April 2026                 [Page 7]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
@@ -400,7 +400,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    Backup Path ID(s): a series of 4-octet identifier(s) that identify
    the backup path(s) in the set that protect this primary path.
 
-3.5.  Multipath Opposite Direction Path TLV
+3.5.  MULTIPATH-OPPDIR-PATH TLV
 
    New MULTIPATH-OPPDIR-PATH TLV is optional in the PATH-ATTRIB object.
    Multiple instances of the TLV are allowed in the same PATH-ATTRIB
@@ -445,7 +445,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
 
-Koldychev, et al.         Expires 18 April 2026                 [Page 8]
+Koldychev, et al.         Expires 19 April 2026                 [Page 8]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
@@ -460,8 +460,8 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
    Opposite Direction Path ID (32 bits): Identifies a path that goes in
    the opposite direction to this path.  If no such path exists, then
-   this field MUST be set to 0x0, a value reserved to indicate the
-   absence of a Path ID.
+   this field MUST be set to 0, a value reserved to indicate the absence
+   of a Path ID.
 
    Multiple instances of this TLV present in the same PATH-ATTRIB object
    indicate that there are multiple opposite-direction paths
@@ -471,7 +471,12 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    Whenever path A references another path B as being the opposite-
    direction path, then path B MUST also reference path A as its own
    opposite-direction path.  Furthermore, their values of the R-flag
-   (Reverse) in the PATH-ATTRIB object MUST have opposite values.
+   (Reverse) in the PATH-ATTRIB object MUST have opposite values.  If a
+   PCEP speaker receives an opposite-direction path mapping that is
+   asymmetric or where the R-flags are inconsistent, it MUST treat this
+   as an error.  The PCEP speaker MUST send a PCError message with
+   Error-Type = 19 ("Invalid Operation") and Error-Value = TBD3
+   ("Invalid opposite-direction path mapping").
 
    See Section 6.4 for an example of usage.
 
@@ -494,17 +499,20 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    are contained in the PATH-ATTRIB object, only the first one MUST be
    processed and the others MUST be ignored.
 
-   An ERO object MUST be included as per the existing RBNF, this ERO
-   MUST contain no sub-objects.  If the head-end receives a non-empty
-   ERO, the contents SHOULD be ignored.
 
 
-
-
-Koldychev, et al.         Expires 18 April 2026                 [Page 9]
+Koldychev, et al.         Expires 19 April 2026                 [Page 9]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
+
+   An ERO object MUST be included as per the existing RBNF, this ERO
+   MUST contain no sub-objects.  This empty ERO serves as a placeholder
+   to maintain compatibility with existing implementations based on the
+   RBNF defined in [RFC8231].  If the head-end receives a non-empty ERO
+   for a Composite Candidate Path, it MUST send a PCError message with
+   Error-Type = 19 ("Invalid Operation") and Error-Value = 21 ("Non-
+   empty path").
 
    See Section 6.3 for an example of the encoding.
 
@@ -512,8 +520,8 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
    Per-Flow Candidate Path builds on top of the concept of the Composite
    Candidate Path.  Each Path in a Per-Flow Candidate Path is assigned a
-   3-bit forward class value, which allows QoS classified traffic to be
-   steered depending on the forward class.
+   3-bit forward class value, which allows Quality of Service (QoS)
+   classified traffic to be steered depending on the forward class.
 
    New MULTIPATH-FORWARD-CLASS TLV is optional in the PATH-ATTRIB
    object.
@@ -544,23 +552,20 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 4.1.  Capability Negotiation
 
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 10]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
 4.1.1.  Multipath Capability TLV
 
    New MULTIPATH-CAP TLV is defined.  This TLV MAY be present in the
    OPEN object during PCEP session establishment.
-
-
-
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 10]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -602,6 +607,17 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    Note that F-flag and C-flag can be set independently, i.e., F-flag
    can be set, but C-flag not set, etc.
 
+
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 11]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
    When PCE computes the LSP path, it MUST NOT return more forward
    multipaths than the corresponding value of "Number of Multipaths"
    from the MULTIPATH-CAP TLV.  If this TLV is absent (from both OPEN
@@ -610,20 +626,13 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    From the PCC, the MULTIPATH-CAP TLV MAY also be present in the LSP
    object for each individual LSP, to specify per-LSP values.  The PCC
    MUST NOT include this TLV in the LSP object if the TLV was not
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 11]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
-
    present in the OPEN objects of both PCEP peers.  TLV values in the
    LSP object override the session default values in the OPEN object.
-   Furthermore, the PATH-ATTRIB object and its associated TLVs MUST NOT
-   be included in PCEP messages if the MULTIPATH-CAP TLV was not present
-   in the OPEN objects exchanged by both PCEP peers during session
-   establishment.
+   If a PCEP speaker receives a PATH-ATTRIB object but the multipath
+   capability was not successfully negotiated during session
+   establishment, it MUST treat this as an error.  The PCEP speaker MUST
+   send a PCError message with Error-Type = 10 ("Reception of an invalid
+   object") and Error-Value = TBD2 ("Unexpected PATH-ATTRIB object").
 
    For example, the PCC includes this TLV in the OPEN object at session
    establishment, setting "Number of Multipaths" to 4 and "O-flag" to 0.
@@ -639,20 +648,31 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    Note that when the LSP is an SR Policy Candidate Path, the Paths
    within that LSP are the Segment Lists.
 
-   Value 0x0 indicates an unallocated Path ID.  The value of 0x0 MAY be
-   used when this Path is not referenced and the allocation of a Path ID
-   is not necessary.
+   Value 0 indicates an unallocated Path ID.  The value of 0 MAY be used
+   when this Path is not referenced and the allocation of a Path ID is
+   not necessary.
 
    Path IDs are allocated by the PCEP peer that owns the LSP.  If the
    LSP is delegated to the PCE, then the PCE allocates the Path IDs and
-   sends them in the PCReply/PCUpd/PCInit messages.  If the LSP is
+   sends them in the PCReply/PCUpd/PCInitiate messages.  If the LSP is
    locally computed on the PCC, then the PCC allocates the Path IDs and
    sends them in the PCReq/PCRpt messages.
 
    If a PCEP speaker detects that there are two Paths with the same Path
-   ID, then the PCEP speaker SHOULD send PCError message with Error-Type
-   = 1 ("Reception of an invalid object") and Error-Value = 38
+   ID, then the PCEP speaker MUST send PCError message with Error-Type =
+   1 ("Reception of an invalid object") and Error-Value = 38
    ("Conflicting Path ID").
+
+
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 12]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
 
 4.3.  Signaling Multiple Paths for Loadbalancing
 
@@ -663,16 +683,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    1.  The PCE MAY assign a unique Path ID to each ERO path and populate
        it inside the PATH-ATTRIB object.  The Path ID is unique within
        the context of a PLSP (when non-zero).
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 12]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
    2.  The MULTIPATH-WEIGHT TLV MAY be carried inside the PATH-ATTRIB
        object.  A weight is populated to reflect the relative loadshare
@@ -708,34 +718,35 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
        rerouted traffic after the protected path(s) fail then the B flag
        MUST be set.
 
-   Note that primary paths which do not include the MULTIPATH-BACKUP TLV
-   are assumed to be protected by all the backup paths.  I.e., omitting
-   the TLV is equivalent to including the TLV with all the backup path
-   IDs filled in.
-
-   Note that a given PCC may not support certain backup combinations,
-   such as a backup path that is itself protected by another backup
-   path, etc.  If a PCC is not able to implement a requested backup
-   scenario, the PCC SHOULD send a PCError message with Error-Type = 19
-   ("Invalid Operation") and Error-Value = 20 ("Not supported path
-   backup").
+   Primary paths which do not include the MULTIPATH-BACKUP TLV are
+   assumed to be protected by all the backup paths.  I.e., omitting the
+   TLV is equivalent to including the TLV with all the backup path IDs
+   filled in.
 
 
 
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 13]
+Koldychev, et al.         Expires 19 April 2026                [Page 13]
 
 Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
+   Note that a given PCC may not support certain backup combinations,
+   such as a backup path that is itself protected by another backup
+   path, etc.  If a PCC does not support a requested backup scenario,
+   the PCC MUST send a PCError message with Error-Type = 19 ("Invalid
+   Operation") and Error-Value = 20 ("Not supported path backup").
+
 5.  PCEP Message Extensions
 
-   The RBNF of PCReq, PCRep, PCRpt, PCUpd and PCInit messages currently
-   use a combination of <intended-path> and/or <actual-path>.  As
-   specified in Section 6.1 of [RFC8231], <intended-path> is represented
-   by the ERO object and <actual-path> is represented by the RRO object:
+   The RBNF of PCRpt, PCUpd and PCInitiate messages currently use a
+   combination of <intended-path> and/or <actual-path>.  PCReq and PCRep
+   messages, as defined in [RFC5440] and extended by [RFC8231], directly
+   include ERO and RRO objects within their respective message
+   structures rather than encapsulating them within <intended-path> or
+   <actual-path> constructs.  As specified in Section 6.1 of [RFC8231],
+   within the context of messages that utilize these constructs,
+   <intended-path> is represented by the ERO object and <actual-path> is
+   represented by the RRO object:
 
       <intended-path> ::= <ERO>
 
@@ -760,6 +771,21 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    Consider the following sample SR Policy, taken from
    [RFC9256].
 
+
+
+
+
+
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 14]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
    SR policy POL1 <headend, color, endpoint>
        Candidate Path CP1 <protocol-origin = 20, originator =
                            100:1.1.1.1, discriminator = 1>
@@ -778,13 +804,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    PLSP-ID 200 to CP2.
 
    The state-report for CP1 can be encoded as:
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 14]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
    <state-report> =
        <LSP PLSP_ID=100>
@@ -814,6 +833,15 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
    <PATH-ATTRIB Path_ID=1 <WEIGHT-TLV Weight=W1>>
 
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 15]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
    means that this is PATH-ATTRIB object with Path ID field set to "1"
    and with a MULTIPATH-WEIGHT TLV carrying weight of "W1".
 
@@ -834,13 +862,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
        <ERO B>
        <PATH-ATTRIB Path_ID=3 <BACKUP-TLV B=1, Backup_Paths=[]>>
        <ERO C>
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 15]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
    Note that the syntax
 
@@ -864,6 +885,19 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
    This is signaled in PCEP as:
 
+
+
+
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 16]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
        <LSP PLSP_ID=100>
            <ASSOCIATION>
            <END-POINT>
@@ -880,23 +914,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
    Consider the two opposite-direction SR Policies between endpoints H1
    and E1.
-
-
-
-
-
-
-
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 16]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
    SR policy POL1 <headend = H1, color, endpoint = E1>
        Candidate Path CP1
@@ -923,6 +940,20 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
    The state-report for POL1, CP1 can be encoded as:
 
+
+
+
+
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 17]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
    <state-report> =
        <LSP PLSP_ID=100>
        <BIDIRECTIONAL ASSOCIATION = A1>
@@ -940,19 +971,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
        <ERO <E1,M4,M3,H1>>
 
    The state-report for POL1, CP2 can be encoded as:
-
-
-
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 17]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
    <state-report> =
        <LSP PLSP_ID=200>
@@ -985,6 +1003,13 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
            <OPPDIR-PATH-TLV OppositePathID=2>>
        <ERO <H1,M3,M4,E1>>
 
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 18]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
    The state-report for POL2, CP2 can be encoded as:
 
    <state-report> =
@@ -999,16 +1024,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
        <PATH-ATTRIB PathID=3 R-flag=1
            <OPPDIR-PATH-TLV OppositePathID=1>>
        <ERO <H1,M5,N6,E1>>
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 18]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
 7.  Implementation Status
 
@@ -1044,6 +1059,13 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    Coverage: Multiple Segment Lists and reverse paths in SR Policy
    Contact: mkoldych@cisco.com
 
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 19]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
 7.2.  Ciena Corp
 
    Organization: Ciena Corp
@@ -1053,18 +1075,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    Contact: byadav@ciena.com
 
 7.3.  Huawei Technologies
-
-
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 19]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
    Organization: Huawei Technologies Co.,Ltd.
    Implementation: Huawei's Router and Controller
@@ -1093,6 +1103,25 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    "PCEP TLV Type Indicators" within the "Path Computation Element
    Protocol (PCEP) Numbers" registry group:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 20]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
     +------------+-----------------------------------+-----------------+
     | TLV Type   | TLV Name                          | Reference       |
     | Value      |                                   |                 |
@@ -1109,18 +1138,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    IANA is requested to make new allocations within the "PCEP TLV Type
    Indicators" within the "Path Computation Element Protocol (PCEP)
    Numbers" registry group:
-
-
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 20]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
     +------------+-----------------------------------+-----------------+
     | TLV Type   | TLV Name                          | Reference       |
@@ -1145,7 +1162,33 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
     | 19         | 21 - Non-empty path               | This document   |
     +------------+-----------------------------------+-----------------+
 
-8.4.  Flags in the Multipath Capability TLV
+   IANA is requested to make new allocations within the "PCEP-ERROR
+   Object Error Types and Values" within the "Path Computation Element
+   Protocol (PCEP) Numbers" registry group:
+
+
+
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 21]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
+    +------------+-----------------------------------+-----------------+
+    | Error-Type | Error-Value                       | Reference       |
+    +------------+-----------------------------------+-----------------+
+    | 10         | TBD2 - Unexpected PATH-ATTRIB     | This document   |
+    |            |        Object                     |                 |
+    +------------+-----------------------------------+-----------------+
+    | 19         | TBD3 - Invalid opposite-direction | This document   |
+    |            |        path mapping               |                 |
+    +------------+-----------------------------------+-----------------+
+
+8.4.  Flags in the MULTIPATH-CAP TLV
 
    IANA is requested to create a new sub-registry to manage the Flag
    field of the MULTIPATH-CAP TLV, called "Flags in MULTIPATH-CAP TLV"
@@ -1156,7 +1199,13 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
     +------------+-----------------------------------+-----------------+
     | Bit        | Description                       | Reference       |
     +------------+-----------------------------------+-----------------+
-    | 0-12       | Unassigned                        | This document   |
+    | 0-10       | Unassigned                        | This document   |
+    +------------+-----------------------------------+-----------------+
+    | 11         | C-flag: support for Composite     | This document   |
+    |            |  Candidate Path processing        |                 |
+    +------------+-----------------------------------+-----------------+
+    | 12         | F-flag: support for processing    | This document   |
+    |            | MULTIPATH-FORWARD-CLASS TLV       |                 |
     +------------+-----------------------------------+-----------------+
     | 13         | 0-flag: support for processing    | This document   |
     |            | MULTIPATH-OPPDIR-PATH TLV         |                 |
@@ -1168,23 +1217,22 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
     |            | MULTIPATH-WEIGHT TLV              |                 |
     +------------+-----------------------------------+-----------------+
 
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 21]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
-
-8.5.  Flags in the Path Attribute Object
+8.5.  Flags in the PATH-ATTRIBUTE Object
 
    IANA is requested to create a new sub-registry to manage the Flag
    field of the PATH-ATTRIBUTE object, called "Flags in PATH-ATTRIBUTE
    Object" within the "Path Computation Element Protocol (PCEP) Numbers"
    registry group.  New values are to be assigned by "IETF review"
    [RFC8126]
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 22]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
 
     +------------+-----------------------------------+-----------------+
     | Bit        | Description                       | Reference       |
@@ -1194,7 +1242,7 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
     | 13-15      | O-flag: Operational state         | This document   |
     +------------+-----------------------------------+-----------------+
 
-8.6.  Flags in the Multipath Backup TLV
+8.6.  Flags in the MULTIPATH-BACKUP TLV
 
    IANA is requested to create a new sub-registry to manage the Flag
    field of the MULTIPATH-BACKUP TLV, called "Flags in MULTIPATH-BACKUP
@@ -1210,29 +1258,13 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
     | 15         | B-flag: Pure backup               | This document   |
     +------------+-----------------------------------+-----------------+
 
-8.7.  Flags in the Multipath Opposite Direction Path TLV
+8.7.  Flags in the MULTIPATH-OPPDIR-PATH TLV
 
    IANA is requested to create a new sub-registry to manage the flag
    fields of the MULTIPATH-OPPDIR-PATH TLV, called "Flags in the
    MULTIPATH-OPPDIR-PATH TLV" within the "Path Computation Element
    Protocol (PCEP) Numbers" registry group.  New values are to be
    assigned by "IETF review" [RFC8126]
-
-
-
-
-
-
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 22]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
     +------------+-----------------------------------+-----------------+
     | Bit        | Description                       | Reference       |
@@ -1250,6 +1282,13 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    [RFC8281], [RFC8664], [RFC9256],
    [I-D.ietf-pce-segment-routing-policy-cp] and
    [I-D.draft-ietf-pce-pcep-color] are applicable to this specification.
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 23]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
 
    As per [RFC8231], it is RECOMMENDED that these PCEP extensions can
    only be activated on authenticated and encrypted sessions across PCEs
@@ -1282,14 +1321,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    liveness detection or monitoring requirements in addition to those
    already defined in [RFC5440] and [RFC8231].
 
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 23]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
-
 10.4.  Verify Correct Operations
 
    In addition to the verification requirements in [RFC5440] and
@@ -1306,6 +1337,14 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
    *  An implementation SHOULD provide a mechanism to log and display
       the new PCEP errors defined in this document
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 24]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
 
 10.5.  Requirements On Other Protocols
 
@@ -1327,24 +1366,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    Yaping for review comments.
 
 12.  Contributors
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 24]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
       Zafar Ali
       Cisco Systems
@@ -1373,6 +1394,14 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    [I-D.ietf-pce-pceps-tls13]
               Dhody, D., Turner, S., and R. Housley, "Updates for PCEPS:
               TLS Connection Establishment Restrictions", Work in
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 25]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
               Progress, Internet-Draft, draft-ietf-pce-pceps-tls13-04, 9
               January 2024, <https://datatracker.ietf.org/doc/html/
               draft-ietf-pce-pceps-tls13-04>.
@@ -1391,26 +1420,10 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
-
-
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 25]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
-
    [RFC5440]  Vasseur, JP., Ed. and JL. Le Roux, Ed., "Path Computation
               Element (PCE) Communication Protocol (PCEP)", RFC 5440,
               DOI 10.17487/RFC5440, March 2009,
               <https://www.rfc-editor.org/rfc/rfc5440>.
-
-   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
-              Code: The Implementation Status Section", BCP 205,
-              RFC 7942, DOI 10.17487/RFC7942, July 2016,
-              <https://www.rfc-editor.org/rfc/rfc7942>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1434,6 +1447,17 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
               Model", RFC 8281, DOI 10.17487/RFC8281, December 2017,
               <https://www.rfc-editor.org/rfc/rfc8281>.
 
+
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 26]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
    [RFC8664]  Sivabalan, S., Filsfils, C., Tantsura, J., Henderickx, W.,
               and J. Hardwick, "Path Computation Element Communication
               Protocol (PCEP) Extensions for Segment Routing", RFC 8664,
@@ -1450,13 +1474,6 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
               Security (TLS) and Datagram Transport Layer Security
               (DTLS)", BCP 195, RFC 9325, DOI 10.17487/RFC9325, November
               2022, <https://www.rfc-editor.org/rfc/rfc9325>.
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 26]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
-
 
 13.2.  Informative References
 
@@ -1484,6 +1501,19 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
               <https://datatracker.ietf.org/doc/html/draft-ietf-spring-
               cs-sr-policy-11>.
 
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/rfc/rfc7942>.
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 27]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
+
+
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
@@ -1505,13 +1535,6 @@ Authors' Addresses
    Siva Sivabalan
    Ciena Corporation
    Email: ssivabal@ciena.com
-
-
-
-
-Koldychev, et al.         Expires 18 April 2026                [Page 27]
-
-Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
    Tarek Saad
@@ -1537,6 +1560,14 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
    Shuping Peng
    Huawei Technologies
    Email: pengshuping@huawei.com
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 28]
+
+Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
    Gyan Mishra
@@ -1565,4 +1596,29 @@ Internet-Draft        PCEP Extensions for Multipath         October 2025
 
 
 
-Koldychev, et al.         Expires 18 April 2026                [Page 28]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Koldychev, et al.         Expires 19 April 2026                [Page 29]
